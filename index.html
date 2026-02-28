@@ -16,20 +16,12 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html {
+  html, body {
     width: 100%;
-    height: fit-content;
-    background: var(--black);
-  }
-
-  body {
-    width: 100%;
-    height: fit-content;
-    min-height: unset;
     background: var(--black);
     color: var(--white);
     font-family: 'DM Sans', sans-serif;
-    overflow: visible;
+    overflow: hidden; /* suppress scrollbar — parent iframe handles scrolling */
   }
 
   /* SCHEDULE */
@@ -63,7 +55,7 @@
   /* LOADING / ERROR STATES */
   .status {
     text-align: center;
-    padding: 2rem; /* FIXED: reduced from 4rem to avoid ghost space during load */
+    padding: 2rem;
     opacity: 0.4;
     font-size: 0.9rem;
     letter-spacing: 0.05em;
@@ -250,7 +242,7 @@
     </div>
   </div>
 </section>
-<p style="text-align:center; font-size:2rem; padding: 1rem 0;">👑🍑</p>
+<p style="text-align:center; font-size:2rem; padding: 1rem 0;">🏎️ 🌵</p>
 
 <script>
   // ============================================================
@@ -262,31 +254,46 @@
   const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
-  function reportHeight() {
-    const section = document.querySelector('.schedule');
-    const height = section ? section.offsetHeight + 32 : document.documentElement.scrollHeight;
+  // ─── HEIGHT REPORTING ───────────────────────────────────────
+  // Measures the true bottom of all content on the page,
+  // then posts it to the parent frame (Wix "Embed a Site" iframe).
+  function getContentHeight() {
+    // getBoundingClientRect gives us the exact rendered bottom
+    // of the last element, which is more reliable than scrollHeight
+    // because scrollHeight can include phantom space from old layouts.
+    const all = document.body.querySelectorAll('*');
+    let maxBottom = 0;
+    all.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const bottom = rect.bottom + window.scrollY;
+      if (bottom > maxBottom) maxBottom = bottom;
+    });
+    return Math.ceil(maxBottom) + 32; // 32px breathing room to avoid scrollbar
+  }
 
-    // All three formats Wix Studio may expect
+  function reportHeight() {
+    const height = getContentHeight();
     window.parent.postMessage({ height }, '*');
     window.parent.postMessage({ type: 'height', value: height }, '*');
     window.parent.postMessage(JSON.stringify({ height }), '*');
   }
 
-  function reportAfterSettle() {
-    setTimeout(reportHeight, 1500);
+  function reportAfterSettle(delay) {
+    setTimeout(reportHeight, delay || 1500);
   }
 
-  window.addEventListener('load', reportAfterSettle);
+  window.addEventListener('load', () => reportAfterSettle(1500));
   window.addEventListener('resize', reportHeight);
-  document.fonts.ready.then(reportAfterSettle);
+  document.fonts.ready.then(() => reportAfterSettle(500));
 
-  // Debounced ResizeObserver
+  // Debounced ResizeObserver — fires after content changes settle
   let roTimer;
   const ro = new ResizeObserver(() => {
     clearTimeout(roTimer);
-    roTimer = setTimeout(reportHeight, 300);
+    roTimer = setTimeout(reportHeight, 400);
   });
   ro.observe(document.body);
+  // ────────────────────────────────────────────────────────────
 
   function parseCSV(text) {
     const lines = text.trim().split('\n');
@@ -318,7 +325,7 @@
 
     if (!shows.length) {
       container.innerHTML = '<div class="status">No upcoming shows right now — check back soon!</div>';
-      reportAfterSettle();
+      reportAfterSettle(500);
       return;
     }
 
@@ -358,11 +365,12 @@
     container.innerHTML = '';
     container.appendChild(grid);
 
-    reportAfterSettle();
+    // Report immediately, then again after animations finish
+    reportAfterSettle(100);
+    reportAfterSettle(1500);
   }
 
   async function loadShows() {
-    // FIXED: corrected URL check to match the actual CSV export URL format
     const isPlaceholderURL = !SHEET_CSV_URL.includes('output=csv');
 
     if (isPlaceholderURL) {
@@ -385,7 +393,7 @@
     } catch (err) {
       document.getElementById('shows-container').innerHTML =
         '<div class="status">Couldn\'t load shows. Please check the sheet URL and make sure it\'s published as CSV.</div>';
-      reportAfterSettle();
+      reportAfterSettle(500);
       console.error(err);
     }
   }
@@ -394,4 +402,3 @@
 </script>
 </body>
 </html>
-
