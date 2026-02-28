@@ -16,18 +16,25 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body {
+  html {
     width: 100%;
-    height: auto;
+    height: fit-content;
+    background: var(--black);
+  }
+
+  body {
+    width: 100%;
+    height: fit-content;
+    min-height: unset;
     background: var(--black);
     color: var(--white);
     font-family: 'DM Sans', sans-serif;
-    overflow: hidden;
+    overflow: visible;
   }
 
   /* SCHEDULE */
   .schedule {
-    padding: 4rem 3rem 5rem;
+    padding: 4rem 3rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
   }
@@ -186,7 +193,7 @@
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
-    .schedule { padding: 3rem 1.5rem 4rem; }
+    .schedule { padding: 3rem 1.5rem 1.5rem; }
 
     .show-row {
       grid-template-columns: 90px 1fr;
@@ -208,7 +215,7 @@
   }
 
   @media (max-width: 480px) {
-    .schedule { padding: 2rem 1rem 3rem; }
+    .schedule { padding: 2rem 1rem 1rem; }
     .show-row { padding: 1rem; gap: 0.5rem 0.75rem; }
     .show-date { font-size: 1.1rem; }
     .show-info h3 { font-size: 0.9rem; }
@@ -243,6 +250,7 @@
     </div>
   </div>
 </section>
+<p style="text-align:center; font-size:2rem; padding: 1rem 0;">🐔🍆</p>
 
 <script>
   // ============================================================
@@ -255,28 +263,29 @@
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
   function reportHeight() {
-    const height = document.documentElement.scrollHeight;
-    // Standard format
+    const section = document.querySelector('.schedule');
+    const height = section ? section.offsetHeight + 32 : document.documentElement.scrollHeight;
+
+    // All three formats Wix Studio may expect
     window.parent.postMessage({ height }, '*');
-    // Wix Studio format
-    window.parent.postMessage(JSON.stringify({ type: 'height', value: height }), '*');
-    // Wix legacy format
+    window.parent.postMessage({ type: 'height', value: height }, '*');
     window.parent.postMessage(JSON.stringify({ height }), '*');
   }
 
-  function pollHeight(ms = 200, times = 20) {
-    let count = 0;
-    const id = setInterval(() => {
-      reportHeight();
-      if (++count >= times) clearInterval(id);
-    }, ms);
+  function reportAfterSettle() {
+    setTimeout(reportHeight, 1500);
   }
 
-  window.addEventListener('load', pollHeight);
+  window.addEventListener('load', reportAfterSettle);
   window.addEventListener('resize', reportHeight);
-  document.fonts.ready.then(pollHeight);
+  document.fonts.ready.then(reportAfterSettle);
 
-  const ro = new ResizeObserver(() => reportHeight());
+  // Debounced ResizeObserver
+  let roTimer;
+  const ro = new ResizeObserver(() => {
+    clearTimeout(roTimer);
+    roTimer = setTimeout(reportHeight, 300);
+  });
   ro.observe(document.body);
 
   function parseCSV(text) {
@@ -309,7 +318,7 @@
 
     if (!shows.length) {
       container.innerHTML = '<div class="status">No upcoming shows right now — check back soon!</div>';
-      pollHeight(); // FIXED: poll instead of single report
+      reportAfterSettle();
       return;
     }
 
@@ -349,7 +358,7 @@
     container.innerHTML = '';
     container.appendChild(grid);
 
-    pollHeight(); // FIXED: poll instead of single report
+    reportAfterSettle();
   }
 
   async function loadShows() {
@@ -376,7 +385,7 @@
     } catch (err) {
       document.getElementById('shows-container').innerHTML =
         '<div class="status">Couldn\'t load shows. Please check the sheet URL and make sure it\'s published as CSV.</div>';
-      pollHeight(); // FIXED: poll instead of single report
+      reportAfterSettle();
       console.error(err);
     }
   }
@@ -385,7 +394,3 @@
 </script>
 </body>
 </html>
-
-
-
-
