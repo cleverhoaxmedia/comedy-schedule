@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comedy Show — Schedule</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFE135;
+    --black: #0D0D0D;
+    --white: #F5F5F0;
+    --red: #FF3B30;
+    --gray: #1A1A1A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: auto;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow: visible;
+  }
+
+  /* SCHEDULE */
+  .schedule {
+    padding: 4rem 3rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255,225,53,0.4), transparent);
+  }
+
+  /* LOADING / ERROR STATES */
+  .status {
+    text-align: center;
+    padding: 2rem; /* FIXED: reduced from 4rem to avoid ghost space during load */
+    opacity: 0.4;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+  }
+
+  .status .spinner {
+    width: 28px; height: 28px;
+    border: 2px solid rgba(255,225,53,0.2);
+    border-top-color: var(--yellow);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  /* GRID */
+  .shows-grid {
+    display: grid;
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .show-row {
+    display: grid;
+    grid-template-columns: 110px 1fr auto auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--gray);
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .show-row::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--yellow);
+    transform: scaleY(0);
+    transition: transform 0.2s;
+    transform-origin: bottom;
+  }
+
+  .show-row:hover { background: #222; }
+  .show-row:hover::before { transform: scaleY(1); }
+
+  .show-date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    line-height: 1.1;
+    color: var(--yellow);
+    letter-spacing: 0.05em;
+  }
+
+  .show-date span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+  }
+
+  .show-info h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .show-info p {
+    font-size: 0.8rem;
+    opacity: 0.5;
+  }
+
+  .show-venue {
+    text-align: right;
+    font-size: 0.85rem;
+    opacity: 0.6;
+    line-height: 1.4;
+  }
+
+  .show-venue strong {
+    display: block;
+    opacity: 1;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.15rem;
+    color: var(--white);
+  }
+
+  .btn-ticket {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255,225,53,0.4);
+    color: var(--yellow);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.1rem;
+    border-radius: 3px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-ticket:hover { background: var(--yellow); color: var(--black); }
+
+  .badge-soldout {
+    display: inline-block;
+    background: rgba(255,59,48,0.15);
+    border: 1px solid rgba(255,59,48,0.3);
+    color: var(--red);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .schedule { padding: 3rem 1.5rem 4rem; }
+
+    .show-row {
+      grid-template-columns: 90px 1fr;
+      grid-template-rows: auto auto;
+      gap: 0.75rem 1rem;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .show-venue {
+      text-align: left;
+      grid-column: 2;
+    }
+
+    .btn-ticket, .badge-soldout {
+      grid-column: 1 / -1;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .schedule { padding: 2rem 1rem 3rem; }
+    .show-row { padding: 1rem; gap: 0.5rem 0.75rem; }
+    .show-date { font-size: 1.1rem; }
+    .show-info h3 { font-size: 0.9rem; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .show-row {
+    animation: fadeUp 0.4s ease both;
+  }
+</style>
+</head>
+<body>
+
+<section class="schedule">
+  <div class="section-header">
+    <h2 class="section-title">Upcoming Shows</h2>
+    <div class="section-line"></div>
+  </div>
+  <div id="shows-container">
+    <div class="status">
+      <div class="spinner"></div>
+      Loading shows...
+    </div>
+  </div>
+</section>
+
+<script>
+  // ============================================================
+  //  PASTE YOUR GOOGLE SHEETS CSV PUBLISH URL HERE
+  // ============================================================
+  const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?gid=1739251150&single=true&output=csv';
+  // ============================================================
+
+  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+  function reportHeight() {
+    const height = document.documentElement.scrollHeight;
+    // Standard format
+    window.parent.postMessage({ height }, '*');
+    // Wix Studio format
+    window.parent.postMessage(JSON.stringify({ type: 'height', value: height }), '*');
+    // Wix legacy format
+    window.parent.postMessage(JSON.stringify({ height }), '*');
+  }
+
+  function pollHeight(ms = 200, times = 20) {
+    let count = 0;
+    const id = setInterval(() => {
+      reportHeight();
+      if (++count >= times) clearInterval(id);
+    }, ms);
+  }
+
+  window.addEventListener('load', pollHeight);
+  window.addEventListener('resize', reportHeight);
+  document.fonts.ready.then(pollHeight);
+
+  const ro = new ResizeObserver(() => reportHeight());
+  ro.observe(document.body);
+
+  function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    return lines.slice(1).map(line => {
+      const cols = [];
+      let current = '', inQuotes = false;
+      for (let ch of line) {
+        if (ch === '"') { inQuotes = !inQuotes; }
+        else if (ch === ',' && !inQuotes) { cols.push(current.trim()); current = ''; }
+        else { current += ch; }
+      }
+      cols.push(current.trim());
+      return Object.fromEntries(headers.map((h, i) => [h, cols[i] ?? '']));
+    }).filter(row => row.Date);
+  }
+
+  function formatDate(dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const date = new Date(y, m - 1, d);
+    return {
+      display: `${MONTHS[date.getMonth()]} ${String(date.getDate()).padStart(2, '0')}`,
+      day: DAYS[date.getDay()]
+    };
+  }
+
+  function renderShows(shows) {
+    const container = document.getElementById('shows-container');
+
+    if (!shows.length) {
+      container.innerHTML = '<div class="status">No upcoming shows right now — check back soon!</div>';
+      pollHeight(); // FIXED: poll instead of single report
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'shows-grid';
+
+    shows.forEach((show, i) => {
+      const { display, day } = formatDate(show.Date);
+      const isSoldOut = (show.TicketURL || '').trim().toLowerCase() === 'soldout';
+
+      const row = document.createElement('div');
+      row.className = 'show-row';
+      row.style.animationDelay = `${i * 0.06}s`;
+
+      row.innerHTML = `
+        <div class="show-date">
+          ${display}
+          <span>${day}</span>
+        </div>
+        <div class="show-info">
+          <h3>${show.Title || ''}</h3>
+          <p>${show.Showtime || ''}</p>
+        </div>
+        <div class="show-venue">
+          <strong>${show.Venue || ''}</strong>
+          ${show.City || ''}${show.City && show.State ? ', ' : ''}${show.State || ''}
+        </div>
+        ${isSoldOut
+          ? '<span class="badge-soldout">Sold Out</span>'
+          : `<a class="btn-ticket" href="${show.TicketURL}" target="_blank" rel="noopener">Get Tickets</a>`
+        }
+      `;
+
+      grid.appendChild(row);
+    });
+
+    container.innerHTML = '';
+    container.appendChild(grid);
+
+    pollHeight(); // FIXED: poll instead of single report
+  }
+
+  async function loadShows() {
+    // FIXED: corrected URL check to match the actual CSV export URL format
+    const isPlaceholderURL = !SHEET_CSV_URL.includes('output=csv');
+
+    if (isPlaceholderURL) {
+      renderShows([
+        { Date: '2026-03-07', Title: 'Friday Night Laughs',      Showtime: '8:30pm', Venue: 'The Laugh Factory',  City: 'Los Angeles',   State: 'CA', TicketURL: '#' },
+        { Date: '2026-03-14', Title: 'The Big Jokes Show',       Showtime: '8:00pm', Venue: 'Comedy Cellar',      City: 'New York',      State: 'NY', TicketURL: '#' },
+        { Date: '2026-03-21', Title: 'Spring Special Showcase',  Showtime: '8:00pm', Venue: 'Zanies Comedy Club', City: 'Chicago',       State: 'IL', TicketURL: 'soldout' },
+        { Date: '2026-03-28', Title: 'End of March Blowout',     Showtime: '9:00pm', Venue: 'Improv Comedy Club', City: 'Houston',       State: 'TX', TicketURL: '#' },
+        { Date: '2026-04-04', Title: 'April Fools Extravaganza', Showtime: '8:30pm', Venue: 'Punch Line SF',      City: 'San Francisco', State: 'CA', TicketURL: '#' },
+      ]);
+      return;
+    }
+
+    try {
+      const res = await fetch(SHEET_CSV_URL);
+      if (!res.ok) throw new Error('Failed to fetch');
+      const text = await res.text();
+      const shows = parseCSV(text);
+      renderShows(shows);
+    } catch (err) {
+      document.getElementById('shows-container').innerHTML =
+        '<div class="status">Couldn\'t load shows. Please check the sheet URL and make sure it\'s published as CSV.</div>';
+      pollHeight(); // FIXED: poll instead of single report
+      console.error(err);
+    }
+  }
+
+  loadShows();
+</script>
+</body>
+</html>
