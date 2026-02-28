@@ -21,7 +21,14 @@
     background: var(--black);
     color: var(--white);
     font-family: 'DM Sans', sans-serif;
-    overflow: hidden; /* suppress scrollbar — parent iframe handles scrolling */
+    /* Hide scrollbar without clipping content */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
   }
 
   /* SCHEDULE */
@@ -242,7 +249,7 @@
     </div>
   </div>
 </section>
-<p style="text-align:center; font-size:2rem; padding: 1rem 0;"> 🌵 🏎️ 🌵</p>
+<p style="text-align:center; font-size:2rem; padding: 1rem 0;">🍌 🎯</p>
 
 <script>
   // ============================================================
@@ -402,4 +409,3 @@
 </script>
 </body>
 </html>
-
