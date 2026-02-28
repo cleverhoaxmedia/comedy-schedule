@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<script>
+  function sendHeight() {
+    const height = document.body.scrollHeight;
+    window.parent.postMessage({ type: 'resize', height: height }, '*');
+  }
+
+  // Send on load
+  window.addEventListener('load', sendHeight);
+
+  // Send whenever content changes
+  const observer = new ResizeObserver(sendHeight);
+  observer.observe(document.body);
+</script>
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Comedy Show — Schedule</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -385,5 +398,6 @@
 </script>
 </body>
 </html>
+
 
 
