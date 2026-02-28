@@ -2,272 +2,541 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comedy Show — Schedule</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --yellow: #FFE135;
-    --black: #0D0D0D;
-    --white: #F5F5F0;
-    --red: #FF3B30;
-    --gray: #1A1A1A;
-  }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comedy Show</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFE135;
+      --black: #0D0D0D;
+      --white: #F5F5F0;
+      --red: #FF3B30;
+      --gray: #1A1A1A;
+    }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body {
-    width: 100%;
-    background: var(--black);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    /* Hide scrollbar without clipping content */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-  }
+    html, body {
+      width: 100%;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
 
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-  }
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar { display: none; }
 
-  /* SCHEDULE */
-  .schedule {
-    padding: 4rem 3rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+    /* ── HERO ─────────────────────────────────────────────── */
+    .hero {
+      width: 100%; height: 100vh;
+      min-height: 400px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      position: relative;
+    }
 
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-  }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,225,53,0.08) 0%, transparent 70%);
+      top: 50%; left: 30%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
 
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    letter-spacing: 0.05em;
-    line-height: 1;
-    white-space: nowrap;
-  }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 3rem;
+      position: relative;
+    }
 
-  .section-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, rgba(255,225,53,0.4), transparent);
-  }
+    .hero-tag {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--black);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.8rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+      width: fit-content;
+      animation: fadeUp 0.6s ease both;
+    }
 
-  /* LOADING / ERROR STATES */
-  .status {
-    text-align: center;
-    padding: 2rem;
-    opacity: 0.4;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-  }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
 
-  .status .spinner {
-    width: 28px; height: 28px;
-    border: 2px solid rgba(255,225,53,0.2);
-    border-top-color: var(--yellow);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 1rem;
-  }
+    .hero-title span { color: var(--yellow); }
 
-  /* GRID */
-  .shows-grid {
-    display: block;
-    gap: 1px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    overflow: visible;
-  }
+    .hero-desc {
+      font-size: 1rem;
+      line-height: 1.7;
+      opacity: 0.65;
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
 
-  .show-row {
-    display: grid;
-    grid-template-columns: 110px 1fr auto auto;
-    gap: 1.5rem;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    background: var(--gray);
-    transition: background 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--yellow);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      width: fit-content;
+      transition: transform 0.2s, background 0.2s;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
 
-  .show-row::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--yellow);
-    transform: scaleY(0);
-    transition: transform 0.2s;
-    transform-origin: bottom;
-  }
+    .btn-primary:hover { transform: translateY(-2px); background: #fff; }
+    .btn-primary:hover svg { transform: translateX(4px); }
+    .btn-primary svg { transition: transform 0.2s; }
 
-  .show-row:hover { background: #222; }
-  .show-row:hover::before { transform: scaleY(1); }
+    .hero-right { position: relative; overflow: hidden; }
 
-  .show-date {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    line-height: 1.1;
-    color: var(--yellow);
-    letter-spacing: 0.05em;
-  }
+    .carousel { width: 100%; height: 100%; position: relative; overflow: hidden; }
 
-  .show-date span {
-    display: block;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    font-weight: 500;
-  }
+    .carousel-slides {
+      display: flex;
+      width: 100%; height: 100%;
+      transition: transform 0.7s cubic-bezier(0.77,0,0.175,1);
+    }
 
-  .show-info h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-  }
+    .carousel-slide { min-width: 100%; height: 100%; position: relative; overflow: hidden; }
 
-  .show-info p {
-    font-size: 0.8rem;
-    opacity: 0.5;
-  }
+    .carousel-slide-inner {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: #111;
+    }
 
-  .show-venue {
-    text-align: right;
-    font-size: 0.85rem;
-    opacity: 0.6;
-    line-height: 1.4;
-  }
+    .slide-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      transform: scale(1);
+      transition: transform 6s ease;
+    }
 
-  .show-venue strong {
-    display: block;
-    opacity: 1;
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin-bottom: 0.15rem;
-    color: var(--white);
-  }
+    .carousel-slide.active .slide-img { transform: scale(1.06); }
 
-  .btn-ticket {
-    display: inline-block;
-    background: transparent;
-    border: 1px solid rgba(255,225,53,0.4);
-    color: var(--yellow);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.5rem 1.1rem;
-    border-radius: 3px;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background 0.2s, color 0.2s;
-  }
+    .carousel-slide-inner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%);
+      pointer-events: none;
+    }
 
-  .btn-ticket:hover { background: var(--yellow); color: var(--black); }
+    .slide-label {
+      position: absolute;
+      bottom: 2rem; left: 2rem;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+      border-left: 3px solid var(--yellow);
+      z-index: 2;
+    }
 
-  .badge-soldout {
-    display: inline-block;
-    background: rgba(255,59,48,0.15);
-    border: 1px solid rgba(255,59,48,0.3);
-    color: var(--red);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.4rem 0.8rem;
-    border-radius: 3px;
-    white-space: nowrap;
-  }
+    .carousel-dots {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      display: flex; gap: 0.4rem;
+      z-index: 10;
+    }
 
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .schedule { padding: 3rem 1.5rem 1.5rem; }
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.3);
+      transition: width 0.3s, background 0.3s;
+      cursor: pointer;
+    }
+
+    .dot.active { width: 20px; background: var(--yellow); }
+
+    .carousel-nav {
+      position: absolute;
+      bottom: 2rem; right: 2rem;
+      display: flex; gap: 0.5rem;
+      z-index: 10;
+    }
+
+    .carousel-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+      backdrop-filter: blur(8px);
+    }
+
+    .carousel-btn:hover { background: var(--yellow); color: var(--black); }
+
+    /* ── MARQUEE ──────────────────────────────────────────── */
+    .marquee-bar {
+      width: 100%;
+      background: var(--yellow);
+      color: var(--black);
+      overflow: hidden;
+      padding: 0.75rem 0;
+      display: flex;
+    }
+
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 18s linear infinite;
+    }
+
+    .marquee-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .marquee-item::after {
+      content: '★';
+      font-size: 0.6rem;
+      opacity: 0.5;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SCHEDULE ─────────────────────────────────────────── */
+    .schedule {
+      padding: 4rem 3rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,225,53,0.4), transparent);
+    }
+
+    .status {
+      text-align: center;
+      padding: 2rem;
+      opacity: 0.4;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+
+    .status .spinner {
+      width: 28px; height: 28px;
+      border: 2px solid rgba(255,225,53,0.2);
+      border-top-color: var(--yellow);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    .shows-grid {
+      display: block;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      overflow: visible;
+    }
 
     .show-row {
-      grid-template-columns: 90px 1fr;
-      grid-template-rows: auto auto;
-      gap: 0.75rem 1rem;
-      padding: 1.25rem 1.5rem;
+      display: grid;
+      grid-template-columns: 110px 1fr auto auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: var(--gray);
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.4s ease both;
     }
+
+    .show-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--yellow);
+      transform: scaleY(0);
+      transition: transform 0.2s;
+      transform-origin: bottom;
+    }
+
+    .show-row:hover { background: #222; }
+    .show-row:hover::before { transform: scaleY(1); }
+
+    .show-date {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      line-height: 1.1;
+      color: var(--yellow);
+      letter-spacing: 0.05em;
+    }
+
+    .show-date span {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      font-weight: 500;
+    }
+
+    .show-info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .show-info p  { font-size: 0.8rem; opacity: 0.5; }
 
     .show-venue {
-      text-align: left;
-      grid-column: 2;
+      text-align: right;
+      font-size: 0.85rem;
+      opacity: 0.6;
+      line-height: 1.4;
     }
 
-    .btn-ticket, .badge-soldout {
-      grid-column: 1 / -1;
-      text-align: center;
-      width: 100%;
+    .show-venue strong {
+      display: block;
+      opacity: 1;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.15rem;
+      color: var(--white);
     }
-  }
 
-  @media (max-width: 480px) {
-    .schedule { padding: 2rem 1rem 1rem; }
-    .show-row { padding: 1rem; gap: 0.5rem 0.75rem; }
-    .show-date { font-size: 1.1rem; }
-    .show-info h3 { font-size: 0.9rem; }
-  }
+    .btn-ticket {
+      display: inline-block;
+      background: transparent;
+      border: 1px solid rgba(255,225,53,0.4);
+      color: var(--yellow);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      border-radius: 3px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
 
-  /* ANIMATIONS */
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+    .btn-ticket:hover { background: var(--yellow); color: var(--black); }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+    .badge-soldout {
+      display: inline-block;
+      background: rgba(255,59,48,0.15);
+      border: 1px solid rgba(255,59,48,0.3);
+      color: var(--red);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
 
-  .show-row {
-    animation: fadeUp 0.4s ease both;
-  }
-</style>
+    /* ── RESPONSIVE ───────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 45vh;
+        height: auto;
+        min-height: 75vh;
+      }
+      .hero-left { padding: 3rem 2.5rem 2rem; }
+      .hero::before { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .schedule { padding: 3rem 1.5rem 1.5rem; }
+      .show-row {
+        grid-template-columns: 90px 1fr;
+        grid-template-rows: auto auto;
+        gap: 0.75rem 1rem;
+        padding: 1.25rem 1.5rem;
+      }
+      .show-venue { text-align: left; grid-column: 2; }
+      .btn-ticket, .badge-soldout { grid-column: 1 / -1; text-align: center; width: 100%; }
+    }
+
+    @media (max-width: 560px) {
+      .hero { grid-template-rows: auto 40vh; }
+      .hero-left { padding: 2rem 1.5rem 1.5rem; }
+      .hero-title { font-size: clamp(3rem, 14vw, 5rem); }
+      .hero-desc { font-size: 0.9rem; margin-bottom: 1.5rem; }
+      .btn-primary { font-size: 0.85rem; padding: 0.8rem 1.5rem; }
+      .slide-label { font-size: 0.7rem; bottom: 1rem; left: 1rem; }
+      .carousel-nav { bottom: 1rem; right: 1rem; }
+      .carousel-dots { top: 1rem; right: 1rem; }
+      .carousel-btn { width: 32px; height: 32px; }
+    }
+
+    @media (max-width: 480px) {
+      .schedule { padding: 2rem 1rem 1rem; }
+      .show-row { padding: 1rem; gap: 0.5rem 0.75rem; }
+      .show-date { font-size: 1.1rem; }
+      .show-info h3 { font-size: 0.9rem; }
+    }
+
+    /* ── ANIMATIONS ───────────────────────────────────────── */
+    @keyframes spin   { to { transform: rotate(360deg); } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
 
-<section class="schedule">
-  <div class="section-header">
-    <h2 class="section-title">Upcoming Shows</h2>
-    <div class="section-line"></div>
-  </div>
-  <div id="shows-container">
-    <div class="status">
-      <div class="spinner"></div>
-      Loading shows...
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">Live Stand-Up Comedy</div>
+      <h1 class="hero-title">Comedy<br><span>Show</span><br>Title</h1>
+      <p class="hero-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent viverra purus vel nunc tincidunt, in faucibus erat laoreet. Sed euismod eros sit amet leo condimentum.</p>
+      <a href="#schedule" class="btn-primary">
+        See Upcoming Shows
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="hero-right">
+      <div class="carousel">
+        <div class="carousel-slides" id="slides">
+          <div class="carousel-slide active">
+            <div class="carousel-slide-inner">
+              <img class="slide-img" src="https://static.wixstatic.com/media/a8adb7_44737cbd56d248ef860c0723f4a84ed3~mv2.jpg" alt="Show photo 1" crossorigin="anonymous" />
+              <div class="slide-label">Last Friday's Show — Downtown Club</div>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <div class="carousel-slide-inner">
+              <img class="slide-img" src="https://static.wixstatic.com/media/a8adb7_deea3eb47f71482eaca8d1f4ea16aaf4~mv2.jpg" alt="Show photo 2" crossorigin="anonymous" />
+              <div class="slide-label">Sold Out — The Comedy Cellar</div>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <div class="carousel-slide-inner">
+              <img class="slide-img" src="https://static.wixstatic.com/media/a8adb7_1d4becebff6f4be7931363f06bbf8f11~mv2.jpg" alt="Show photo 3" crossorigin="anonymous" />
+              <div class="slide-label">Special Guest Night — Laugh Factory</div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-dots" id="dots">
+          <div class="dot active" data-i="0"></div>
+          <div class="dot" data-i="1"></div>
+          <div class="dot" data-i="2"></div>
+        </div>
+        <div class="carousel-nav">
+          <button class="carousel-btn" id="prev">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="carousel-btn" id="next">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar">
+    <div class="marquee-track">
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
+      <div class="marquee-item">Scrolling Text</div>
     </div>
   </div>
-</section>
-<p style="text-align:center; font-size:2rem; padding: 1rem 0;">🍌 🎯</p>
+
+  <!-- SCHEDULE -->
+  <section class="schedule" id="schedule">
+    <div class="section-header">
+      <h2 class="section-title">Upcoming Shows</h2>
+      <div class="section-line"></div>
+    </div>
+    <div id="shows-container">
+      <div class="status">
+        <div class="spinner"></div>
+        Loading shows...
+      </div>
+    </div>
+  </section>
 
 <script>
-  // ============================================================
-  //  PASTE YOUR GOOGLE SHEETS CSV PUBLISH URL HERE
-  // ============================================================
-  const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
-  // ============================================================
-
-  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-
-  // ─── HEIGHT REPORTING ───────────────────────────────────────
-  // Measures the true bottom of all content on the page,
-  // then posts it to the parent frame (Wix "Embed a Site" iframe).
+  // ── HEIGHT REPORTING ───────────────────────────────────────
   function getContentHeight() {
-    // getBoundingClientRect gives us the exact rendered bottom
-    // of the last element, which is more reliable than scrollHeight
-    // because scrollHeight can include phantom space from old layouts.
     const all = document.body.querySelectorAll('*');
     let maxBottom = 0;
     all.forEach(el => {
@@ -275,7 +544,7 @@
       const bottom = rect.bottom + window.scrollY;
       if (bottom > maxBottom) maxBottom = bottom;
     });
-    return Math.ceil(maxBottom) + 32; // 32px breathing room to avoid scrollbar
+    return Math.ceil(maxBottom) + 32;
   }
 
   function reportHeight() {
@@ -293,27 +562,51 @@
   window.addEventListener('resize', reportHeight);
   document.fonts.ready.then(() => reportAfterSettle(500));
 
-  // Debounced ResizeObserver — fires after content changes settle
   let roTimer;
   const ro = new ResizeObserver(() => {
     clearTimeout(roTimer);
     roTimer = setTimeout(reportHeight, 400);
   });
   ro.observe(document.body);
-  // ────────────────────────────────────────────────────────────
+
+  // ── CAROUSEL ───────────────────────────────────────────────
+  let current = 0;
+  const total = 3;
+  const slidesEl = document.getElementById('slides');
+  const allSlides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.dot');
+
+  function goTo(n) {
+    allSlides[current].classList.remove('active');
+    current = (n + total) % total;
+    allSlides[current].classList.add('active');
+    slidesEl.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.i)));
+  setInterval(() => goTo(current + 1), 4000);
+
+  // ── SCHEDULE ───────────────────────────────────────────────
+  const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
+
+  const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
   function parseCSV(text) {
     const lines = text.trim().split('\n');
     const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
     return lines.slice(1).map(line => {
       const cols = [];
-      let current = '', inQuotes = false;
+      let cur = '', inQuotes = false;
       for (let ch of line) {
         if (ch === '"') { inQuotes = !inQuotes; }
-        else if (ch === ',' && !inQuotes) { cols.push(current.trim()); current = ''; }
-        else { current += ch; }
+        else if (ch === ',' && !inQuotes) { cols.push(cur.trim()); cur = ''; }
+        else { cur += ch; }
       }
-      cols.push(current.trim());
+      cols.push(cur.trim());
       return Object.fromEntries(headers.map((h, i) => [h, cols[i] ?? '']));
     }).filter(row => row.Date);
   }
@@ -365,14 +658,11 @@
           : `<a class="btn-ticket" href="${show.TicketURL}" target="_blank" rel="noopener">Get Tickets</a>`
         }
       `;
-
       grid.appendChild(row);
     });
 
     container.innerHTML = '';
     container.appendChild(grid);
-
-    // Report immediately, then again after animations finish
     reportAfterSettle(100);
     reportAfterSettle(1500);
   }
