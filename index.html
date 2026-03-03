@@ -117,6 +117,7 @@
 
     .hero-right { position: relative; overflow: hidden; }
 
+    /* ── CAROUSEL ─────────────────────────────────────────── */
     .carousel { width: 100%; height: 100%; position: relative; overflow: hidden; }
 
     .carousel-slides {
@@ -136,6 +137,14 @@
       background: #111;
     }
 
+    /* Full-slide clickable link overlay */
+    a.slide-link {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+    }
+
     .slide-img {
       width: 100%; height: 100%;
       object-fit: cover;
@@ -153,6 +162,7 @@
       inset: 0;
       background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%);
       pointer-events: none;
+      z-index: 1;
     }
 
     .slide-label {
@@ -167,7 +177,29 @@
       opacity: 0.9;
       border-left: 3px solid var(--yellow);
       z-index: 2;
+      pointer-events: none;
     }
+
+    /* Hover CTA badge */
+    .slide-cta {
+      position: absolute;
+      top: 2rem; left: 2rem;
+      background: var(--yellow);
+      color: var(--black);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.75rem;
+      border-radius: 2px;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+
+    .carousel-slide:hover .slide-cta { opacity: 1; transform: translateY(0); }
 
     .carousel-dots {
       position: absolute;
@@ -460,37 +492,21 @@
       </a>
     </div>
     <div class="hero-right">
-      <div class="carousel">
+      <div class="carousel" id="carousel">
         <div class="carousel-slides" id="slides">
+          <!-- Injected by JS -->
           <div class="carousel-slide active">
-            <div class="carousel-slide-inner">
-              <img class="slide-img" src="https://static.wixstatic.com/media/a8adb7_44737cbd56d248ef860c0723f4a84ed3~mv2.jpg" alt="Show photo 1" crossorigin="anonymous" />
-              <div class="slide-label">Last Friday's Show — Downtown Club</div>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <div class="carousel-slide-inner">
-              <img class="slide-img" src="https://static.wixstatic.com/media/a8adb7_deea3eb47f71482eaca8d1f4ea16aaf4~mv2.jpg" alt="Show photo 2" crossorigin="anonymous" />
-              <div class="slide-label">Sold Out — The Comedy Cellar</div>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <div class="carousel-slide-inner">
-              <img class="slide-img" src="https://static.wixstatic.com/media/a8adb7_1d4becebff6f4be7931363f06bbf8f11~mv2.jpg" alt="Show photo 3" crossorigin="anonymous" />
-              <div class="slide-label">Special Guest Night — Laugh Factory</div>
+            <div class="carousel-slide-inner" style="background:#111;">
+              <div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;">Loading…</div>
             </div>
           </div>
         </div>
-        <div class="carousel-dots" id="dots">
-          <div class="dot active" data-i="0"></div>
-          <div class="dot" data-i="1"></div>
-          <div class="dot" data-i="2"></div>
-        </div>
-        <div class="carousel-nav">
-          <button class="carousel-btn" id="prev">
+        <div class="carousel-dots" id="dots"></div>
+        <div class="carousel-nav" id="carousel-nav">
+          <button class="carousel-btn" id="prev" aria-label="Previous slide">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </button>
-          <button class="carousel-btn" id="next">
+          <button class="carousel-btn" id="next" aria-label="Next slide">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -570,45 +586,27 @@
   });
   ro.observe(document.body);
 
-  // ── CAROUSEL ───────────────────────────────────────────────
-  let current = 0;
-  const total = 3;
-  const slidesEl = document.getElementById('slides');
-  const allSlides = document.querySelectorAll('.carousel-slide');
-  const dots = document.querySelectorAll('.dot');
-
-  function goTo(n) {
-    allSlides[current].classList.remove('active');
-    current = (n + total) % total;
-    allSlides[current].classList.add('active');
-    slidesEl.style.transform = `translateX(-${current * 100}%)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === current));
-  }
-
-  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
-  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
-  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.i)));
-  setInterval(() => goTo(current + 1), 4000);
-
-  // ── SCHEDULE ───────────────────────────────────────────────
+  // ── CONSTANTS ──────────────────────────────────────────────
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
-
   const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
+  // ── CSV PARSER ─────────────────────────────────────────────
   function parseCSV(text) {
     const lines = text.trim().split('\n');
     const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
     return lines.slice(1).map(line => {
       const cols = [];
       let cur = '', inQuotes = false;
-      for (let ch of line) {
+      for (const ch of line) {
         if (ch === '"') { inQuotes = !inQuotes; }
         else if (ch === ',' && !inQuotes) { cols.push(cur.trim()); cur = ''; }
         else { cur += ch; }
       }
       cols.push(cur.trim());
-      return Object.fromEntries(headers.map((h, i) => [h, cols[i] ?? '']));
+      return Object.fromEntries(
+        headers.map((h, i) => [h, (cols[i] ?? '').replace(/^"|"$/g, '').trim()])
+      );
     }).filter(row => row.Date);
   }
 
@@ -621,6 +619,87 @@
     };
   }
 
+  // ── CAROUSEL ───────────────────────────────────────────────
+  let current  = 0;
+  let total    = 0;
+  let autoTimer = null;
+
+  function buildCarousel(shows) {
+    // Only rows where PosterURL is non-empty
+    const carouselShows = shows.filter(s => s.PosterURL && s.PosterURL.trim() !== '');
+
+    const slidesEl = document.getElementById('slides');
+    const dotsEl   = document.getElementById('dots');
+    const navEl    = document.getElementById('carousel-nav');
+
+    if (!carouselShows.length) {
+      slidesEl.innerHTML = `
+        <div class="carousel-slide active">
+          <div class="carousel-slide-inner" style="background:#111;">
+            <div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;text-align:center;padding:2rem;">
+              Add a <strong style="color:rgba(255,225,53,0.4)">PosterURL</strong> column<br>to your sheet to populate this carousel
+            </div>
+          </div>
+        </div>`;
+      dotsEl.innerHTML = '';
+      navEl.style.display = 'none';
+      total = 1; current = 0;
+      return;
+    }
+
+    total   = carouselShows.length;
+    current = 0;
+
+    slidesEl.innerHTML = carouselShows.map((show, i) => {
+      const label     = show.CarouselLabel ? show.CarouselLabel.trim() : '';
+      const url       = show.TicketURL ? show.TicketURL.trim() : '';
+      const isSoldOut = url.toLowerCase() === 'soldout';
+      const hasLink   = !isSoldOut && url !== '';
+
+      return `
+        <div class="carousel-slide${i === 0 ? ' active' : ''}">
+          <div class="carousel-slide-inner">
+            <img class="slide-img" src="${show.PosterURL.trim()}" alt="${show.Title || 'Show poster'}" />
+            ${hasLink ? `<span class="slide-cta">Get Tickets →</span>` : ''}
+            ${label   ? `<div class="slide-label">${label}</div>` : ''}
+            ${hasLink ? `<a class="slide-link" href="${url}" target="_blank" rel="noopener" aria-label="Get tickets"></a>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+
+    // Dots & nav
+    if (total > 1) {
+      dotsEl.innerHTML = carouselShows.map((_, i) =>
+        `<div class="dot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`
+      ).join('');
+      dotsEl.querySelectorAll('.dot').forEach(d =>
+        d.addEventListener('click', () => goTo(+d.dataset.i))
+      );
+      navEl.style.display = '';
+    } else {
+      dotsEl.innerHTML = '';
+      navEl.style.display = 'none';
+    }
+
+    if (autoTimer) clearInterval(autoTimer);
+    if (total > 1) autoTimer = setInterval(() => goTo(current + 1), 4000);
+  }
+
+  function goTo(n) {
+    const allSlides = document.querySelectorAll('.carousel-slide');
+    const allDots   = document.querySelectorAll('.dot');
+    if (!allSlides.length || total < 2) return;
+    allSlides[current].classList.remove('active');
+    current = (n + total) % total;
+    allSlides[current].classList.add('active');
+    document.getElementById('slides').style.transform = `translateX(-${current * 100}%)`;
+    allDots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+
+  // ── SCHEDULE ───────────────────────────────────────────────
   function renderShows(shows) {
     const container = document.getElementById('shows-container');
 
@@ -668,31 +747,20 @@
     reportAfterSettle(1500);
   }
 
+  // ── LOAD ───────────────────────────────────────────────────
   async function loadShows() {
-    const isPlaceholderURL = !SHEET_CSV_URL.includes('output=csv');
-
-    if (isPlaceholderURL) {
-      renderShows([
-        { Date: '2026-03-07', Title: 'Friday Night Laughs',      Showtime: '8:30pm', Venue: 'The Laugh Factory',  City: 'Los Angeles',   State: 'CA', TicketURL: '#' },
-        { Date: '2026-03-14', Title: 'The Big Jokes Show',       Showtime: '8:00pm', Venue: 'Comedy Cellar',      City: 'New York',      State: 'NY', TicketURL: '#' },
-        { Date: '2026-03-21', Title: 'Spring Special Showcase',  Showtime: '8:00pm', Venue: 'Zanies Comedy Club', City: 'Chicago',       State: 'IL', TicketURL: 'soldout' },
-        { Date: '2026-03-28', Title: 'End of March Blowout',     Showtime: '9:00pm', Venue: 'Improv Comedy Club', City: 'Houston',       State: 'TX', TicketURL: '#' },
-        { Date: '2026-04-04', Title: 'April Fools Extravaganza', Showtime: '8:30pm', Venue: 'Punch Line SF',      City: 'San Francisco', State: 'CA', TicketURL: '#' },
-      ]);
-      return;
-    }
-
     try {
       const res = await fetch(SHEET_CSV_URL);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       const text = await res.text();
       const shows = parseCSV(text);
+      buildCarousel(shows);
       renderShows(shows);
     } catch (err) {
+      console.error('Sheet load error:', err);
       document.getElementById('shows-container').innerHTML =
-        '<div class="status">Couldn\'t load shows. Please check the sheet URL and make sure it\'s published as CSV.</div>';
+        '<div class="status">Couldn\'t load shows. Make sure the sheet is published as CSV.</div>';
       reportAfterSettle(500);
-      console.error(err);
     }
   }
 
@@ -700,4 +768,3 @@
 </script>
 </body>
 </html>
-
