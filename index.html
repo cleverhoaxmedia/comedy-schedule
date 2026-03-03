@@ -252,6 +252,7 @@
     .marquee-track {
       display: flex;
       white-space: nowrap;
+      width: max-content;
       animation: marquee 18s linear infinite;
     }
 
@@ -528,7 +529,7 @@
       </div>
     </div>
   </section>
-  <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🌵 🚂</p>
+  <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🍕 🦋</p>
 
 <script>
   // ── HEIGHT REPORTING ───────────────────────────────────────
@@ -567,7 +568,7 @@
 
   // ── MARQUEE ────────────────────────────────────────────────
   const MARQUEE_TEXT = 'HA HA HA';
-  const MARQUEE_COPIES = 20;
+  const MARQUEE_COPIES = 30;
 
   const marqueeTrack = document.getElementById('marquee-track');
   const item = `<div class="marquee-item">${MARQUEE_TEXT}</div>`;
