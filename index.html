@@ -265,10 +265,11 @@
       align-items: center;
     }
 
-    .marquee-item::after {
-      content: '😂';
-      font-size: 2rem;
+    .marquee-separator {
+      height: 1.2rem;
+      width: auto;
       margin: 0 0.75rem;
+      opacity: 0.7;
     }
 
     @keyframes marquee {
@@ -529,7 +530,7 @@
       </div>
     </div>
   </section>
-  <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🦑 🎠</p>
+  <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🐻 🌮</p>
 
 <script>
   // ── HEIGHT REPORTING ───────────────────────────────────────
@@ -568,12 +569,11 @@
 
   // ── MARQUEE ────────────────────────────────────────────────
   const MARQUEE_TEXT = 'HA HA HA';
+  const MARQUEE_LOGO = 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/3c5bb56af430ed005e52416d7535672311cf9f7b/posters/Mindy.svg';
   const MARQUEE_COPIES = 30;
 
   const marqueeTrack = document.getElementById('marquee-track');
-  const item = `<div class="marquee-item">${MARQUEE_TEXT}</div>`;
-  // Build one set, then duplicate it exactly — animation slides by -50%
-  // so the second copy seamlessly replaces the first on loop
+  const item = `<div class="marquee-item">${MARQUEE_TEXT}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
   const singleSet = Array(MARQUEE_COPIES).fill(item).join('');
   marqueeTrack.innerHTML = singleSet + singleSet;
 
