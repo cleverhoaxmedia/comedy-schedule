@@ -137,7 +137,6 @@
       background: #111;
     }
 
-    /* Full-slide clickable link overlay */
     a.slide-link {
       display: block;
       position: absolute;
@@ -180,7 +179,6 @@
       pointer-events: none;
     }
 
-    /* Hover CTA badge */
     .slide-cta {
       position: absolute;
       top: 2rem; left: 2rem;
@@ -494,7 +492,6 @@
     <div class="hero-right">
       <div class="carousel" id="carousel">
         <div class="carousel-slides" id="slides">
-          <!-- Injected by JS -->
           <div class="carousel-slide active">
             <div class="carousel-slide-inner" style="background:#111;">
               <div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;">Loading…</div>
@@ -516,24 +513,7 @@
 
   <!-- MARQUEE -->
   <div class="marquee-bar">
-    <div class="marquee-track">
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-      <div class="marquee-item">🐢 Text</div>
-    </div>
+    <div class="marquee-track" id="marquee-track"></div>
   </div>
 
   <!-- SCHEDULE -->
@@ -586,6 +566,15 @@
   });
   ro.observe(document.body);
 
+  // ── MARQUEE ────────────────────────────────────────────────
+  const MARQUEE_TEXT = '🐢 Text';
+  const MARQUEE_COPIES = 20;
+
+  const marqueeTrack = document.getElementById('marquee-track');
+  marqueeTrack.innerHTML = Array(MARQUEE_COPIES)
+    .fill(`<div class="marquee-item">${MARQUEE_TEXT}</div>`)
+    .join('');
+
   // ── CONSTANTS ──────────────────────────────────────────────
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
   const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -625,7 +614,6 @@
   let autoTimer = null;
 
   function buildCarousel(shows) {
-    // Only rows where PosterURL is non-empty
     const carouselShows = shows.filter(s => s.PosterURL && s.PosterURL.trim() !== '');
 
     const slidesEl = document.getElementById('slides');
@@ -667,7 +655,6 @@
         </div>`;
     }).join('');
 
-    // Dots & nav
     if (total > 1) {
       dotsEl.innerHTML = carouselShows.map((_, i) =>
         `<div class="dot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`
