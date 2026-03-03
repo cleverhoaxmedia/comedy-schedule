@@ -570,9 +570,11 @@
   const MARQUEE_COPIES = 20;
 
   const marqueeTrack = document.getElementById('marquee-track');
-  marqueeTrack.innerHTML = Array(MARQUEE_COPIES)
-    .fill(`<div class="marquee-item">${MARQUEE_TEXT}</div>`)
-    .join('');
+  const item = `<div class="marquee-item">${MARQUEE_TEXT}</div>`;
+  // Build one set, then duplicate it exactly — animation slides by -50%
+  // so the second copy seamlessly replaces the first on loop
+  const singleSet = Array(MARQUEE_COPIES).fill(item).join('');
+  marqueeTrack.innerHTML = singleSet + singleSet;
 
   // ── CONSTANTS ──────────────────────────────────────────────
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
