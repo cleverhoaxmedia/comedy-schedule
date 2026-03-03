@@ -530,7 +530,7 @@
       </div>
     </div>
   </section>
-  <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🐻 🌮</p>
+  <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🦀 🔮</p>
 
 <script>
   // ── HEIGHT REPORTING ───────────────────────────────────────
@@ -577,7 +577,17 @@
   const singleSet = Array(MARQUEE_COPIES).fill(item).join('');
   marqueeTrack.innerHTML = singleSet + singleSet;
 
-  // ── CONSTANTS ──────────────────────────────────────────────
+  // ── TAG FILTERING ──────────────────────────────────────────
+  // Reads ?tag=xxx from the URL. If absent, shows everything.
+  const URL_TAG = new URLSearchParams(window.location.search).get('tag')?.toLowerCase().trim() || null;
+
+  function matchesTag(show) {
+    if (!URL_TAG) return true;                          // no filter — show everything
+    const raw = (show.Tag || '').trim();
+    if (!raw) return true;                              // no tag on show — show everywhere
+    const tags = raw.split(',').map(t => t.toLowerCase().trim());
+    return tags.includes(URL_TAG);
+  }
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
   const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -736,6 +746,20 @@
     reportAfterSettle(1500);
   }
 
+  // ── TAG FILTERING ──────────────────────────────────────────
+  // Read ?tag=xxx from the URL. If absent, show everything.
+  const urlTag = new URLSearchParams(window.location.search).get('tag')?.toLowerCase().trim() || null;
+
+  function matchesTag(show) {
+    // No tag on the show → show on all pages
+    if (!show.Tag || show.Tag.trim() === '') return true;
+    // No tag in URL → show everything
+    if (!urlTag) return true;
+    // Check if the show's comma-separated tags include the requested tag
+    const showTags = show.Tag.split(',').map(t => t.toLowerCase().trim());
+    return showTags.includes(urlTag);
+  }
+
   // ── LOAD ───────────────────────────────────────────────────
   async function loadShows() {
     try {
@@ -743,8 +767,9 @@
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const text = await res.text();
       const shows = parseCSV(text);
-      buildCarousel(shows);
-      renderShows(shows);
+      const filtered = shows.filter(matchesTag);
+      buildCarousel(filtered);
+      renderShows(filtered);
     } catch (err) {
       console.error('Sheet load error:', err);
       document.getElementById('shows-container').innerHTML =
