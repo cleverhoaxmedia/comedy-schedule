@@ -482,11 +482,11 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-left">
-      <div class="hero-tag">Live Stand-Up Comedy</div>
-      <h1 class="hero-title">GET<br><span>TICKETS</span><br>HERE</h1>
-      <p class="hero-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent viverra purus vel nunc tincidunt, in faucibus erat laoreet. Sed euismod eros sit amet leo condimentum.</p>
-      <a href="#schedule" class="btn-primary">
-        See Upcoming Shows
+      <div class="hero-tag" id="hero-tag">Live Stand-Up Comedy</div>
+      <h1 class="hero-title" id="hero-title">GET<br><span>TICKETS</span><br>HERE</h1>
+      <p class="hero-desc" id="hero-desc">Your go-to destination for live comedy in San Antonio. Browse all upcoming shows and grab your seats before they sell out.</p>
+      <a href="#schedule" class="btn-primary" id="hero-btn">
+        <span id="hero-btn-text">See Upcoming Shows</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
@@ -520,7 +520,7 @@
   <!-- SCHEDULE -->
   <section class="schedule" id="schedule">
     <div class="section-header">
-      <h2 class="section-title">Upcoming Shows</h2>
+      <h2 class="section-title" id="schedule-title">Upcoming Shows</h2>
       <div class="section-line"></div>
     </div>
     <div id="shows-container">
@@ -530,7 +530,7 @@
       </div>
     </div>
   </section>
-  <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🦀 🔮</p>
+  <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🌊 🎯</p>
 
 <script>
   // ── HEIGHT REPORTING ───────────────────────────────────────
@@ -567,27 +567,78 @@
   });
   ro.observe(document.body);
 
+  // ── BRAND CONFIG ───────────────────────────────────────────
+  // Edit this block to control hero content and carousel images per tag.
+  // carousel images are shown in the hero right panel (independent of the
+  // poster-based carousel that was previously driven by the sheet).
+  const BRAND_CONFIG = {
+    irma: {
+      tag:      'Irma Ruiz — Live',
+      title:    'IRMA<br><span>RUIZ</span>',
+      desc:     'San Antonio\'s own Irma Ruiz brings her sharp wit and fearless storytelling to the stage. Catch her live before she blows up.',
+      btnText:  'See Irma\'s Shows',
+      scheduleTitle: 'Irma Ruiz — Upcoming Dates',
+      images:   [
+        // Add Irma's image URLs here, e.g.:
+        // 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/main/posters/irma-1.jpg',
+      ],
+    },
+    teach: {
+      tag:      'Teachers Gone Bad',
+      title:    'TEACHERS<br><span>GONE</span><br>BAD',
+      desc:     'Roasts, chaos, and stories you were never supposed to hear. Come see what happens when teachers finally snap.',
+      btnText:  'Get Your Seat',
+      scheduleTitle: 'Teachers Gone Bad — Upcoming Dates',
+      images:   [],
+    },
+    bingo: {
+      tag:      'Bingo Night',
+      title:    'COMEDY<br><span>BINGO</span>',
+      desc:     'It\'s bingo — but make it funny. Interactive, unpredictable, and guaranteed to be a good time.',
+      btnText:  'Play Along',
+      scheduleTitle: 'Comedy Bingo — Upcoming Dates',
+      images:   [],
+    },
+    chingona: {
+      tag:      'Chingona Comedy',
+      title:    'CHINGONA<br><span>COMEDY</span>',
+      desc:     'Bold lineups. Big energy. No apologies. The fiercest night of comedy in San Antonio.',
+      btnText:  'Get Tickets',
+      scheduleTitle: 'Chingona Comedy — Upcoming Dates',
+      images:   [],
+    },
+    default: {
+      tag:      'Live Stand-Up Comedy',
+      title:    'GET<br><span>TICKETS</span><br>HERE',
+      desc:     'Your go-to destination for live comedy in San Antonio. Browse all upcoming shows and grab your seats before they sell out.',
+      btnText:  'See Upcoming Shows',
+      scheduleTitle: 'Upcoming Shows',
+      images:   [],
+    },
+  };
+
   // ── MARQUEE ────────────────────────────────────────────────
   const MARQUEE_TEXT = 'HA HA HA';
   const MARQUEE_LOGO = 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/3c5bb56af430ed005e52416d7535672311cf9f7b/posters/Mindy.svg';
   const MARQUEE_COPIES = 30;
 
   const marqueeTrack = document.getElementById('marquee-track');
-  const item = `<div class="marquee-item">${MARQUEE_TEXT}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
-  const singleSet = Array(MARQUEE_COPIES).fill(item).join('');
+  const marqueeItem = `<div class="marquee-item">${MARQUEE_TEXT}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
+  const singleSet = Array(MARQUEE_COPIES).fill(marqueeItem).join('');
   marqueeTrack.innerHTML = singleSet + singleSet;
 
-  // ── TAG FILTERING ──────────────────────────────────────────
-  // Reads ?tag=xxx from the URL. If absent, shows everything.
+  // ── URL TAG → BRAND CONFIG ─────────────────────────────────
   const URL_TAG = new URLSearchParams(window.location.search).get('tag')?.toLowerCase().trim() || null;
+  const brand   = BRAND_CONFIG[URL_TAG] || BRAND_CONFIG.default;
 
-  function matchesTag(show) {
-    if (!URL_TAG) return true;                          // no filter — show everything
-    const raw = (show.Tag || '').trim();
-    if (!raw) return true;                              // no tag on show — show everywhere
-    const tags = raw.split(',').map(t => t.toLowerCase().trim());
-    return tags.includes(URL_TAG);
-  }
+  // Apply hero content
+  document.getElementById('hero-tag').textContent        = brand.tag;
+  document.getElementById('hero-title').innerHTML        = brand.title;
+  document.getElementById('hero-desc').textContent       = brand.desc;
+  document.getElementById('hero-btn-text').textContent   = brand.btnText;
+  document.getElementById('schedule-title').textContent  = brand.scheduleTitle;
+
+  // ── CONSTANTS ──────────────────────────────────────────────
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
   const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -620,24 +671,52 @@
     };
   }
 
+  // ── TAG FILTERING ──────────────────────────────────────────
+  function matchesTag(show) {
+    if (!URL_TAG) return true;
+    const raw = (show.Tag || '').trim();
+    if (!raw) return true;
+    const tags = raw.split(',').map(t => t.toLowerCase().trim());
+    return tags.includes(URL_TAG);
+  }
+
   // ── CAROUSEL ───────────────────────────────────────────────
+  // Priority: brand config images → sheet PosterURL column → empty state
   let current  = 0;
   let total    = 0;
   let autoTimer = null;
 
   function buildCarousel(shows) {
-    const carouselShows = shows.filter(s => s.PosterURL && s.PosterURL.trim() !== '');
-
     const slidesEl = document.getElementById('slides');
     const dotsEl   = document.getElementById('dots');
     const navEl    = document.getElementById('carousel-nav');
 
-    if (!carouselShows.length) {
+    // Build slide source list:
+    // If brand has static images configured, use those.
+    // Otherwise fall back to PosterURL from the sheet.
+    let slideItems = [];
+
+    if (brand.images && brand.images.length > 0) {
+      slideItems = brand.images.map(url => ({
+        imgUrl:  url,
+        label:   '',
+        linkUrl: '',
+      }));
+    } else {
+      const posterShows = shows.filter(s => s.PosterURL && s.PosterURL.trim() !== '');
+      slideItems = posterShows.map(s => ({
+        imgUrl:  s.PosterURL.trim(),
+        label:   s.CarouselLabel ? s.CarouselLabel.trim() : '',
+        linkUrl: (s.TicketURL || '').trim().toLowerCase() === 'soldout' ? '' : (s.TicketURL || '').trim(),
+      }));
+    }
+
+    if (!slideItems.length) {
       slidesEl.innerHTML = `
         <div class="carousel-slide active">
           <div class="carousel-slide-inner" style="background:#111;">
             <div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;text-align:center;padding:2rem;">
-              Add a <strong style="color:rgba(255,225,53,0.4)">PosterURL</strong> column<br>to your sheet to populate this carousel
+              Add images to <strong style="color:rgba(255,225,53,0.4)">BRAND_CONFIG</strong><br>or a <strong style="color:rgba(255,225,53,0.4)">PosterURL</strong> column in your sheet
             </div>
           </div>
         </div>`;
@@ -647,28 +726,24 @@
       return;
     }
 
-    total   = carouselShows.length;
+    total   = slideItems.length;
     current = 0;
 
-    slidesEl.innerHTML = carouselShows.map((show, i) => {
-      const label     = show.CarouselLabel ? show.CarouselLabel.trim() : '';
-      const url       = show.TicketURL ? show.TicketURL.trim() : '';
-      const isSoldOut = url.toLowerCase() === 'soldout';
-      const hasLink   = !isSoldOut && url !== '';
-
+    slidesEl.innerHTML = slideItems.map((slide, i) => {
+      const hasLink = slide.linkUrl !== '';
       return `
         <div class="carousel-slide${i === 0 ? ' active' : ''}">
           <div class="carousel-slide-inner">
-            <img class="slide-img" src="${show.PosterURL.trim()}" alt="${show.Title || 'Show poster'}" />
+            <img class="slide-img" src="${slide.imgUrl}" alt="Show image" />
             ${hasLink ? `<span class="slide-cta">Get Tickets →</span>` : ''}
-            ${label   ? `<div class="slide-label">${label}</div>` : ''}
-            ${hasLink ? `<a class="slide-link" href="${url}" target="_blank" rel="noopener" aria-label="Get tickets"></a>` : ''}
+            ${slide.label ? `<div class="slide-label">${slide.label}</div>` : ''}
+            ${hasLink ? `<a class="slide-link" href="${slide.linkUrl}" target="_blank" rel="noopener" aria-label="Get tickets"></a>` : ''}
           </div>
         </div>`;
     }).join('');
 
     if (total > 1) {
-      dotsEl.innerHTML = carouselShows.map((_, i) =>
+      dotsEl.innerHTML = slideItems.map((_, i) =>
         `<div class="dot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`
       ).join('');
       dotsEl.querySelectorAll('.dot').forEach(d =>
@@ -744,20 +819,6 @@
     container.appendChild(grid);
     reportAfterSettle(100);
     reportAfterSettle(1500);
-  }
-
-  // ── TAG FILTERING ──────────────────────────────────────────
-  // Read ?tag=xxx from the URL. If absent, show everything.
-  const urlTag = new URLSearchParams(window.location.search).get('tag')?.toLowerCase().trim() || null;
-
-  function matchesTag(show) {
-    // No tag on the show → show on all pages
-    if (!show.Tag || show.Tag.trim() === '') return true;
-    // No tag in URL → show everything
-    if (!urlTag) return true;
-    // Check if the show's comma-separated tags include the requested tag
-    const showTags = show.Tag.split(',').map(t => t.toLowerCase().trim());
-    return showTags.includes(urlTag);
   }
 
   // ── LOAD ───────────────────────────────────────────────────
