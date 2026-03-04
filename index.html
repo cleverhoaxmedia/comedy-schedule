@@ -6,23 +6,118 @@
   <title>Comedy Show</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
+
+    /* ── DEFAULT (Black/Yellow) ───────────────────────────── */
     :root {
-      --yellow: #FFE135;
-      --black: #0D0D0D;
-      --white: #F5F5F0;
-      --red: #FF3B30;
-      --gray: #1A1A1A;
+      --bg:         #0D0D0D;
+      --bg-deep:    #1A1A1A;
+      --bg-mid:     #222222;
+      --accent:     #FFE135;
+      --accent-hi:  #ffffff;
+      --accent2:    #FFE135;
+      --accent2-hi: #ffffff;
+      --text:       #F5F5F0;
+      --text-dim:   rgba(245,245,240,0.5);
+      --marquee-bg: #FFE135;
+      --marquee-fg: #0D0D0D;
+      --tag-bg:     #FFE135;
+      --tag-fg:     #0D0D0D;
+      --btn-bg:     #FFE135;
+      --btn-fg:     #0D0D0D;
+      --btn-hi:     #ffffff;
+      --dot-active: #FFE135;
+      --stroke:     rgba(255,255,255,0.06);
+      --red:        #FF3B30;
+      --line-grad:  rgba(255,225,53,0.4);
+      --spinner-top:#FFE135;
+      --left-bar:   #FFE135;
+    }
+
+    /* ── TEACHERS GONE BAD ───────────────────────────────── */
+    body.theme-teach {
+      --bg:         #2D5A3D;
+      --bg-deep:    #1E3D2A;
+      --bg-mid:     #3A6B4A;
+      --accent:     #C0392B;
+      --accent-hi:  #E04030;
+      --accent2:    #C0392B;
+      --accent2-hi: #E04030;
+      --text:       #F2EFE4;
+      --text-dim:   rgba(242,239,228,0.55);
+      --marquee-bg: #C0392B;
+      --marquee-fg: #F2EFE4;
+      --tag-bg:     #C0392B;
+      --tag-fg:     #F2EFE4;
+      --btn-bg:     #C0392B;
+      --btn-fg:     #F2EFE4;
+      --btn-hi:     #E04030;
+      --dot-active: #C0392B;
+      --stroke:     rgba(242,239,228,0.1);
+      --line-grad:  rgba(192,57,43,0.5);
+      --spinner-top:#C0392B;
+      --left-bar:   #C0392B;
+    }
+
+    /* ── LOTERÍA COMEDY ──────────────────────────────────── */
+    body.theme-loteria {
+      --bg:         #1A6B7A;
+      --bg-deep:    #124F5C;
+      --bg-mid:     #1E7A8A;
+      --accent:     #E8700A;
+      --accent-hi:  #F07D15;
+      --accent2:    #D4287A;
+      --accent2-hi: #E03088;
+      --text:       #FDF6E3;
+      --text-dim:   rgba(253,246,227,0.55);
+      --marquee-bg: #D4287A;
+      --marquee-fg: #FDF6E3;
+      --tag-bg:     #D4287A;
+      --tag-fg:     #FDF6E3;
+      --btn-bg:     #D4287A;
+      --btn-fg:     #FDF6E3;
+      --btn-hi:     #E03088;
+      --dot-active: #E8700A;
+      --stroke:     rgba(253,246,227,0.1);
+      --line-grad:  rgba(232,112,10,0.5);
+      --spinner-top:#E8700A;
+      --left-bar:   #E8700A;
+    }
+
+    /* ── CHINGONA COMEDY ─────────────────────────────────── */
+    body.theme-chingona {
+      --bg:         #1A0A2E;
+      --bg-deep:    #110720;
+      --bg-mid:     #221040;
+      --accent:     #C9A84C;
+      --accent-hi:  #D9BB6A;
+      --accent2:    #2A9090;
+      --accent2-hi: #2ABAAA;
+      --text:       #F0E8FF;
+      --text-dim:   rgba(240,232,255,0.6);
+      --marquee-bg: #C0287A;
+      --marquee-fg: #F0E8FF;
+      --tag-bg:     #2A9090;
+      --tag-fg:     #F0E8FF;
+      --btn-bg:     #2A9090;
+      --btn-fg:     #F0E8FF;
+      --btn-hi:     #2ABAAA;
+      --dot-active: #C9A84C;
+      --stroke:     rgba(240,232,255,0.08);
+      --line-grad:  rgba(201,168,76,0.4);
+      --spinner-top:#2A9090;
+      --left-bar:   #C9A84C;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       width: 100%;
-      background: var(--black);
-      color: var(--white);
+      background: var(--bg);
+      color: var(--text);
       font-family: 'DM Sans', sans-serif;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      transition: background 0.4s ease;
     }
 
     html::-webkit-scrollbar,
@@ -48,6 +143,15 @@
       pointer-events: none;
     }
 
+    /* Left edge accent line */
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--left-bar);
+    }
+
     .hero-left {
       display: flex;
       flex-direction: column;
@@ -58,8 +162,8 @@
 
     .hero-tag {
       display: inline-block;
-      background: var(--yellow);
-      color: var(--black);
+      background: var(--tag-bg);
+      color: var(--tag-fg);
       font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.15em;
@@ -77,15 +181,16 @@
       line-height: 0.9;
       letter-spacing: 0.02em;
       margin-bottom: 1.5rem;
+      color: var(--text);
       animation: fadeUp 0.6s 0.1s ease both;
     }
 
-    .hero-title span { color: var(--yellow); }
+    .hero-title span { color: var(--accent); }
 
     .hero-desc {
       font-size: 1rem;
       line-height: 1.7;
-      opacity: 0.65;
+      color: var(--text-dim);
       max-width: 420px;
       margin-bottom: 2.5rem;
       animation: fadeUp 0.6s 0.2s ease both;
@@ -95,8 +200,8 @@
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      background: var(--yellow);
-      color: var(--black);
+      background: var(--btn-bg);
+      color: var(--btn-fg);
       font-family: 'DM Sans', sans-serif;
       font-weight: 700;
       font-size: 0.9rem;
@@ -111,7 +216,7 @@
       animation: fadeUp 0.6s 0.3s ease both;
     }
 
-    .btn-primary:hover { transform: translateY(-2px); background: #fff; }
+    .btn-primary:hover { transform: translateY(-2px); background: var(--btn-hi); }
     .btn-primary:hover svg { transform: translateX(4px); }
     .btn-primary svg { transition: transform 0.2s; }
 
@@ -134,7 +239,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      background: #111;
+      background: var(--bg-deep);
     }
 
     a.slide-link {
@@ -174,16 +279,17 @@
       font-size: 0.8rem;
       letter-spacing: 0.05em;
       opacity: 0.9;
-      border-left: 3px solid var(--yellow);
+      border-left: 3px solid var(--accent);
       z-index: 2;
       pointer-events: none;
+      color: var(--text);
     }
 
     .slide-cta {
       position: absolute;
       top: 2rem; left: 2rem;
-      background: var(--yellow);
-      color: var(--black);
+      background: var(--accent2);
+      color: var(--btn-fg);
       font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.12em;
@@ -214,7 +320,7 @@
       cursor: pointer;
     }
 
-    .dot.active { width: 20px; background: var(--yellow); }
+    .dot.active { width: 20px; background: var(--dot-active); }
 
     .carousel-nav {
       position: absolute;
@@ -228,7 +334,7 @@
       border-radius: 50%;
       background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.2);
-      color: white;
+      color: var(--text);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -237,13 +343,13 @@
       backdrop-filter: blur(8px);
     }
 
-    .carousel-btn:hover { background: var(--yellow); color: var(--black); }
+    .carousel-btn:hover { background: var(--accent2); color: var(--btn-fg); border-color: var(--accent2); }
 
     /* ── MARQUEE ──────────────────────────────────────────── */
     .marquee-bar {
       width: 100%;
-      background: var(--yellow);
-      color: var(--black);
+      background: var(--marquee-bg);
+      color: var(--marquee-fg);
       overflow: hidden;
       padding: 0.75rem 0;
       display: flex;
@@ -263,6 +369,7 @@
       padding: 0;
       display: flex;
       align-items: center;
+      color: var(--marquee-fg);
     }
 
     .marquee-separator {
@@ -297,12 +404,13 @@
       letter-spacing: 0.05em;
       line-height: 1;
       white-space: nowrap;
+      color: var(--text);
     }
 
     .section-line {
       flex: 1;
       height: 1px;
-      background: linear-gradient(to right, rgba(255,225,53,0.4), transparent);
+      background: linear-gradient(to right, var(--line-grad), transparent);
     }
 
     .status {
@@ -311,12 +419,13 @@
       opacity: 0.4;
       font-size: 0.9rem;
       letter-spacing: 0.05em;
+      color: var(--text);
     }
 
     .status .spinner {
       width: 28px; height: 28px;
-      border: 2px solid rgba(255,225,53,0.2);
-      border-top-color: var(--yellow);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-top-color: var(--spinner-top);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin: 0 auto 1rem;
@@ -324,8 +433,8 @@
 
     .shows-grid {
       display: block;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.06);
+      background: var(--stroke);
+      border: 1px solid var(--stroke);
       border-radius: 8px;
       overflow: visible;
     }
@@ -336,7 +445,7 @@
       gap: 1.5rem;
       align-items: center;
       padding: 1.5rem 2rem;
-      background: var(--gray);
+      background: var(--bg-deep);
       transition: background 0.2s;
       position: relative;
       overflow: hidden;
@@ -348,20 +457,20 @@
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 3px;
-      background: var(--yellow);
+      background: var(--left-bar);
       transform: scaleY(0);
       transition: transform 0.2s;
       transform-origin: bottom;
     }
 
-    .show-row:hover { background: #222; }
+    .show-row:hover { background: var(--bg-mid); }
     .show-row:hover::before { transform: scaleY(1); }
 
     .show-date {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 1.4rem;
       line-height: 1.1;
-      color: var(--yellow);
+      color: var(--accent);
       letter-spacing: 0.05em;
     }
 
@@ -371,34 +480,33 @@
       font-size: 0.7rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
+      color: var(--text-dim);
       font-weight: 500;
     }
 
-    .show-info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
-    .show-info p  { font-size: 0.8rem; opacity: 0.5; }
+    .show-info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text); }
+    .show-info p  { font-size: 0.8rem; color: var(--text-dim); }
 
     .show-venue {
       text-align: right;
       font-size: 0.85rem;
-      opacity: 0.6;
+      color: var(--text-dim);
       line-height: 1.4;
     }
 
     .show-venue strong {
       display: block;
-      opacity: 1;
       font-weight: 500;
       font-size: 0.9rem;
       margin-bottom: 0.15rem;
-      color: var(--white);
+      color: var(--text);
     }
 
     .btn-ticket {
       display: inline-block;
       background: transparent;
-      border: 1px solid rgba(255,225,53,0.4);
-      color: var(--yellow);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--accent);
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.1em;
@@ -407,16 +515,16 @@
       border-radius: 3px;
       text-decoration: none;
       white-space: nowrap;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
     }
 
-    .btn-ticket:hover { background: var(--yellow); color: var(--black); }
+    .btn-ticket:hover { background: var(--accent2); color: var(--btn-fg); border-color: var(--accent2); }
 
     .badge-soldout {
       display: inline-block;
       background: rgba(255,59,48,0.15);
       border: 1px solid rgba(255,59,48,0.3);
-      color: var(--red);
+      color: #FF3B30;
       font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.1em;
@@ -552,25 +660,17 @@
     window.parent.postMessage(JSON.stringify({ height }), '*');
   }
 
-  function reportAfterSettle(delay) {
-    setTimeout(reportHeight, delay || 1500);
-  }
+  function reportAfterSettle(delay) { setTimeout(reportHeight, delay || 1500); }
 
   window.addEventListener('load', () => reportAfterSettle(1500));
   window.addEventListener('resize', reportHeight);
   document.fonts.ready.then(() => reportAfterSettle(500));
 
   let roTimer;
-  const ro = new ResizeObserver(() => {
-    clearTimeout(roTimer);
-    roTimer = setTimeout(reportHeight, 400);
-  });
+  const ro = new ResizeObserver(() => { clearTimeout(roTimer); roTimer = setTimeout(reportHeight, 400); });
   ro.observe(document.body);
 
   // ── BRAND CONFIG ───────────────────────────────────────────
-  // Edit this block to control hero content and carousel images per tag.
-  // carousel images are shown in the hero right panel (independent of the
-  // poster-based carousel that was previously driven by the sheet).
   const BRAND_CONFIG = {
     irma: {
       tag:      'Irma Ruiz — Live',
@@ -578,19 +678,23 @@
       desc:     'San Antonio\'s own Irma Ruiz brings her razor wit and fearless storytelling to the stage. Catch her live!.',
       btnText:  'See Irma\'s Shows',
       scheduleTitle: 'Irma Ruiz — Upcoming Dates',
+      marqueeText: 'HA HA HA',
+      theme:    null,
       images: [
         'https://upload.wikimedia.org/wikipedia/en/d/d6/Paisaje_urbano%2C_Frida_Kahlo%2C_1925.jpg',
         'https://upload.wikimedia.org/wikipedia/en/c/ca/Aparador_en_una_calle_de_Detroit%2C_Frida_Kahlo%2C_1931.jpg',
         'https://upload.wikimedia.org/wikipedia/en/9/91/Hucha_y_caballo_negro%2C_Frida_Kahlo%2C_1928.jpg',
-],
+      ],
     },
     teach: {
       tag:      'Sit Down and Shut Up!',
       title:    'TEACHERS<br><span>GONE</span><br>BAD',
-      desc:     'Teachers lounge talk on stage, Come see what happens when teachers finally snap. What are they gonna do, fire use twice?',
+      desc:     'Teachers lounge talk on stage. Come see what happens when teachers finally snap. What are they gonna do, fire us twice?',
       btnText:  'Find Your Seats!',
       scheduleTitle: 'Teachers Gone Bad — Due Dates',
-      images:   [
+      marqueeText: 'TEACHERS GONE BAD',
+      theme:    'theme-teach',
+      images: [
         'https://upload.wikimedia.org/wikipedia/commons/a/a7/BogdanovBelsky_UstnySchet.jpg',
         'https://upload.wikimedia.org/wikipedia/commons/4/49/%22The_School_of_Athens%22_by_Raffaello_Sanzio_da_Urbino.jpg',
         'https://www.saturdayeveningpost.com/wp-content/uploads/satevepost/1956_03_17.jpg',
@@ -602,9 +706,12 @@
       desc:     'Lotería — but make it funny. Interactive, unpredictable, uncensored.',
       btnText:  'Play Along',
       scheduleTitle: 'Comedy Lotería — Upcoming Dates',
-      images:   ['https://upload.wikimedia.org/wikipedia/commons/f/fc/Loteria_boards.jpg',
-                 'https://upload.wikimedia.org/wikipedia/commons/1/14/2015Feria020.JPG',
-                 'https://upload.wikimedia.org/wikipedia/commons/4/47/ToyRoomToluca10.JPG',
+      marqueeText: 'LOTERÍA COMEDY',
+      theme:    'theme-loteria',
+      images: [
+        'https://upload.wikimedia.org/wikipedia/commons/f/fc/Loteria_boards.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/1/14/2015Feria020.JPG',
+        'https://upload.wikimedia.org/wikipedia/commons/4/47/ToyRoomToluca10.JPG',
       ],
     },
     chingona: {
@@ -613,9 +720,12 @@
       desc:     'Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in Town.',
       btnText:  '*tsk*…Neeeeaaahhh',
       scheduleTitle: 'Chingona Comedy — Upcoming Dates',
-      images:   ['https://upload.wikimedia.org/wikipedia/commons/1/12/Chicano_Park_Mural.JPG',
-                 'https://upload.wikimedia.org/wikipedia/commons/4/4e/1964_Chevrolet_Impala_Gypsy_Rose.jpg',
-                 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Romero%27s_papel_picado.jpg',
+      marqueeText: 'CHINGONA COMEDY',
+      theme:    'theme-chingona',
+      images: [
+        'https://upload.wikimedia.org/wikipedia/commons/1/12/Chicano_Park_Mural.JPG',
+        'https://upload.wikimedia.org/wikipedia/commons/4/4e/1964_Chevrolet_Impala_Gypsy_Rose.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/b/bc/Romero%27s_papel_picado.jpg',
       ],
     },
     default: {
@@ -624,23 +734,18 @@
       desc:     'Your go-to destination for live comedy in San Antonio. Browse all upcoming shows and grab your seats before they sell out.',
       btnText:  'See Upcoming Shows',
       scheduleTitle: 'Upcoming Shows',
+      marqueeText: 'HA HA HA',
+      theme:    null,
       images:   [],
     },
   };
 
-  // ── MARQUEE ────────────────────────────────────────────────
-  const MARQUEE_TEXT = 'HA HA HA';
-  const MARQUEE_LOGO = 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/3c5bb56af430ed005e52416d7535672311cf9f7b/posters/Mindy.svg';
-  const MARQUEE_COPIES = 30;
-
-  const marqueeTrack = document.getElementById('marquee-track');
-  const marqueeItem = `<div class="marquee-item">${MARQUEE_TEXT}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
-  const singleSet = Array(MARQUEE_COPIES).fill(marqueeItem).join('');
-  marqueeTrack.innerHTML = singleSet + singleSet;
-
-  // ── URL TAG → BRAND CONFIG ─────────────────────────────────
+  // ── URL TAG → BRAND + THEME ────────────────────────────────
   const URL_TAG = new URLSearchParams(window.location.search).get('tag')?.toLowerCase().trim() || null;
   const brand   = BRAND_CONFIG[URL_TAG] || BRAND_CONFIG.default;
+
+  // Apply theme class to body
+  if (brand.theme) document.body.classList.add(brand.theme);
 
   // Apply hero content
   document.getElementById('hero-tag').textContent        = brand.tag;
@@ -648,6 +753,15 @@
   document.getElementById('hero-desc').textContent       = brand.desc;
   document.getElementById('hero-btn-text').textContent   = brand.btnText;
   document.getElementById('schedule-title').textContent  = brand.scheduleTitle;
+
+  // ── MARQUEE ────────────────────────────────────────────────
+  const MARQUEE_LOGO  = 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/3c5bb56af430ed005e52416d7535672311cf9f7b/posters/Mindy.svg';
+  const MARQUEE_COPIES = 30;
+
+  const marqueeTrack = document.getElementById('marquee-track');
+  const marqueeItem  = `<div class="marquee-item">${brand.marqueeText}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
+  const singleSet    = Array(MARQUEE_COPIES).fill(marqueeItem).join('');
+  marqueeTrack.innerHTML = singleSet + singleSet;
 
   // ── CONSTANTS ──────────────────────────────────────────────
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
@@ -682,37 +796,24 @@
     };
   }
 
-  // ── TAG FILTERING ──────────────────────────────────────────
   function matchesTag(show) {
     if (!URL_TAG) return true;
     const raw = (show.Tag || '').trim();
     if (!raw) return true;
-    const tags = raw.split(',').map(t => t.toLowerCase().trim());
-    return tags.includes(URL_TAG);
+    return raw.split(',').map(t => t.toLowerCase().trim()).includes(URL_TAG);
   }
 
   // ── CAROUSEL ───────────────────────────────────────────────
-  // Priority: brand config images → sheet PosterURL column → empty state
-  let current  = 0;
-  let total    = 0;
-  let autoTimer = null;
+  let current = 0, total = 0, autoTimer = null;
 
   function buildCarousel(shows) {
     const slidesEl = document.getElementById('slides');
     const dotsEl   = document.getElementById('dots');
     const navEl    = document.getElementById('carousel-nav');
 
-    // Build slide source list:
-    // If brand has static images configured, use those.
-    // Otherwise fall back to PosterURL from the sheet.
     let slideItems = [];
-
     if (brand.images && brand.images.length > 0) {
-      slideItems = brand.images.map(url => ({
-        imgUrl:  url,
-        label:   '',
-        linkUrl: '',
-      }));
+      slideItems = brand.images.map(url => ({ imgUrl: url, label: '', linkUrl: '' }));
     } else {
       const posterShows = shows.filter(s => s.PosterURL && s.PosterURL.trim() !== '');
       slideItems = posterShows.map(s => ({
@@ -727,7 +828,7 @@
         <div class="carousel-slide active">
           <div class="carousel-slide-inner" style="background:#111;">
             <div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;text-align:center;padding:2rem;">
-              Add images to <strong style="color:rgba(255,225,53,0.4)">BRAND_CONFIG</strong><br>or a <strong style="color:rgba(255,225,53,0.4)">PosterURL</strong> column in your sheet
+              Add images to <strong>BRAND_CONFIG</strong><br>or a <strong>PosterURL</strong> column in your sheet
             </div>
           </div>
         </div>`;
@@ -737,9 +838,7 @@
       return;
     }
 
-    total   = slideItems.length;
-    current = 0;
-
+    total = slideItems.length; current = 0;
     slidesEl.innerHTML = slideItems.map((slide, i) => {
       const hasLink = slide.linkUrl !== '';
       return `
@@ -854,8 +953,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
