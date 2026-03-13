@@ -123,7 +123,6 @@
     html::-webkit-scrollbar,
     body::-webkit-scrollbar { display: none; }
 
-    /* ── HERO ─────────────────────────────────────────────── */
     .hero {
       width: 100%; height: 100vh;
       min-height: 400px;
@@ -143,7 +142,6 @@
       pointer-events: none;
     }
 
-    /* Left edge accent line */
     .hero::after {
       content: '';
       position: absolute;
@@ -222,7 +220,6 @@
 
     .hero-right { position: relative; overflow: hidden; }
 
-    /* ── CAROUSEL ─────────────────────────────────────────── */
     .carousel { width: 100%; height: 100%; position: relative; overflow: hidden; }
 
     .carousel-slides {
@@ -345,7 +342,6 @@
 
     .carousel-btn:hover { background: var(--accent2); color: var(--btn-fg); border-color: var(--accent2); }
 
-    /* ── MARQUEE ──────────────────────────────────────────── */
     .marquee-bar {
       width: 100%;
       background: var(--marquee-bg);
@@ -384,7 +380,6 @@
       to   { transform: translateX(-50%); }
     }
 
-    /* ── SCHEDULE ─────────────────────────────────────────── */
     .schedule {
       padding: 4rem 3rem 2rem;
       max-width: 1200px;
@@ -534,7 +529,6 @@
       white-space: nowrap;
     }
 
-    /* ── RESPONSIVE ───────────────────────────────────────── */
     @media (max-width: 900px) {
       .hero {
         grid-template-columns: 1fr;
@@ -577,7 +571,6 @@
       .show-info h3 { font-size: 0.9rem; }
     }
 
-    /* ── ANIMATIONS ───────────────────────────────────────── */
     @keyframes spin   { to { transform: rotate(360deg); } }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -587,7 +580,6 @@
 </head>
 <body>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-left">
       <div class="hero-tag" id="hero-tag">Live Stand-Up Comedy</div>
@@ -620,12 +612,10 @@
     </div>
   </section>
 
-  <!-- MARQUEE -->
   <div class="marquee-bar">
     <div class="marquee-track" id="marquee-track"></div>
   </div>
 
-  <!-- SCHEDULE -->
   <section class="schedule" id="schedule">
     <div class="section-header">
       <h2 class="section-title" id="schedule-title">Upcoming Shows</h2>
@@ -641,7 +631,6 @@
   <p style="text-align:center; font-size:2rem; padding: 1rem 0;">🌊 🎯</p>
 
 <script>
-  // ── HEIGHT REPORTING ───────────────────────────────────────
   function getContentHeight() {
     const all = document.body.querySelectorAll('*');
     let maxBottom = 0;
@@ -670,12 +659,11 @@
   const ro = new ResizeObserver(() => { clearTimeout(roTimer); roTimer = setTimeout(reportHeight, 400); });
   ro.observe(document.body);
 
-  // ── BRAND CONFIG ───────────────────────────────────────────
   const BRAND_CONFIG = {
     irma: {
       tag:      'Irma Ruiz — Live',
       title:    'IRMA<br><span>RUIZ</span>',
-      desc:     'San Antonio\'s own Irma Ruiz brings her razor wit and fearless storytelling to the stage. Catch her live!.',
+      desc:     `Irma Ruiz is a former wannabe chola, turned school teacher, turned comedian. Although she's been kicked out of every Nextdoor group she's joined and banned from 5 Facebook Mom groups, you can still find her performing in comedy clubs, casinos, and festivals across Texas and beyond.`,
       btnText:  'See Irma\'s Shows',
       scheduleTitle: 'Irma Ruiz — Upcoming Dates',
       marqueeText: 'HA HA HA',
@@ -689,7 +677,7 @@
     teach: {
       tag:      'Sit Down and Shut Up!',
       title:    'TEACHERS<br><span>GONE</span><br>BAD',
-      desc:     'Teachers lounge talk on stage. Come see what happens when teachers finally snap. What are they gonna do, fire us twice?',
+      desc:     `Come see what happens when teachers finally snap! Teachers Gone Bad features a killer lineup of ex-educators talking classroom disasters, school politics, and staffroom drama. And no, this is not kid-friendly. Nearly every show sells out, and for good reason: it's the jokes teachers wish they could say on campus, with zero punches pulled and absolutely NO FEAR of HR. What are they going to do? Fire us AGAIN?`,
       btnText:  'Find Your Seats!',
       scheduleTitle: 'Teachers Gone Bad — Due Dates',
       marqueeText: 'TEACHERS GONE BAD',
@@ -702,8 +690,8 @@
     },
     bingo: {
       tag:      'Not Your Average Bingo Night',
-      title:    'CHINGONA<br><span>Lotería</span>',
-      desc:     'Lotería — but make it funny. Interactive, unpredictable, uncensored.',
+      title:    'LOTERÍA<br><span>COMEDY</span>',
+      desc:     `Loteria gets LOUD — comedy meets competition. You compete for prizes all night while we keep the laughs coming. No script. No safety net. Just pure, unpredictable comedy driven by fate and a deck! You've never played Lotería like this!`,
       btnText:  'Play Along',
       scheduleTitle: 'Comedy Lotería — Upcoming Dates',
       marqueeText: 'LOTERÍA COMEDY',
@@ -717,7 +705,7 @@
     chingona: {
       tag:      'For Chingona Eyes Only!',
       title:    'CHINGONA<br><span>COMEDY</span>',
-      desc:     'Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in Town.',
+      desc:     `Chingona Comedy is a powerhouse lineup of fierce, funny, and unapologetic women tearing the mic up with stories that hit home. From relationship chaos and mom life madness to HOA beefs, awkward hookups, and the everyday absurdities of being a woman, we say what everyone else wishes they could. Bold. Real. Hilarious. And no, we're not censoring ourselves for anyone!`,
       btnText:  '*tsk*…Neeeeaaahhh',
       scheduleTitle: 'Chingona Comedy — Upcoming Dates',
       marqueeText: 'CHINGONA COMEDY',
@@ -740,21 +728,17 @@
     },
   };
 
-  // ── URL TAG → BRAND + THEME ────────────────────────────────
   const URL_TAG = new URLSearchParams(window.location.search).get('tag')?.toLowerCase().trim() || null;
   const brand   = BRAND_CONFIG[URL_TAG] || BRAND_CONFIG.default;
 
-  // Apply theme class to body
   if (brand.theme) document.body.classList.add(brand.theme);
 
-  // Apply hero content
   document.getElementById('hero-tag').textContent        = brand.tag;
   document.getElementById('hero-title').innerHTML        = brand.title;
   document.getElementById('hero-desc').textContent       = brand.desc;
   document.getElementById('hero-btn-text').textContent   = brand.btnText;
   document.getElementById('schedule-title').textContent  = brand.scheduleTitle;
 
-  // ── MARQUEE ────────────────────────────────────────────────
   const MARQUEE_LOGO  = 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/3c5bb56af430ed005e52416d7535672311cf9f7b/posters/Mindy.svg';
   const MARQUEE_COPIES = 30;
 
@@ -763,12 +747,10 @@
   const singleSet    = Array(MARQUEE_COPIES).fill(marqueeItem).join('');
   marqueeTrack.innerHTML = singleSet + singleSet;
 
-  // ── CONSTANTS ──────────────────────────────────────────────
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpXOrXHP-TEW7S19r-BSy_pyoXMnwyxhSy7nwjExY0Cvvsbf3K0SlWOXjsdbmbuM8wAB9csOhE1WB8/pub?output=csv';
   const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
-  // ── CSV PARSER ─────────────────────────────────────────────
   function parseCSV(text) {
     const lines = text.trim().split('\n');
     const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
@@ -803,7 +785,6 @@
     return raw.split(',').map(t => t.toLowerCase().trim()).includes(URL_TAG);
   }
 
-  // ── CAROUSEL ───────────────────────────────────────────────
   let current = 0, total = 0, autoTimer = null;
 
   function buildCarousel(shows) {
@@ -883,7 +864,6 @@
   document.getElementById('next').addEventListener('click', () => goTo(current + 1));
   document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
 
-  // ── SCHEDULE ───────────────────────────────────────────────
   function renderShows(shows) {
     const container = document.getElementById('shows-container');
 
@@ -931,7 +911,6 @@
     reportAfterSettle(1500);
   }
 
-  // ── LOAD ───────────────────────────────────────────────────
   async function loadShows() {
     try {
       const res = await fetch(SHEET_CSV_URL);
@@ -953,7 +932,3 @@
 </script>
 </body>
 </html>
-
-
-
-
