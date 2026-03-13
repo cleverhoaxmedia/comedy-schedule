@@ -1,9 +1,3 @@
-Come see what happens when teachers finally snap
-
-
-Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in Town.
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,36 +150,7 @@ Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in
       left: 0; top: 0; bottom: 0;
       width: 4px;
       background: var(--left-bar);
-      z-index: 3;
     }
-
-    /* ── HERO VIDEO ───────────────────────────────────────── */
-    .hero-video {
-      position: absolute;
-      inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-      pointer-events: none;
-    }
-
-    .hero-video.loaded { opacity: 1; }
-
-    /* Dark overlay so text stays readable over video */
-    .hero.has-video::before {
-      background: rgba(0,0,0,0.52);
-      width: 100%; height: 100%;
-      top: 0; left: 0;
-      transform: none;
-      z-index: 1;
-      border-radius: 0;
-    }
-
-    /* Lift hero content above video layers */
-    .hero.has-video .hero-left,
-    .hero.has-video .hero-right { z-index: 2; }
 
     .hero-left {
       display: flex;
@@ -623,9 +588,7 @@ Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in
 <body>
 
   <!-- HERO -->
-  <section class="hero" id="hero">
-    <!-- Full-bleed background video (activated per brand by JS) -->
-    <video id="hero-video" class="hero-video" autoplay muted loop playsinline poster=""></video>
+  <section class="hero">
     <div class="hero-left">
       <div class="hero-tag" id="hero-tag">Live Stand-Up Comedy</div>
       <h1 class="hero-title" id="hero-title">GET<br><span>TICKETS</span><br>HERE</h1>
@@ -712,58 +675,57 @@ Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in
     irma: {
       tag:      'Irma Ruiz — Live',
       title:    'IRMA<br><span>RUIZ</span>',
-      desc:     `Irma Ruiz is a former wannabe chola, turned school teacher, turned comedian. Although she's been kicked out of every Nextdoor group she's joined and banned from 5 Facebook Mom groups, you can still find her performing in comedy clubs, casinos, and festivals across Texas and beyond.`,
+      desc:     'San Antonio\'s own Irma Ruiz brings her razor wit and fearless storytelling to the stage. Catch her live!.',
       btnText:  'See Irma\'s Shows',
       scheduleTitle: 'Irma Ruiz — Upcoming Dates',
       marqueeText: 'HA HA HA',
       theme:    null,
       images: [
-        'https://upload.wikimedia.org/wikipedia/en/d/d6/Paisaje_urbano%2C_Frida_Kahlo%2C_1925.jpg',
-        'https://upload.wikimedia.org/wikipedia/en/c/ca/Aparador_en_una_calle_de_Detroit%2C_Frida_Kahlo%2C_1931.jpg',
-        'https://upload.wikimedia.org/wikipedia/en/9/91/Hucha_y_caballo_negro%2C_Frida_Kahlo%2C_1928.jpg',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Irma1.jpg',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Irma2.png',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Irma3.png',
       ],
     },
     teach: {
       tag:      'Sit Down and Shut Up!',
       title:    'TEACHERS<br><span>GONE</span><br>BAD',
-      desc:     `Come see what happens when teachers finally snap! Teachers Gone Bad features a killer lineup of ex-educators talking classroom disasters, school politics, and staffroom drama. And no, this is not kid-friendly. Nearly every show sells out, and for good reason: it's the jokes teachers wish they could say on campus, with zero punches pulled and absolutely NO FEAR of HR. What are they going to do? Fire us AGAIN?`,
+      desc:     'Teachers lounge talk on stage. Come see what happens when teachers finally snap. What are they gonna do, fire us twice?',
       btnText:  'Find Your Seats!',
       scheduleTitle: 'Teachers Gone Bad — Due Dates',
       marqueeText: 'TEACHERS GONE BAD',
       theme:    'theme-teach',
-      heroVideo: 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/TeachersBG.mp4',
       images: [
-        'https://upload.wikimedia.org/wikipedia/commons/a/a7/BogdanovBelsky_UstnySchet.jpg',
-        'https://upload.wikimedia.org/wikipedia/commons/4/49/%22The_School_of_Athens%22_by_Raffaello_Sanzio_da_Urbino.jpg',
-        'https://www.saturdayeveningpost.com/wp-content/uploads/satevepost/1956_03_17.jpg',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Teach1.jpg',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Teach2.png',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Teach3.jpg',
       ],
     },
     bingo: {
       tag:      'Not Your Average Bingo Night',
-      title:    'LOTERÍA<br><span>COMEDY</span>',
-      desc:     `Loteria gets LOUD — comedy meets competition. You compete for prizes all night while we keep the laughs coming. No script. No safety net. Just pure, unpredictable comedy driven by fate and a deck! You've never played Lotería like this!`,
+      title:    'CHINGONA<br><span>Lotería</span>',
+      desc:     'Lotería — but make it funny. Interactive, unpredictable, uncensored.',
       btnText:  'Play Along',
       scheduleTitle: 'Comedy Lotería — Upcoming Dates',
       marqueeText: 'LOTERÍA COMEDY',
       theme:    'theme-loteria',
       images: [
-        'https://upload.wikimedia.org/wikipedia/commons/f/fc/Loteria_boards.jpg',
-        'https://upload.wikimedia.org/wikipedia/commons/1/14/2015Feria020.JPG',
-        'https://upload.wikimedia.org/wikipedia/commons/4/47/ToyRoomToluca10.JPG',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/LotStand1.jpg',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/LotStand2.jpg',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Lot_Stand3.png',
       ],
     },
     chingona: {
       tag:      'For Chingona Eyes Only!',
       title:    'CHINGONA<br><span>COMEDY</span>',
-      desc:     `Chingona Comedy is a powerhouse lineup of fierce, funny, and unapologetic women tearing the mic up with stories that hit home. From relationship chaos and mom life madness to HOA beefs, awkward hookups, and the everyday absurdities of being a woman, we say what everyone else wishes they could. Bold. Real. Hilarious. And no, we're not censoring ourselves for anyone!`,
+      desc:     'Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in Town.',
       btnText:  '*tsk*…Neeeeaaahhh',
       scheduleTitle: 'Chingona Comedy — Upcoming Dates',
       marqueeText: 'CHINGONA COMEDY',
       theme:    'theme-chingona',
       images: [
-        'https://upload.wikimedia.org/wikipedia/commons/1/12/Chicano_Park_Mural.JPG',
+        'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Chi_Mural.jpg',
         'https://upload.wikimedia.org/wikipedia/commons/4/4e/1964_Chevrolet_Impala_Gypsy_Rose.jpg',
-        'https://upload.wikimedia.org/wikipedia/commons/b/bc/Romero%27s_papel_picado.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/9/90/Quiosco_del_Jard%C3%ADn_de_San_Marcos_con_decoraciones_para_la_feria_02.jpg',
       ],
     },
     default: {
@@ -784,21 +746,6 @@ Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in
 
   // Apply theme class to body
   if (brand.theme) document.body.classList.add(brand.theme);
-
-  // ── HERO VIDEO ─────────────────────────────────────────────
-  if (brand.heroVideo) {
-    const heroEl  = document.getElementById('hero');
-    const videoEl = document.getElementById('hero-video');
-    heroEl.classList.add('has-video');
-    videoEl.src = brand.heroVideo;
-    videoEl.addEventListener('canplay', () => videoEl.classList.add('loaded'));
-    // Hide carousel nav/dots — video replaces the right panel visually
-    document.getElementById('carousel-nav').style.display = 'none';
-    document.getElementById('dots').style.display = 'none';
-  } else {
-    // No video — remove the video element to avoid empty src requests
-    document.getElementById('hero-video').remove();
-  }
 
   // Apply hero content
   document.getElementById('hero-tag').textContent        = brand.tag;
@@ -1006,3 +953,7 @@ Hot Cheetos. Hoop Earrings. Latina Pride. The 🔥🔥🔥est night of comedy in
 </script>
 </body>
 </html>
+
+
+
+
