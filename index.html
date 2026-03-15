@@ -895,7 +895,7 @@
         </div>
         <div class="show-venue">
           <strong>${show.Venue || ''}</strong>
-          ${show.City || ''}${show.City && show.State ? ', ' : ''}${show.State || ''}
+          ${show['City • ST'] || ''}
         </div>
         ${isSoldOut
           ? '<span class="badge-soldout">Sold Out</span>'
