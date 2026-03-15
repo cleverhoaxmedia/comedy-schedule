@@ -117,6 +117,7 @@
       font-family: 'DM Sans', sans-serif;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      overflow-x: hidden;
       padding-bottom: 0;
       margin-bottom: 0;
       transition: background 0.4s ease;
@@ -796,7 +797,9 @@
 
   function reportAfterSettle(delay) { setTimeout(reportHeight, delay || 1500); }
 
-  window.addEventListener('load', () => reportAfterSettle(1500));
+  // Report height immediately so Wix never needs to add a scrollbar
+  document.addEventListener('DOMContentLoaded', () => reportHeight());
+  window.addEventListener('load', () => { reportHeight(); reportAfterSettle(500); reportAfterSettle(1500); });
   window.addEventListener('resize', reportHeight);
   document.fonts.ready.then(() => reportAfterSettle(500));
 
