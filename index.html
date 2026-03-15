@@ -623,6 +623,48 @@
       background: rgba(255,255,255,0.07);
     }
 
+    .header-nav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      color: rgba(245,245,240,0.6);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.75rem;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .header-nav-btn:hover {
+      color: #F5F5F0;
+      background: rgba(255,255,255,0.07);
+    }
+
+    .header-nav-btn.active {
+      color: var(--accent);
+    }
+
+    /* Drawer buttons */
+    .site-header-drawer .header-nav-btn {
+      text-align: left;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.05em;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      border-radius: 0;
+      width: 100%;
+      color: rgba(245,245,240,0.7);
+    }
+
+    .site-header-drawer .header-nav-btn:hover,
+    .site-header-drawer .header-nav-btn.active { color: var(--accent); background: none; }
+
     .site-header-nav a.active {
       color: var(--accent);
     }
@@ -704,11 +746,11 @@
       <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
     </a>
     <nav class="site-header-nav">
-      <a href="https://www.mindtwistcomedy.com/tickets">Get Tickets</a>
-      <a href="https://www.mindtwistcomedy.com/irma">Irma Ruiz</a>
-      <a href="https://www.mindtwistcomedy.com/teachers">Teachers Gone Bad</a>
-      <a href="https://www.mindtwistcomedy.com/loteria">Lotería Comedy</a>
-      <a href="https://www.mindtwistcomedy.com/chingona">Chingona Comedy</a>
+      <button class="header-nav-btn" data-tag="">All Shows</button>
+      <button class="header-nav-btn" data-tag="irma">Irma Ruiz</button>
+      <button class="header-nav-btn" data-tag="teach">Teachers Gone Bad</button>
+      <button class="header-nav-btn" data-tag="bingo">Lotería Comedy</button>
+      <button class="header-nav-btn" data-tag="chingona">Chingona Comedy</button>
       <span style="color:rgba(245,245,240,0.25); font-size:0.72rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; padding:0.4rem 0.75rem; cursor:default;">Store</span>
       <a href="https://www.mindtwistcomedy.com/tipjar">Tip Jar</a>
     </nav>
@@ -716,12 +758,12 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="site-header-drawer" id="header-drawer">
-      <a href="https://www.mindtwistcomedy.com/tickets">Get Tickets</a>
-      <a href="https://www.mindtwistcomedy.com/irma">Irma Ruiz</a>
-      <a href="https://www.mindtwistcomedy.com/teachers">Teachers Gone Bad</a>
-      <a href="https://www.mindtwistcomedy.com/loteria">Lotería Comedy</a>
-      <a href="https://www.mindtwistcomedy.com/chingona">Chingona Comedy</a>
-      <span style="color:rgba(245,245,240,0.25); font-size:0.72rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; padding:0.4rem 0.75rem; cursor:default;">Store</span>
+      <button class="header-nav-btn" data-tag="">All Shows</button>
+      <button class="header-nav-btn" data-tag="irma">Irma Ruiz</button>
+      <button class="header-nav-btn" data-tag="teach">Teachers Gone Bad</button>
+      <button class="header-nav-btn" data-tag="bingo">Lotería Comedy</button>
+      <button class="header-nav-btn" data-tag="chingona">Chingona Comedy</button>
+      <span style="color:rgba(245,245,240,0.25); font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.05em; padding:0.35rem 0; border-bottom:1px solid rgba(255,255,255,0.05); cursor:default;">Store</span>
       <a href="https://www.mindtwistcomedy.com/tipjar">Tip Jar</a>
     </nav>
   </header>
@@ -935,69 +977,6 @@
 
   let current = 0, total = 0, autoTimer = null;
 
-  function buildCarousel(shows) {
-    const slidesEl = document.getElementById('slides');
-    const dotsEl   = document.getElementById('dots');
-    const navEl    = document.getElementById('carousel-nav');
-
-    let slideItems = [];
-    if (brand.images && brand.images.length > 0) {
-      slideItems = brand.images.map(url => ({ imgUrl: url, label: '', linkUrl: '' }));
-    } else {
-      const posterShows = shows.filter(s => s.PosterURL && s.PosterURL.trim() !== '');
-      slideItems = posterShows.map(s => ({
-        imgUrl:  s.PosterURL.trim(),
-        label:   s.CarouselLabel ? s.CarouselLabel.trim() : '',
-        linkUrl: (s.TicketURL || '').trim().toLowerCase() === 'soldout' ? '' : (s.TicketURL || '').trim(),
-      }));
-    }
-
-    if (!slideItems.length) {
-      slidesEl.innerHTML = `
-        <div class="carousel-slide active">
-          <div class="carousel-slide-inner" style="background:#111;">
-            <div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;text-align:center;padding:2rem;">
-              Add images to <strong>BRAND_CONFIG</strong><br>or a <strong>PosterURL</strong> column in your sheet
-            </div>
-          </div>
-        </div>`;
-      dotsEl.innerHTML = '';
-      navEl.style.display = 'none';
-      total = 1; current = 0;
-      return;
-    }
-
-    total = slideItems.length; current = 0;
-    slidesEl.innerHTML = slideItems.map((slide, i) => {
-      const hasLink = slide.linkUrl !== '';
-      return `
-        <div class="carousel-slide${i === 0 ? ' active' : ''}">
-          <div class="carousel-slide-inner">
-            <img class="slide-img" src="${slide.imgUrl}" alt="Show image" />
-            ${hasLink ? `<span class="slide-cta">Get Tickets →</span>` : ''}
-            ${slide.label ? `<div class="slide-label">${slide.label}</div>` : ''}
-            ${hasLink ? `<a class="slide-link" href="${slide.linkUrl}" target="_blank" rel="noopener" aria-label="Get tickets"></a>` : ''}
-          </div>
-        </div>`;
-    }).join('');
-
-    if (total > 1) {
-      dotsEl.innerHTML = slideItems.map((_, i) =>
-        `<div class="dot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`
-      ).join('');
-      dotsEl.querySelectorAll('.dot').forEach(d =>
-        d.addEventListener('click', () => goTo(+d.dataset.i))
-      );
-      navEl.style.display = '';
-    } else {
-      dotsEl.innerHTML = '';
-      navEl.style.display = 'none';
-    }
-
-    if (autoTimer) clearInterval(autoTimer);
-    if (total > 1) autoTimer = setInterval(() => goTo(current + 1), 4000);
-  }
-
   function goTo(n) {
     const allSlides = document.querySelectorAll('.carousel-slide');
     const allDots   = document.querySelectorAll('.dot');
@@ -1059,37 +1038,143 @@
     reportAfterSettle(1500);
   }
 
-  async function loadShows() {
+  let cachedShows = null;
+
+  async function loadShowsWithTag(tag) {
+    const container = document.getElementById('shows-container');
+    container.innerHTML = '<div class="status"><div class="spinner"></div>Loading shows...</div>';
     try {
-      const res = await fetch(SHEET_CSV_URL);
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const text = await res.text();
-      const shows = parseCSV(text);
-      const filtered = shows.filter(matchesTag);
-      buildCarousel(filtered);
+      if (!cachedShows) {
+        const res = await fetch(SHEET_CSV_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const text = await res.text();
+        cachedShows = parseCSV(text);
+      }
+      const filtered = cachedShows.filter(show => {
+        if (!tag) return true;
+        const raw = (show.Tag || '').trim();
+        if (!raw) return true;
+        return raw.split(',').map(t => t.toLowerCase().trim()).includes(tag);
+      });
+      const newBrand = BRAND_CONFIG[tag] || BRAND_CONFIG.default;
+      buildCarouselForBrand(newBrand, filtered);
       renderShows(filtered);
     } catch (err) {
       console.error('Sheet load error:', err);
-      document.getElementById('shows-container').innerHTML =
-        '<div class="status">Couldn\'t load shows. Make sure the sheet is published as CSV.</div>';
+      container.innerHTML = '<div class="status">Couldn\'t load shows. Make sure the sheet is published as CSV.</div>';
       reportAfterSettle(500);
     }
   }
 
+  async function loadShows() {
+    loadShowsWithTag(URL_TAG);
+  }
 
-  // ── HEADER BURGER ─────────────────────────────────────────
+  function buildCarouselForBrand(b, shows) {
+    const slidesEl = document.getElementById('slides');
+    const dotsEl   = document.getElementById('dots');
+    const navEl    = document.getElementById('carousel-nav');
+
+    let slideItems = [];
+    if (b.images && b.images.length > 0) {
+      slideItems = b.images.map(url => ({ imgUrl: url, label: '', linkUrl: '' }));
+    } else {
+      const posterShows = shows.filter(s => s.PosterURL && s.PosterURL.trim() !== '');
+      slideItems = posterShows.map(s => ({
+        imgUrl:  s.PosterURL.trim(),
+        label:   s.CarouselLabel ? s.CarouselLabel.trim() : '',
+        linkUrl: (s.TicketURL || '').trim().toLowerCase() === 'soldout' ? '' : (s.TicketURL || '').trim(),
+      }));
+    }
+
+    if (!slideItems.length) {
+      slidesEl.innerHTML = `<div class="carousel-slide active"><div class="carousel-slide-inner" style="background:#111;"><div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;text-align:center;padding:2rem;">No images available</div></div></div>`;
+      dotsEl.innerHTML = ''; navEl.style.display = 'none';
+      total = 1; current = 0; return;
+    }
+
+    total = slideItems.length; current = 0;
+    slidesEl.innerHTML = slideItems.map((slide, i) => {
+      const hasLink = slide.linkUrl !== '';
+      return `<div class="carousel-slide${i === 0 ? ' active' : ''}"><div class="carousel-slide-inner"><img class="slide-img" src="${slide.imgUrl}" alt="Show image" />${hasLink ? `<span class="slide-cta">Get Tickets →</span>` : ''}${slide.label ? `<div class="slide-label">${slide.label}</div>` : ''}${hasLink ? `<a class="slide-link" href="${slide.linkUrl}" target="_blank" rel="noopener" aria-label="Get tickets"></a>` : ''}</div></div>`;
+    }).join('');
+    document.getElementById('slides').style.transform = 'translateX(0)';
+
+    if (total > 1) {
+      dotsEl.innerHTML = slideItems.map((_, i) => `<div class="dot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`).join('');
+      dotsEl.querySelectorAll('.dot').forEach(d => d.addEventListener('click', () => goTo(+d.dataset.i)));
+      navEl.style.display = '';
+    } else { dotsEl.innerHTML = ''; navEl.style.display = 'none'; }
+
+    if (autoTimer) clearInterval(autoTimer);
+    if (total > 1) autoTimer = setInterval(() => goTo(current + 1), 4000);
+  }
+
+
+  // ── HEADER BURGER + TAG SWITCHING ─────────────────────────
   const burger = document.getElementById('header-burger');
   const drawer = document.getElementById('header-drawer');
+
   burger.addEventListener('click', () => {
     burger.classList.toggle('open');
     drawer.classList.toggle('open');
   });
-  // Close drawer on link click
+
+  // Close drawer on any link click
   drawer.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
       burger.classList.remove('open');
       drawer.classList.remove('open');
     });
+  });
+
+  // Tag switching buttons
+  function setActiveTag(tag) {
+    // Update URL param without reloading
+    const url = new URL(window.location.href);
+    if (tag) { url.searchParams.set('tag', tag); }
+    else { url.searchParams.delete('tag'); }
+    window.history.replaceState({}, '', url);
+
+    // Re-run brand + data with new tag
+    const newTag = tag || null;
+    const newBrand = BRAND_CONFIG[newTag] || BRAND_CONFIG.default;
+
+    // Apply theme
+    document.body.className = newBrand.theme || '';
+
+    // Update hero
+    document.getElementById('hero-tag').textContent       = newBrand.tag;
+    document.getElementById('hero-title').innerHTML       = newBrand.title;
+    document.getElementById('hero-desc').textContent      = newBrand.desc;
+    document.getElementById('hero-btn-text').textContent  = newBrand.btnText;
+    document.getElementById('schedule-title').textContent = newBrand.scheduleTitle;
+
+    // Update marquee
+    const newItem = `<div class="marquee-item">${newBrand.marqueeText}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
+    const newSet  = Array(MARQUEE_COPIES).fill(newItem).join('');
+    document.getElementById('marquee-track').innerHTML = newSet + newSet;
+
+    // Reload shows with new filter
+    loadShowsWithTag(newTag);
+
+    // Update active state on buttons
+    document.querySelectorAll('.header-nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tag === (tag || ''));
+    });
+
+    // Close drawer
+    burger.classList.remove('open');
+    drawer.classList.remove('open');
+  }
+
+  document.querySelectorAll('.header-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => setActiveTag(btn.dataset.tag));
+  });
+
+  // Mark current tag as active on load
+  document.querySelectorAll('.header-nav-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tag === (URL_TAG || ''));
   });
 
   loadShows();
