@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tip Jar — MindTwistComedy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:   #080808;
+      --white:   #F0EEE9;
+      --yellow:  #FFE135;
+      --muted:   rgba(240,238,233,0.4);
+      --stroke:  rgba(240,238,233,0.08);
+      --ease:    cubic-bezier(0.76, 0, 0.24, 1);
+      --cashapp: #00D632;
+      --venmo:   #008CFF;
+      --paypal:  #009cde;
+      --zelle:   #6D1ED4;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar { display: none; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      opacity: 0.45;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 20% 10%, rgba(255,225,53,0.05), transparent),
+        radial-gradient(ellipse 60% 60% at 80% 90%, rgba(255,59,48,0.04), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem 6rem;
+    }
+
+    .header {
+      margin-bottom: 4rem;
+      animation: fadeUp 0.6s var(--ease) both;
+    }
+
+    .header-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--yellow);
+    }
+
+    .header-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 8rem);
+      letter-spacing: 0.02em;
+      line-height: 0.9;
+      margin-bottom: 1.25rem;
+    }
+
+    .header-title span { color: var(--yellow); }
+
+    .header-desc {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 48ch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .card {
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s, transform 0.3s var(--ease), background 0.3s;
+      animation: fadeUp 0.6s var(--ease) both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.10s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.20s; }
+
+    .card[data-app="cashapp"] { background: rgba(0,214,50,0.06);   border-color: rgba(0,214,50,0.15); }
+    .card[data-app="venmo"]   { background: rgba(0,140,255,0.06);  border-color: rgba(0,140,255,0.15); }
+    .card[data-app="paypal"]  { background: rgba(0,156,222,0.06);  border-color: rgba(0,156,222,0.15); }
+    .card[data-app="zelle"]   { background: rgba(109,30,212,0.08); border-color: rgba(109,30,212,0.2); }
+
+    .card:hover { transform: translateY(-4px); }
+    .card[data-app="cashapp"]:hover { background: rgba(0,214,50,0.10);   border-color: rgba(0,214,50,0.3); }
+    .card[data-app="venmo"]:hover   { background: rgba(0,140,255,0.10);  border-color: rgba(0,140,255,0.3); }
+    .card[data-app="paypal"]:hover  { background: rgba(0,156,222,0.10);  border-color: rgba(0,156,222,0.3); }
+    .card[data-app="zelle"]:hover   { background: rgba(109,30,212,0.12); border-color: rgba(109,30,212,0.4); }
+
+    .card-stripe { height: 3px; width: 100%; }
+    .card[data-app="cashapp"] .card-stripe { background: var(--cashapp); }
+    .card[data-app="venmo"]   .card-stripe { background: var(--venmo); }
+    .card[data-app="paypal"]  .card-stripe { background: linear-gradient(to right, #009cde, #003087); }
+    .card[data-app="zelle"]   .card-stripe { background: var(--zelle); }
+
+    .card-body {
+      padding: 1.75rem 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 1.25rem;
+    }
+
+    .card-identity {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .card-appname {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .card[data-app="cashapp"] .card-appname { color: var(--cashapp); }
+    .card[data-app="venmo"]   .card-appname { color: var(--venmo); }
+    .card[data-app="paypal"]  .card-appname { color: var(--paypal); }
+    .card[data-app="zelle"]   .card-appname { color: #a45ee5; }
+
+    .card-icon {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-handle {
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .card-handle strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      margin-bottom: 2px;
+    }
+
+    .card-qr {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-qr img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .card-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--stroke);
+      text-decoration: none;
+      color: var(--white);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.04);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .card-cta:hover { transform: translateY(-1px); }
+    .card[data-app="cashapp"] .card-cta:hover { background: rgba(0,214,50,0.12);   border-color: rgba(0,214,50,0.3); }
+    .card[data-app="venmo"]   .card-cta:hover { background: rgba(0,140,255,0.12);  border-color: rgba(0,140,255,0.3); }
+    .card[data-app="paypal"]  .card-cta:hover { background: rgba(0,156,222,0.12);  border-color: rgba(0,156,222,0.3); }
+    .card[data-app="zelle"]   .card-cta:hover { background: rgba(109,30,212,0.15); border-color: rgba(109,30,212,0.4); }
+
+    .footer-note {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      line-height: 1.8;
+      animation: fadeUp 0.6s 0.3s var(--ease) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 621px) {
+      .card-collapsible { display: contents; }
+      .card-collapsible-inner { display: contents; }
+    }
+
+    @media (max-width: 620px) {
+      .page { padding: 3rem 1.25rem 4rem; }
+      .grid { grid-template-columns: 1fr; }
+      .header { margin-bottom: 2.5rem; }
+      .header-desc { max-width: 100%; }
+      .card:hover { transform: none; }
+
+      .card-body { align-items: center; text-align: center; }
+
+      .card-identity {
+        cursor: pointer;
+        user-select: none;
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .card-handle strong { text-align: center; }
+
+      .card-identity::after {
+        content: '›';
+        font-size: 1.6rem;
+        line-height: 1;
+        color: var(--muted);
+        transform: rotate(90deg);
+        transition: transform 0.35s var(--ease);
+        flex-shrink: 0;
+      }
+
+      .card.open .card-identity::after {
+        transform: rotate(270deg);
+      }
+
+      .card-collapsible {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s var(--ease);
+        width: 100%;
+      }
+
+      .card.open .card-collapsible {
+        grid-template-rows: 1fr;
+      }
+
+      .card-collapsible-inner {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        width: 100%;
+      }
+
+      .card.open .card-collapsible-inner { padding-top: 1.25rem; }
+
+      .card-qr { max-width: 240px; }
+      .card-cta { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-eyebrow">MindTwistComedy</div>
+    <h1 class="header-title">Tip <span>Jar</span></h1>
+    <p class="header-desc">Enjoyed the show? Picking up some swag at the merch stand? Your contributions keep this stage humming! Every dollar counts, thank you.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- CASHAPP -->
+    <div class="card" data-app="cashapp">
+      <div class="card-stripe"></div>
+      <div class="card-body">
+        <div class="card-identity">
+          <div class="card-appname">Cash App</div>
+          <div class="card-icon">
+            <img src="https://static.wixstatic.com/media/a8adb7_30d8a10c586e4a7a8f4af2f9a24004af~mv2.png" alt="Cash App" />
+          </div>
+        </div>
+        <div class="card-handle">
+          <strong>$MindTwistComedy</strong>
+          Scan or tap to open
+        </div>
+        <div class="card-collapsible"><div class="card-collapsible-inner">
+          <div class="card-qr">
+            <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRCashApp.svg" alt="Cash App QR Code" />
+          </div>
+          <a href="https://cash.app/$MindTwistComedy" target="_blank" rel="noopener" class="card-cta">Open Cash App →</a>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- VENMO -->
+    <div class="card" data-app="venmo">
+      <div class="card-stripe"></div>
+      <div class="card-body">
+        <div class="card-identity">
+          <div class="card-appname">Venmo</div>
+          <div class="card-icon">
+            <img src="https://static.wixstatic.com/media/a8adb7_c7ca3645e9eb46bdb9b3d5788fd6b117~mv2.png" alt="Venmo" />
+          </div>
+        </div>
+        <div class="card-handle">
+          <strong>@MindTwistComedy</strong>
+          Scan or tap to open
+        </div>
+        <div class="card-collapsible"><div class="card-collapsible-inner">
+          <div class="card-qr">
+            <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRVenmo.svg" alt="Venmo QR Code" />
+          </div>
+          <a href="https://account.venmo.com/u/MindTwistComedy" target="_blank" rel="noopener" class="card-cta">Open Venmo →</a>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PAYPAL -->
+    <div class="card" data-app="paypal">
+      <div class="card-stripe"></div>
+      <div class="card-body">
+        <div class="card-identity">
+          <div class="card-appname">PayPal</div>
+          <div class="card-icon">
+            <img src="https://static.wixstatic.com/media/a8adb7_5439953c15e44281a8c59b123c86aa36~mv2.png" alt="PayPal" />
+          </div>
+        </div>
+        <div class="card-handle">
+          <strong>@MindTwistComedy</strong>
+          Scan or tap to open
+        </div>
+        <div class="card-collapsible"><div class="card-collapsible-inner">
+          <div class="card-qr">
+            <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRPaypal.svg" alt="PayPal QR Code" />
+          </div>
+          <a href="https://www.paypal.com/paypalme/MindTwistComedy" target="_blank" rel="noopener" class="card-cta">Open PayPal →</a>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ZELLE -->
+    <div class="card" data-app="zelle">
+      <div class="card-stripe"></div>
+      <div class="card-body">
+        <div class="card-identity">
+          <div class="card-appname">Zelle</div>
+          <div class="card-icon">
+            <img src="https://static.wixstatic.com/media/a8adb7_b2e047addf97487dbb77c63efebee9ce~mv2.png" alt="Zelle" />
+          </div>
+        </div>
+        <div class="card-handle">
+          <strong>IRMA RUIZ</strong>
+          <strong style="margin-top:2px;">210-467-2581</strong>
+          Send directly via your bank app
+        </div>
+        <div class="card-collapsible"><div class="card-collapsible-inner">
+          <div class="card-qr">
+            <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRZelle.svg" alt="Zelle QR Code" />
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="footer-note">
+    Tips are voluntary.<br>
+    Thank you for your generosity. ❤️
+  </p>
+
+</div>
+
+<script>
+  function isMobile() { return window.innerWidth <= 620; }
+
+  document.querySelectorAll('.card-identity').forEach(identity => {
+    identity.addEventListener('click', () => {
+      if (!isMobile()) return;
+      const card = identity.closest('.card');
+      const isOpen = card.classList.contains('open');
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('open'));
+      if (!isOpen) card.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
