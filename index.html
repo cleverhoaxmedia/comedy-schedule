@@ -576,6 +576,96 @@
     }
 
 
+
+    /* ── SHARE BUTTON ────────────────────────────────────── */
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px; height: 42px;
+      background: var(--accent2);
+      border: 1px solid var(--accent2);
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--btn-fg);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s, color 0.2s;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.6s 0.35s ease both;
+    }
+
+    .btn-share:hover {
+      background: var(--accent2-hi);
+      border-color: var(--accent2-hi);
+      color: var(--btn-fg);
+      transform: translateY(-2px);
+    }
+
+    .btn-share::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -75%;
+      width: 50%; height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255,255,255,0.4) 50%,
+        transparent 100%
+      );
+      opacity: 0;
+      animation: share-shimmer 4s ease-in-out infinite;
+      border-radius: 4px;
+    }
+
+    @keyframes share-shimmer {
+      0%   { left: -75%; opacity: 1; }
+      20%  { left: 125%; opacity: 1; }
+      21%  { opacity: 0; }
+      100% { left: 125%; opacity: 0; }
+    }
+
+            .btn-share-wrap {
+      position: relative;
+      display: inline-flex;
+      flex-shrink: 0;
+    }
+
+    .share-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: var(--text);
+      color: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 200;
+    }
+
+    .share-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--text);
+    }
+
+    .btn-share-wrap.copied .share-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
     /* ── SITE HEADER ─────────────────────────────────────── */
     .site-header {
       position: sticky;
@@ -773,10 +863,18 @@
       <div class="hero-tag" id="hero-tag">Live Stand-Up Comedy</div>
       <h1 class="hero-title" id="hero-title">GET<br><span>TICKETS</span><br>HERE</h1>
       <p class="hero-desc" id="hero-desc">Your go-to destination for live comedy in San Antonio. Browse all upcoming shows and grab your seats before they sell out.</p>
-      <a href="#schedule" class="btn-primary" id="hero-btn">
-        <span id="hero-btn-text">See Upcoming Shows</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
+      <div style="display:flex; gap:0.75rem; align-items:center;">
+        <a href="#schedule" class="btn-primary" id="hero-btn">
+          <span id="hero-btn-text">See Upcoming Shows</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <div class="btn-share-wrap">
+          <button class="btn-share" id="share-btn" aria-label="Copy link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+          <span class="share-tooltip">Link Copied!</span>
+        </div>
+      </div>
     </div>
     <div class="hero-right">
       <div class="carousel" id="carousel">
@@ -858,6 +956,7 @@
       scheduleTitle: 'Irma Ruiz — Upcoming Dates',
       marqueeText: 'HA HA HA',
       theme:    null,
+      shareUrl: 'https://www.mindtwistcomedy.com/irma',
       images: [
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Irma1.jpg',
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Irma2.png',
@@ -872,6 +971,7 @@
       scheduleTitle: 'Teachers Gone Bad — Due Dates',
       marqueeText: 'TEACHERS GONE BAD',
       theme:    'theme-teach',
+      shareUrl: 'https://www.mindtwistcomedy.com/teachers',
       images: [
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Teach1.jpg',
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Teach2.png',
@@ -886,6 +986,7 @@
       scheduleTitle: 'Comedy Lotería — Upcoming Dates',
       marqueeText: 'LOTERÍA COMEDY',
       theme:    'theme-loteria',
+      shareUrl: 'https://www.mindtwistcomedy.com/loteria',
       images: [
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/LotStand1.jpg',
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/LotStand2.jpg',
@@ -900,6 +1001,7 @@
       scheduleTitle: 'Chingona Comedy — Upcoming Dates',
       marqueeText: 'CHINGONA COMEDY',
       theme:    'theme-chingona',
+      shareUrl: 'https://www.mindtwistcomedy.com/chingona',
       images: [
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Chi_Mural.jpg',
         'https://upload.wikimedia.org/wikipedia/commons/4/4e/1964_Chevrolet_Impala_Gypsy_Rose.jpg',
@@ -914,6 +1016,7 @@
       scheduleTitle: 'Upcoming Shows',
       marqueeText: 'HA HA HA',
       theme:    null,
+      shareUrl: 'https://www.mindtwistcomedy.com/tickets',
       images:   [],
     },
   };
@@ -1111,6 +1214,18 @@
   }
 
 
+
+  // ── SHARE BUTTON ───────────────────────────────────────────
+  const shareBtn = document.getElementById('share-btn');
+  let currentShareUrl = brand.shareUrl || 'https://www.mindtwistcomedy.com/tickets';
+
+  shareBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(currentShareUrl).then(() => {
+      shareBtn.closest('.btn-share-wrap').classList.add('copied');
+      setTimeout(() => shareBtn.closest('.btn-share-wrap').classList.remove('copied'), 2000);
+    });
+  });
+
   // ── HEADER BURGER + TAG SWITCHING ─────────────────────────
   const burger = document.getElementById('header-burger');
   const drawer = document.getElementById('header-drawer');
@@ -1142,6 +1257,9 @@
 
     // Apply theme
     document.body.className = newBrand.theme || '';
+
+    // Update share URL
+    currentShareUrl = newBrand.shareUrl || 'https://www.mindtwistcomedy.com/tickets';
 
     // Update hero
     document.getElementById('hero-tag').textContent       = newBrand.tag;
