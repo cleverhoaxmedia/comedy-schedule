@@ -31,6 +31,16 @@
       --line-grad:  rgba(255,225,53,0.4);
       --spinner-top:#FFE135;
       --left-bar:   #FFE135;
+      /* Shared vars for home/tipjar views */
+      --black:      #080808;
+      --white:      #F0EEE9;
+      --yellow:     #FFE135;
+      --muted:      rgba(240,238,233,0.4);
+      --ease:       cubic-bezier(0.76, 0, 0.24, 1);
+      --cashapp:    #00D632;
+      --venmo:      #008CFF;
+      --paypal:     #009cde;
+      --zelle:      #6D1ED4;
     }
 
     /* ── TEACHERS GONE BAD ───────────────────────────────── */
@@ -401,8 +411,8 @@
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(2.5rem, 5vw, 4rem);
       letter-spacing: 0.05em;
-      line-height: 1;
-      white-space: nowrap;
+      line-height: 1.05;
+      white-space: normal;
       color: var(--text);
     }
 
@@ -466,21 +476,48 @@
     .show-row:hover::before { transform: scaleY(1); }
 
     .show-date {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      line-height: 1.1;
-      color: var(--accent);
-      letter-spacing: 0.05em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 64px;
+      flex-shrink: 0;
     }
 
-    .show-date span {
-      display: block;
+    .show-date-month {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-dim);
+      width: 100%;
+      text-align: center;
+      line-height: 1.3;
+      padding-bottom: 0.15rem;
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .show-date-day {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.6rem;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      width: 100%;
+      text-align: center;
+      padding-top: 0.1rem;
+    }
+
+    .show-date-weekday {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.6rem;
       font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      width: 100%;
+      text-align: center;
+      margin-top: 0.15rem;
     }
 
     .show-info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text); }
@@ -498,6 +535,23 @@
       font-weight: 500;
       font-size: 0.9rem;
       margin-bottom: 0.15rem;
+      color: var(--text);
+    }
+
+    /* Inline venue shown only on mobile */
+    .show-venue-inline {
+      display: none;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.4;
+      margin-top: 0.2rem;
+    }
+
+    .show-venue-inline strong {
+      display: block;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.1rem;
       color: var(--text);
     }
 
@@ -547,12 +601,21 @@
     @media (max-width: 768px) {
       .schedule { padding: 3rem 1.5rem 1.5rem; }
       .show-row {
-        grid-template-columns: 90px 1fr;
+        grid-template-columns: 80px 1fr;
         grid-template-rows: auto auto;
-        gap: 0.75rem 1rem;
+        gap: 0.5rem 1rem;
         padding: 1.25rem 1.5rem;
+        align-items: start;
       }
-      .show-venue { text-align: left; grid-column: 2; }
+      .show-date {
+        width: 100%;
+        padding-top: 0.2rem;
+      }
+      .show-date-day { font-size: 3rem; }
+      .show-date-month { font-size: 0.7rem; letter-spacing: 0.18em; }
+      .show-date-weekday { font-size: 0.62rem; }
+      .show-venue { display: none; }
+      .show-venue-inline { display: block; }
       .btn-ticket, .badge-soldout { grid-column: 1 / -1; text-align: center; width: 100%; }
     }
 
@@ -571,7 +634,7 @@
     @media (max-width: 480px) {
       .schedule { padding: 2rem 1rem 1rem; }
       .show-row { padding: 1rem; gap: 0.5rem 0.75rem; }
-      .show-date { font-size: 1.1rem; }
+      .show-date-day { font-size: 2.4rem; } .show-date-month { font-size: 0.65rem; }
       .show-info h3 { font-size: 0.9rem; }
     }
 
@@ -821,6 +884,599 @@
       .header-burger { display: flex; }
     }
 
+
+    /* ── LAYOUT SWITCHING ────────────────────────────────── */
+    body.layout-home { overflow: hidden; height: 100vh; height: 100dvh; cursor: none; }
+    body.layout-home .site-header { display: none; }
+
+    /* ── HOMEPAGE LAYOUT ─────────────────────────────────── */
+    #layout-home .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .home-shell {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      height: 100dvh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 3rem 3.5rem;
+      gap: 2rem;
+    }
+
+    .home-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeUp 0.6s var(--ease) both;
+    }
+
+    .home-nav {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+
+    .home-nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: none;
+      border: none;
+      color: var(--white, #F0EEE9);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.6rem, 5vw, 4.8rem);
+      letter-spacing: 0.02em;
+      line-height: 1;
+      padding: 0.25rem 0 0.25rem 1.2rem;
+      position: relative;
+      transition: opacity 0.3s, padding-left 0.35s var(--ease);
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+
+    .home-nav:has(.home-nav-link:hover) .home-nav-link:not(:hover) { opacity: 0.15; }
+
+    .home-nav-link::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10%; bottom: 10%;
+      width: 2px;
+      background: #FFE135;
+      border-radius: 2px;
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.35s var(--ease);
+    }
+
+    .home-nav-link:hover::before { transform: scaleY(1); }
+    .home-nav-link:hover { padding-left: 1.8rem; }
+    .home-nav-link.get-tix { font-size: clamp(3.5rem, 6.5vw, 6.5rem); }
+
+    .home-nav-link .nav-meta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(240,238,233,0.38);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.25s, transform 0.25s var(--ease);
+    }
+
+    .home-nav-link:hover .nav-meta { opacity: 1; transform: translateX(0); }
+
+    .home-footer {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(240,238,233,0.08);
+      color: #F0EEE9;
+      background: rgba(255,255,255,0.04);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s, color 0.2s;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .home-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+    .home-btn.primary { background: #FFE135; border-color: #FFE135; color: #080808; font-weight: 700; }
+    .home-btn.primary:hover { background: #fff; border-color: #fff; }
+    .home-btn.shimmer { position: relative; overflow: hidden; }
+    .home-btn.shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -75%;
+      width: 50%; height: 100%;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+      animation: shimmer 2.4s ease-in-out infinite;
+    }
+
+    .home-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      animation: fadeUp 0.6s 0.15s var(--ease) both;
+    }
+
+    .home-feature { text-align: right; max-width: 520px; }
+    .home-right-footer { display: flex; gap: 8px; }
+
+    @media (max-width: 768px) {
+      body.layout-home { overflow: auto; cursor: auto; }
+      .home-shell {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 100vh;
+        padding: 2rem 1.5rem 2rem 2rem;
+        gap: 3rem;
+      }
+      .home-right { align-items: flex-start; }
+      .home-feature { text-align: left; }
+      .home-nav-link { font-size: clamp(2.2rem, 10vw, 3rem); }
+      .home-nav-link.get-tix { font-size: clamp(2.8rem, 12vw, 3.8rem); }
+    }
+
+    /* ── TIPJAR LAYOUT ───────────────────────────────────── */
+    .tipjar-page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 6rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tipjar-header { margin-bottom: 4rem; animation: fadeUp 0.6s var(--ease) both; }
+
+    .tipjar-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(240,238,233,0.4);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .tipjar-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: #FFE135;
+    }
+
+    .tipjar-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 8rem);
+      letter-spacing: 0.02em;
+      line-height: 0.9;
+      margin-bottom: 1.25rem;
+      color: #F0EEE9;
+    }
+
+    .tipjar-title span { color: #FFE135; }
+
+    .tipjar-desc {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(240,238,233,0.4);
+      font-weight: 300;
+      max-width: 48ch;
+    }
+
+    .tipjar-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .tj-card {
+      border: 1px solid rgba(240,238,233,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s, transform 0.3s var(--ease), background 0.3s;
+      animation: fadeUp 0.6s var(--ease) both;
+    }
+
+    .tj-card:nth-child(1) { animation-delay: 0.05s; }
+    .tj-card:nth-child(2) { animation-delay: 0.10s; }
+    .tj-card:nth-child(3) { animation-delay: 0.15s; }
+    .tj-card:nth-child(4) { animation-delay: 0.20s; }
+
+    .tj-card[data-app="cashapp"] { background: rgba(0,214,50,0.06);   border-color: rgba(0,214,50,0.15); }
+    .tj-card[data-app="venmo"]   { background: rgba(0,140,255,0.06);  border-color: rgba(0,140,255,0.15); }
+    .tj-card[data-app="paypal"]  { background: rgba(0,156,222,0.06);  border-color: rgba(0,156,222,0.15); }
+    .tj-card[data-app="zelle"]   { background: rgba(109,30,212,0.08); border-color: rgba(109,30,212,0.2); }
+
+    .tj-card:hover { transform: translateY(-4px); }
+    .tj-card[data-app="cashapp"]:hover { background: rgba(0,214,50,0.10);   border-color: rgba(0,214,50,0.3); }
+    .tj-card[data-app="venmo"]:hover   { background: rgba(0,140,255,0.10);  border-color: rgba(0,140,255,0.3); }
+    .tj-card[data-app="paypal"]:hover  { background: rgba(0,156,222,0.10);  border-color: rgba(0,156,222,0.3); }
+    .tj-card[data-app="zelle"]:hover   { background: rgba(109,30,212,0.12); border-color: rgba(109,30,212,0.4); }
+
+    .tj-stripe { height: 3px; width: 100%; }
+    .tj-card[data-app="cashapp"] .tj-stripe { background: #00D632; }
+    .tj-card[data-app="venmo"]   .tj-stripe { background: #008CFF; }
+    .tj-card[data-app="paypal"]  .tj-stripe { background: linear-gradient(to right, #009cde, #003087); }
+    .tj-card[data-app="zelle"]   .tj-stripe { background: #6D1ED4; }
+
+    .tj-body { padding: 1.75rem 1.75rem 1.5rem; display: flex; flex-direction: column; flex: 1; gap: 1.25rem; }
+
+    .tj-identity { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+
+    .tj-appname { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.04em; line-height: 1; }
+    .tj-card[data-app="cashapp"] .tj-appname { color: #00D632; }
+    .tj-card[data-app="venmo"]   .tj-appname { color: #008CFF; }
+    .tj-card[data-app="paypal"]  .tj-appname { color: #009cde; }
+    .tj-card[data-app="zelle"]   .tj-appname { color: #a45ee5; }
+
+    .tj-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; flex-shrink: 0; }
+    .tj-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .tj-handle { font-size: 0.8rem; letter-spacing: 0.06em; color: rgba(240,238,233,0.4); font-weight: 300; }
+    .tj-handle strong { display: block; font-size: 1rem; font-weight: 500; color: #F0EEE9; letter-spacing: 0.02em; margin-bottom: 2px; }
+
+    .tj-qr { width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center; }
+    .tj-qr img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+    .tj-cta {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid rgba(240,238,233,0.08);
+      text-decoration: none; color: #F0EEE9; font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; background: rgba(255,255,255,0.04);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .tj-cta:hover { transform: translateY(-1px); }
+    .tj-card[data-app="cashapp"] .tj-cta:hover { background: rgba(0,214,50,0.12);   border-color: rgba(0,214,50,0.3); }
+    .tj-card[data-app="venmo"]   .tj-cta:hover { background: rgba(0,140,255,0.12);  border-color: rgba(0,140,255,0.3); }
+    .tj-card[data-app="paypal"]  .tj-cta:hover { background: rgba(0,156,222,0.12);  border-color: rgba(0,156,222,0.3); }
+    .tj-card[data-app="zelle"]   .tj-cta:hover { background: rgba(109,30,212,0.15); border-color: rgba(109,30,212,0.4); }
+
+    .tipjar-footer-note {
+      margin-top: 3rem; text-align: center; font-size: 0.75rem;
+      color: rgba(240,238,233,0.4); font-weight: 300; letter-spacing: 0.04em; line-height: 1.8;
+    }
+
+    /* Tipjar mobile collapsible */
+    @media (min-width: 621px) {
+      .tj-collapsible { display: contents; }
+      .tj-collapsible-inner { display: contents; }
+    }
+
+    @media (max-width: 620px) {
+      .tipjar-page { padding: 3rem 1.25rem 4rem; }
+      .tipjar-grid { grid-template-columns: 1fr; }
+      .tipjar-header { margin-bottom: 2.5rem; }
+      .tj-card:hover { transform: none; }
+      .tj-body { align-items: center; text-align: center; }
+      .tj-identity { cursor: pointer; user-select: none; width: 100%; justify-content: center; }
+      .tj-handle strong { text-align: center; }
+      .tj-identity::after {
+        content: '›'; font-size: 1.6rem; line-height: 1;
+        color: rgba(240,238,233,0.4); transform: rotate(90deg);
+        transition: transform 0.35s var(--ease); flex-shrink: 0;
+      }
+      .tj-card.open .tj-identity::after { transform: rotate(270deg); }
+      .tj-collapsible { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s var(--ease); width: 100%; }
+      .tj-card.open .tj-collapsible { grid-template-rows: 1fr; }
+      .tj-collapsible-inner { overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; width: 100%; }
+      .tj-card.open .tj-collapsible-inner { padding-top: 1.25rem; }
+      .tj-qr { max-width: 240px; }
+      .tj-cta { width: 100%; justify-content: center; }
+    }
+
+
+    /* ══ HOMEPAGE VIEW ══════════════════════════════════════ */
+    #view-home { display: none; position: relative; }
+    #view-home.active { display: block; }
+
+    #view-home .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s var(--ease), height 0.25s var(--ease);
+      mix-blend-mode: difference;
+    }
+    #view-home .cursor.big { width: 44px; height: 44px; }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+    .stage-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease);
+    }
+    .stage-bg.active { opacity: 1; }
+    .stage-bg-default  { background: var(--black); opacity: 1; }
+    .stage-bg-getTix   { background: #0a1828; }
+    .stage-bg-irma     { background: #1a1208; }
+    .stage-bg-teachers { background: #0f0a1e; }
+    .stage-bg-loteria  { background: #0a1a0a; }
+    .stage-bg-chingona { background: #1e0808; }
+    .stage-bg-store    { background: #0a0a1a; }
+    .stage-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      opacity: 0.65;
+    }
+    .stage-video-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(15,10,30,0.85) 0%, rgba(15,10,30,0.4) 50%, rgba(15,10,30,0.2) 100%);
+      pointer-events: none;
+    }
+    .stage-bg-label {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: flex-end;
+      padding-right: 6vw;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 14vw, 14rem);
+      letter-spacing: -0.02em; line-height: 1;
+      opacity: 0.055; user-select: none; pointer-events: none; text-align: right;
+    }
+    .stage-glow {
+      position: absolute; inset: 0;
+      pointer-events: none; opacity: 0;
+      transition: opacity 0.6s var(--ease);
+    }
+    .stage-glow.active { opacity: 1; }
+    .stage-glow-getTix   { background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(255,225,53,0.06), transparent); }
+    .stage-glow-irma     { background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(255,200,80,0.06), transparent); }
+    .stage-glow-teachers { background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(140,100,255,0.07), transparent); }
+    .stage-glow-loteria  { background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(80,200,80,0.06), transparent); }
+    .stage-glow-chingona { background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(255,59,48,0.07), transparent); }
+    .stage-glow-store    { background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(80,120,255,0.06), transparent); }
+    .stage::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      opacity: 0.45; pointer-events: none; z-index: 2;
+    }
+    .stage-vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.7));
+      pointer-events: none; z-index: 1;
+    }
+    .shell {
+      position: relative; z-index: 1;
+      height: 100vh; height: 100dvh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding: 3rem 3.5rem; gap: 2rem;
+    }
+    .shell .left {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      animation: fadeUp 0.6s var(--ease) both;
+    }
+    .brand-logo { width: 100%; max-width: 340px; }
+    .brand-logo img { width: 100%; height: auto; display: block; }
+    .nav {
+      display: flex; flex-direction: column; gap: 0;
+      flex: 1; justify-content: center; padding: 2rem 0;
+    }
+    .nav-link {
+      display: flex; align-items: center; justify-content: space-between;
+      text-decoration: none; color: var(--white);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.6rem, 5vw, 4.8rem);
+      letter-spacing: 0.02em; line-height: 1;
+      padding: 0.25rem 0 0.25rem 1.2rem;
+      position: relative;
+      transition: opacity 0.3s, padding-left 0.35s var(--ease);
+    }
+    .nav:has(.nav-link:hover) .nav-link:not(:hover) { opacity: 0.15; }
+    .nav-link::before {
+      content: ''; position: absolute;
+      left: 0; top: 10%; bottom: 10%;
+      width: 2px; background: var(--yellow); border-radius: 2px;
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform 0.35s var(--ease);
+    }
+    .nav-link:hover::before { transform: scaleY(1); }
+    .nav-link:hover { padding-left: 1.8rem; }
+    .nav-link.get-tix { font-size: clamp(3.5rem, 6.5vw, 6.5rem); }
+    .nav-meta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem; font-weight: 300;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); white-space: nowrap;
+      opacity: 0; transform: translateX(-8px);
+      transition: opacity 0.25s, transform 0.25s var(--ease);
+    }
+    .nav-link:hover .nav-meta { opacity: 1; transform: translateX(0); }
+    .left-footer { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hp-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      text-decoration: none;
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.5rem 1.1rem; border-radius: 999px;
+      border: 1px solid var(--stroke); color: var(--white);
+      background: rgba(255,255,255,0.04);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s, color 0.2s;
+    }
+    .hp-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+    .hp-btn.primary { background: var(--yellow); border-color: var(--yellow); color: var(--black); font-weight: 700; }
+    .hp-btn.primary:hover { background: #fff; border-color: #fff; }
+    .hp-btn.shimmer { position: relative; overflow: hidden; }
+    .hp-btn.shimmer::after {
+      content: ''; position: absolute;
+      top: 0; left: -75%; width: 50%; height: 100%;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+      animation: shimmer 2.4s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0% { left: -75%; } 60% { left: 125%; } 100% { left: 125%; } }
+    .shell .right {
+      display: flex; flex-direction: column;
+      justify-content: space-between; align-items: flex-end;
+      animation: fadeUp 0.6s 0.15s var(--ease) both;
+    }
+    .feature { text-align: right; max-width: 520px; }
+    .feature-kicker {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(0,0,0,0.25); border: 1px solid var(--stroke);
+      backdrop-filter: blur(8px); border-radius: 999px;
+      padding: 6px 14px; font-size: 0.68rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.5rem;
+    }
+    .kicker-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--yellow);
+      box-shadow: 0 0 0 4px rgba(255,225,53,0.18);
+    }
+    .feature-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      letter-spacing: 0.03em; line-height: 0.92; margin-bottom: 1rem;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: opacity 0.25s;
+    }
+    .feature-desc {
+      font-size: 0.95rem; line-height: 1.75;
+      color: rgba(240,238,233,0.58); font-weight: 300;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.5); transition: opacity 0.25s;
+    }
+    .right-footer { display: flex; gap: 8px; }
+    @media (max-width: 768px) {
+      #view-home .cursor { display: none; }
+      .shell { grid-template-columns: 1fr; height: auto; min-height: 100vh; padding: 2rem 1.5rem 2rem 2rem; gap: 3rem; }
+      .shell .right { align-items: flex-start; }
+      .feature { text-align: left; }
+      .feature-kicker { margin-bottom: 1rem; }
+      .nav-link { font-size: clamp(2.2rem, 10vw, 3rem); }
+      .nav-link.get-tix { font-size: clamp(2.8rem, 12vw, 3.8rem); }
+    }
+
+    /* ══ TIPJAR VIEW ═════════════════════════════════════════ */
+    #view-tipjar { display: none; }
+    #view-tipjar.active { display: block; }
+
+    .tj-page {
+      position: relative; z-index: 1;
+      max-width: 960px; margin: 0 auto;
+      padding: 3rem 2.5rem 6rem;
+    }
+    .tj-header { margin-bottom: 4rem; animation: fadeUp 0.6s var(--ease) both; }
+    .tj-eyebrow {
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .tj-eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--yellow); }
+    .tj-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); letter-spacing: 0.02em; line-height: 0.9; margin-bottom: 1.25rem; }
+    .tj-title span { color: var(--yellow); }
+    .tj-desc { font-size: 1rem; line-height: 1.75; color: var(--muted); font-weight: 300; max-width: 48ch; }
+    .tj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .tj-card {
+      border: 1px solid var(--stroke); border-radius: 16px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color 0.3s, transform 0.3s var(--ease), background 0.3s;
+      animation: fadeUp 0.6s var(--ease) both;
+    }
+    .tj-card:nth-child(1) { animation-delay: 0.05s; }
+    .tj-card:nth-child(2) { animation-delay: 0.10s; }
+    .tj-card:nth-child(3) { animation-delay: 0.15s; }
+    .tj-card:nth-child(4) { animation-delay: 0.20s; }
+    .tj-card[data-app="cashapp"] { background: rgba(0,214,50,0.06);   border-color: rgba(0,214,50,0.15); }
+    .tj-card[data-app="venmo"]   { background: rgba(0,140,255,0.06);  border-color: rgba(0,140,255,0.15); }
+    .tj-card[data-app="paypal"]  { background: rgba(0,156,222,0.06);  border-color: rgba(0,156,222,0.15); }
+    .tj-card[data-app="zelle"]   { background: rgba(109,30,212,0.08); border-color: rgba(109,30,212,0.2); }
+    .tj-card:hover { transform: translateY(-4px); }
+    .tj-card[data-app="cashapp"]:hover { background: rgba(0,214,50,0.10);   border-color: rgba(0,214,50,0.3); }
+    .tj-card[data-app="venmo"]:hover   { background: rgba(0,140,255,0.10);  border-color: rgba(0,140,255,0.3); }
+    .tj-card[data-app="paypal"]:hover  { background: rgba(0,156,222,0.10);  border-color: rgba(0,156,222,0.3); }
+    .tj-card[data-app="zelle"]:hover   { background: rgba(109,30,212,0.12); border-color: rgba(109,30,212,0.4); }
+    .tj-stripe { height: 3px; width: 100%; }
+    .tj-card[data-app="cashapp"] .tj-stripe { background: var(--cashapp); }
+    .tj-card[data-app="venmo"]   .tj-stripe { background: var(--venmo); }
+    .tj-card[data-app="paypal"]  .tj-stripe { background: linear-gradient(to right, #009cde, #003087); }
+    .tj-card[data-app="zelle"]   .tj-stripe { background: var(--zelle); }
+    .tj-card-body { padding: 1.75rem 1.75rem 1.5rem; display: flex; flex-direction: column; flex: 1; gap: 1.25rem; }
+    .tj-identity { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .tj-appname { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.04em; line-height: 1; }
+    .tj-card[data-app="cashapp"] .tj-appname { color: var(--cashapp); }
+    .tj-card[data-app="venmo"]   .tj-appname { color: var(--venmo); }
+    .tj-card[data-app="paypal"]  .tj-appname { color: var(--paypal); }
+    .tj-card[data-app="zelle"]   .tj-appname { color: #a45ee5; }
+    .tj-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .tj-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tj-handle { font-size: 0.8rem; letter-spacing: 0.06em; color: var(--muted); font-weight: 300; }
+    .tj-handle strong { display: block; font-size: 1rem; font-weight: 500; color: var(--white); letter-spacing: 0.02em; margin-bottom: 2px; }
+    .tj-qr { width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center; }
+    .tj-qr img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .tj-cta {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--stroke);
+      text-decoration: none; color: var(--white);
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      background: rgba(255,255,255,0.04);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .tj-cta:hover { transform: translateY(-1px); }
+    .tj-card[data-app="cashapp"] .tj-cta:hover { background: rgba(0,214,50,0.12);   border-color: rgba(0,214,50,0.3); }
+    .tj-card[data-app="venmo"]   .tj-cta:hover { background: rgba(0,140,255,0.12);  border-color: rgba(0,140,255,0.3); }
+    .tj-card[data-app="paypal"]  .tj-cta:hover { background: rgba(0,156,222,0.12);  border-color: rgba(0,156,222,0.3); }
+    .tj-card[data-app="zelle"]   .tj-cta:hover { background: rgba(109,30,212,0.15); border-color: rgba(109,30,212,0.4); }
+    .tj-footer-note { margin-top: 3rem; text-align: center; font-size: 0.75rem; color: var(--muted); font-weight: 300; letter-spacing: 0.04em; line-height: 1.8; animation: fadeUp 0.6s 0.3s var(--ease) both; }
+    @media (max-width: 620px) {
+      .tj-page { padding: 3rem 1.25rem 4rem; }
+      .tj-grid { grid-template-columns: 1fr; }
+      .tj-header { margin-bottom: 2.5rem; }
+      .tj-card:hover { transform: none; }
+      .tj-card-body { align-items: center; text-align: center; }
+      .tj-identity { cursor: pointer; user-select: none; width: 100%; justify-content: center; gap: 1rem; }
+      .tj-handle strong { text-align: center; }
+      .tj-identity::after { content: '›'; font-size: 1.6rem; line-height: 1; color: var(--muted); transform: rotate(90deg); transition: transform 0.35s var(--ease); flex-shrink: 0; }
+      .tj-card.open .tj-identity::after { transform: rotate(270deg); }
+      .tj-collapsible { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s var(--ease); width: 100%; }
+      .tj-card.open .tj-collapsible { grid-template-rows: 1fr; }
+      .tj-collapsible-inner { overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; width: 100%; }
+      .tj-card.open .tj-collapsible-inner { padding-top: 1.25rem; }
+      .tj-qr { max-width: 240px; }
+      .tj-cta { width: 100%; justify-content: center; }
+    }
+    @media (min-width: 621px) {
+      .tj-collapsible { display: contents; }
+      .tj-collapsible-inner { display: contents; }
+    }
+
+    /* ══ SCHEDULE VIEW ═══════════════════════════════════════ */
+    #view-schedule { display: none; }
+    #view-schedule.active { display: block; }
+
     @keyframes spin   { to { transform: rotate(360deg); } }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -832,32 +1488,189 @@
 
   <!-- SITE HEADER -->
   <header class="site-header">
-    <a class="site-header-logo" href="https://www.mindtwistcomedy.com/">
+    <a class="site-header-logo" href="https://www.mindtwistcomedy.com/" target="_blank" rel="noopener">
       <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
     </a>
     <nav class="site-header-nav">
-      <button class="header-nav-btn" data-tag="">All Shows</button>
+      <button class="header-nav-btn" data-tag="home">Home</button>
+      <button class="header-nav-btn" data-tag="tickets">All Shows</button>
       <button class="header-nav-btn" data-tag="irma">Irma Ruiz</button>
       <button class="header-nav-btn" data-tag="teach">Teachers Gone Bad</button>
       <button class="header-nav-btn" data-tag="bingo">Lotería Comedy</button>
       <button class="header-nav-btn" data-tag="chingona">Chingona Comedy</button>
       <span style="color:rgba(245,245,240,0.25); font-size:0.72rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; padding:0.4rem 0.75rem; cursor:default;">Store</span>
-      <a href="https://www.mindtwistcomedy.com/tipjar">Tip Jar</a>
+      <button class="header-nav-btn" data-tag="tipjar">Tip Jar</button>
     </nav>
     <button class="header-burger" id="header-burger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
     <nav class="site-header-drawer" id="header-drawer">
-      <button class="header-nav-btn" data-tag="">All Shows</button>
+      <button class="header-nav-btn" data-tag="home">Home</button>
+      <button class="header-nav-btn" data-tag="tickets">All Shows</button>
       <button class="header-nav-btn" data-tag="irma">Irma Ruiz</button>
       <button class="header-nav-btn" data-tag="teach">Teachers Gone Bad</button>
       <button class="header-nav-btn" data-tag="bingo">Lotería Comedy</button>
       <button class="header-nav-btn" data-tag="chingona">Chingona Comedy</button>
       <span style="color:rgba(245,245,240,0.25); font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.05em; padding:0.35rem 0; border-bottom:1px solid rgba(255,255,255,0.05); cursor:default;">Store</span>
-      <a href="https://www.mindtwistcomedy.com/tipjar">Tip Jar</a>
+      <button class="header-nav-btn" data-tag="tipjar">Tip Jar</button>
     </nav>
   </header>
 
+  <!-- HOME VIEW -->
+  <div id="view-home">
+    <div class="cursor" id="hp-cursor"></div>
+    <div class="stage" aria-hidden="true">
+      <div class="stage-bg stage-bg-default active" id="bg-default"></div>
+      <div class="stage-bg stage-bg-getTix" id="bg-getTix">
+        <video class="stage-video" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/main/GenImages/TicketTemp.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Get Tickets</div>
+      </div>
+      <div class="stage-bg stage-bg-irma" id="bg-irma">
+        <video class="stage-video" style="object-position: 75% center;" src="https://github.com/cleverhoaxmedia/comedy-schedule/raw/refs/heads/main/GenImages/IrmaTemp.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Irma Ruiz</div>
+      </div>
+      <div class="stage-bg stage-bg-teachers" id="bg-teachers">
+        <video class="stage-video" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/main/GenImages/Tgbgenpromoclip2.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Teachers Gone Bad</div>
+      </div>
+      <div class="stage-bg stage-bg-loteria" id="bg-loteria">
+        <video class="stage-video" src="https://github.com/cleverhoaxmedia/comedy-schedule/raw/refs/heads/main/GenImages/LotTemp3.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Lotería Comedy</div>
+      </div>
+      <div class="stage-bg stage-bg-chingona" id="bg-chingona">
+        <video class="stage-video" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/main/GenImages/Chingonatemp2.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Chingona Comedy</div>
+      </div>
+      <div class="stage-bg stage-bg-store" id="bg-store"><div class="stage-bg-label">Store</div></div>
+      <div class="stage-glow stage-glow-getTix"   id="glow-getTix"></div>
+      <div class="stage-glow stage-glow-irma"     id="glow-irma"></div>
+      <div class="stage-glow stage-glow-teachers" id="glow-teachers"></div>
+      <div class="stage-glow stage-glow-loteria"  id="glow-loteria"></div>
+      <div class="stage-glow stage-glow-chingona" id="glow-chingona"></div>
+      <div class="stage-glow stage-glow-store"    id="glow-store"></div>
+      <div class="stage-vignette"></div>
+    </div>
+    <main class="shell">
+      <div class="left">
+        <div class="brand-logo">
+          <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+        </div>
+        <nav class="nav" id="hp-nav">
+          <a href="#" class="nav-link get-tix" data-key="getTix" data-tag="tickets" data-title="Get Tickets" data-desc="All upcoming shows across every brand — in one place.">
+            <span>Get Tickets</span><span class="nav-meta">All Shows →</span>
+          </a>
+          <a href="#" class="nav-link" data-key="irma" data-tag="irma" data-title="Irma Ruiz" data-desc="Bio, press clips, and booking info.">
+            <span>Irma Ruiz</span><span class="nav-meta">Press Kit →</span>
+          </a>
+          <a href="#" class="nav-link" data-key="teachers" data-tag="teach" data-title="Teachers Gone Bad" data-desc="Roasts, chaos, and stories from the classroom.">
+            <span>Teachers Gone Bad</span><span class="nav-meta">Shows →</span>
+          </a>
+          <a href="#" class="nav-link" data-key="loteria" data-tag="bingo" data-title="Lotería Comedy" data-desc="Fast, interactive comedy with a twist.">
+            <span>Lotería Comedy</span><span class="nav-meta">Series →</span>
+          </a>
+          <a href="#" class="nav-link" data-key="chingona" data-tag="chingona" data-title="Chingona Comedy" data-desc="Bold lineups. Big energy. No apologies.">
+            <span>Chingona Comedy</span><span class="nav-meta">Lineups →</span>
+          </a>
+          <a href="#" class="nav-link" style="opacity:0.3; pointer-events:none; cursor:default;" data-key="store" data-title="Store" data-desc="Merch and drops — coming soon.">
+            <span>Store</span><span class="nav-meta">Soon →</span>
+          </a>
+          <a href="#" class="nav-link" data-key="tipjar" data-tag="tipjar" data-title="Tip Jar" data-desc="Enjoyed the show? Keep this stage humming!">
+            <span>Tip Jar</span><span class="nav-meta">Support Us →</span>
+          </a>
+        </nav>
+        <div class="left-footer">
+          <a href="#" class="hp-btn primary" data-tag="tipjar">Tip Jar →</a>
+          <a href="https://docs.google.com/forms/d/1bMV4cM-nOHJ6P_e8R8GoVkRurOqSng9OAURaf1ki-9g/viewform?edit_requested=true" class="hp-btn shimmer" target="_blank" rel="noopener">Free Tix! 🎟</a>
+        </div>
+      </div>
+      <div class="right">
+        <div class="feature">
+          <div class="feature-kicker"><span class="kicker-dot"></span><span>Now Featuring</span></div>
+          <div class="feature-title" id="hp-feature-title">MindTwist Comedy</div>
+          <p class="feature-desc" id="hp-feature-desc">Live stand-up. Multiple brands. One place to get tickets.</p>
+        </div>
+        <div class="right-footer">
+          <a href="#" class="hp-btn" data-tag="irma">About ↗</a>
+        </div>
+      </div>
+    </main>
+  </div><!-- /view-home -->
+
+  <!-- TIPJAR VIEW -->
+  <div id="view-tipjar">
+    <div class="tj-page">
+      <div class="tj-header">
+        <div class="tj-eyebrow">MindTwistComedy</div>
+        <h1 class="tj-title">Tip <span>Jar</span></h1>
+        <p class="tj-desc">Enjoyed the show? Picking up some swag at the merch stand? Your contributions keep this stage humming! Every dollar counts, thank you.</p>
+      </div>
+      <div class="tj-grid">
+        <div class="tj-card" data-app="cashapp">
+          <div class="tj-stripe"></div>
+          <div class="tj-card-body">
+            <div class="tj-identity">
+              <div class="tj-appname">Cash App</div>
+              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_30d8a10c586e4a7a8f4af2f9a24004af~mv2.png" alt="Cash App" /></div>
+            </div>
+            <div class="tj-handle"><strong>$MindTwistComedy</strong>Scan or tap to open</div>
+            <div class="tj-collapsible"><div class="tj-collapsible-inner">
+              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRCashApp.svg" alt="Cash App QR Code" /></div>
+              <a href="https://cash.app/$MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open Cash App →</a>
+            </div></div>
+          </div>
+        </div>
+        <div class="tj-card" data-app="venmo">
+          <div class="tj-stripe"></div>
+          <div class="tj-card-body">
+            <div class="tj-identity">
+              <div class="tj-appname">Venmo</div>
+              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_c7ca3645e9eb46bdb9b3d5788fd6b117~mv2.png" alt="Venmo" /></div>
+            </div>
+            <div class="tj-handle"><strong>@MindTwistComedy</strong>Scan or tap to open</div>
+            <div class="tj-collapsible"><div class="tj-collapsible-inner">
+              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRVenmo.svg" alt="Venmo QR Code" /></div>
+              <a href="https://account.venmo.com/u/MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open Venmo →</a>
+            </div></div>
+          </div>
+        </div>
+        <div class="tj-card" data-app="paypal">
+          <div class="tj-stripe"></div>
+          <div class="tj-card-body">
+            <div class="tj-identity">
+              <div class="tj-appname">PayPal</div>
+              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_5439953c15e44281a8c59b123c86aa36~mv2.png" alt="PayPal" /></div>
+            </div>
+            <div class="tj-handle"><strong>@MindTwistComedy</strong>Scan or tap to open</div>
+            <div class="tj-collapsible"><div class="tj-collapsible-inner">
+              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRPaypal.svg" alt="PayPal QR Code" /></div>
+              <a href="https://www.paypal.com/paypalme/MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open PayPal →</a>
+            </div></div>
+          </div>
+        </div>
+        <div class="tj-card" data-app="zelle">
+          <div class="tj-stripe"></div>
+          <div class="tj-card-body">
+            <div class="tj-identity">
+              <div class="tj-appname">Zelle</div>
+              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_b2e047addf97487dbb77c63efebee9ce~mv2.png" alt="Zelle" /></div>
+            </div>
+            <div class="tj-handle"><strong>IRMA RUIZ</strong><strong style="margin-top:2px;">210-467-2581</strong>Send directly via your bank app</div>
+            <div class="tj-collapsible"><div class="tj-collapsible-inner">
+              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRZelle.svg" alt="Zelle QR Code" /></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+      <p class="tj-footer-note">Tips are voluntary.<br>Thank you for your generosity. ❤️</p>
+    </div>
+  </div><!-- /view-tipjar -->
+
+  <div id="view-schedule">
   <section class="hero">
     <div class="hero-left">
       <div class="hero-tag" id="hero-tag">Live Stand-Up Comedy</div>
@@ -915,6 +1728,162 @@
     </div>
   </section>
 
+  <!-- HOMEPAGE LAYOUT -->
+  <div id="layout-home" style="display:none;">
+    <div class="stage" aria-hidden="true">
+      <div class="stage-bg stage-bg-default active" id="home-bg-default"></div>
+      <div class="stage-bg stage-bg-getTix"   id="home-bg-getTix">
+        <video class="stage-video" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/main/GenImages/TicketTemp.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Get Tickets</div>
+      </div>
+      <div class="stage-bg stage-bg-irma" id="home-bg-irma">
+        <video class="stage-video" src="https://github.com/cleverhoaxmedia/comedy-schedule/raw/refs/heads/main/GenImages/IrmaTemp.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Irma Ruiz</div>
+      </div>
+      <div class="stage-bg stage-bg-teachers" id="home-bg-teachers">
+        <video class="stage-video" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/main/GenImages/Tgbgenpromoclip2.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Teachers Gone Bad</div>
+      </div>
+      <div class="stage-bg stage-bg-loteria" id="home-bg-loteria">
+        <video class="stage-video" src="https://github.com/cleverhoaxmedia/comedy-schedule/raw/refs/heads/main/GenImages/LotTemp3.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Lotería Comedy</div>
+      </div>
+      <div class="stage-bg stage-bg-chingona" id="home-bg-chingona">
+        <video class="stage-video" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/main/GenImages/Chingonatemp2.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="stage-video-overlay"></div>
+        <div class="stage-bg-label">Chingona Comedy</div>
+      </div>
+      <div class="stage-bg stage-bg-store" id="home-bg-store"><div class="stage-bg-label">Store</div></div>
+      <div class="stage-glow stage-glow-getTix"   id="home-glow-getTix"></div>
+      <div class="stage-glow stage-glow-irma"     id="home-glow-irma"></div>
+      <div class="stage-glow stage-glow-teachers" id="home-glow-teachers"></div>
+      <div class="stage-glow stage-glow-loteria"  id="home-glow-loteria"></div>
+      <div class="stage-glow stage-glow-chingona" id="home-glow-chingona"></div>
+      <div class="stage-glow stage-glow-store"    id="home-glow-store"></div>
+      <div class="stage-vignette"></div>
+    </div>
+    <main class="home-shell">
+      <div class="home-left">
+        <div class="brand-logo">
+          <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+        </div>
+        <nav class="home-nav" id="home-nav">
+          <button class="home-nav-link get-tix header-nav-btn" data-tag="tickets">
+            <span>Get Tickets</span><span class="nav-meta">All Shows →</span>
+          </button>
+          <button class="home-nav-link header-nav-btn" data-tag="irma" data-bg="irma" data-title="Irma Ruiz" data-desc="Bio, press clips, and booking info.">
+            <span>Irma Ruiz</span><span class="nav-meta">Press Kit →</span>
+          </button>
+          <button class="home-nav-link header-nav-btn" data-tag="teach" data-bg="teachers" data-title="Teachers Gone Bad" data-desc="Roasts, chaos, and stories from the classroom.">
+            <span>Teachers Gone Bad</span><span class="nav-meta">Shows →</span>
+          </button>
+          <button class="home-nav-link header-nav-btn" data-tag="bingo" data-bg="loteria" data-title="Lotería Comedy" data-desc="Fast, interactive comedy with a twist.">
+            <span>Lotería Comedy</span><span class="nav-meta">Series →</span>
+          </button>
+          <button class="home-nav-link header-nav-btn" data-tag="chingona" data-bg="chingona" data-title="Chingona Comedy" data-desc="Bold lineups. Big energy. No apologies.">
+            <span>Chingona Comedy</span><span class="nav-meta">Lineups →</span>
+          </button>
+          <button class="home-nav-link header-nav-btn" data-tag="store" data-bg="store" data-title="Store" data-desc="Merch and drops — coming soon." style="opacity:0.3;pointer-events:none;cursor:default;">
+            <span>Store</span><span class="nav-meta">Soon →</span>
+          </button>
+        </nav>
+        <div class="home-footer">
+          <button class="home-btn primary header-nav-btn" data-tag="tipjar">Tip Jar →</button>
+          <a href="https://docs.google.com/forms/d/1bMV4cM-nOHJ6P_e8R8GoVkRurOqSng9OAURaf1ki-9g/viewform?edit_requested=true" class="home-btn shimmer" target="_blank" rel="noopener">Free Tix! 🎟</a>
+        </div>
+      </div>
+      <div class="home-right">
+        <div class="home-feature">
+          <div class="feature-kicker">
+            <span class="kicker-dot"></span>
+            <span>Now Featuring</span>
+          </div>
+          <div class="feature-title" id="home-feature-title">MindTwist Comedy</div>
+          <p class="feature-desc" id="home-feature-desc">Live stand-up. Multiple brands. One place to get tickets.</p>
+        </div>
+        <div class="home-right-footer">
+          <button class="home-btn header-nav-btn" data-tag="irma">About ↗</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- TIPJAR LAYOUT -->
+  <div id="layout-tipjar" style="display:none;">
+    <div class="tipjar-page">
+      <div class="tipjar-header">
+        <div class="tipjar-eyebrow">MindTwistComedy</div>
+        <h1 class="tipjar-title">Tip <span>Jar</span></h1>
+        <p class="tipjar-desc">Enjoyed the show? Picking up some swag at the merch stand? Your contributions keep this stage humming! Every dollar counts, thank you.</p>
+      </div>
+      <div class="tipjar-grid">
+        <!-- CASHAPP -->
+        <div class="tj-card" data-app="cashapp">
+          <div class="tj-stripe"></div>
+          <div class="tj-body">
+            <div class="tj-identity">
+              <div class="tj-appname">Cash App</div>
+              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_30d8a10c586e4a7a8f4af2f9a24004af~mv2.png" alt="Cash App" /></div>
+            </div>
+            <div class="tj-handle"><strong>$MindTwistComedy</strong>Scan or tap to open</div>
+            <div class="tj-collapsible"><div class="tj-collapsible-inner">
+              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRCashApp.svg" alt="Cash App QR" /></div>
+              <a href="https://cash.app/$MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open Cash App →</a>
+            </div></div>
+          </div>
+        </div>
+        <!-- VENMO -->
+        <div class="tj-card" data-app="venmo">
+          <div class="tj-stripe"></div>
+          <div class="tj-body">
+            <div class="tj-identity">
+              <div class="tj-appname">Venmo</div>
+              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_c7ca3645e9eb46bdb9b3d5788fd6b117~mv2.png" alt="Venmo" /></div>
+            </div>
+            <div class="tj-handle"><strong>@MindTwistComedy</strong>Scan or tap to open</div>
+            <div class="tj-collapsible"><div class="tj-collapsible-inner">
+              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRVenmo.svg" alt="Venmo QR" /></div>
+              <a href="https://account.venmo.com/u/MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open Venmo →</a>
+            </div></div>
+          </div>
+        </div>
+        <!-- PAYPAL -->
+        <div class="tj-card" data-app="paypal">
+          <div class="tj-stripe"></div>
+          <div class="tj-body">
+            <div class="tj-identity">
+              <div class="tj-appname">PayPal</div>
+              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_5439953c15e44281a8c59b123c86aa36~mv2.png" alt="PayPal" /></div>
+            </div>
+            <div class="tj-handle"><strong>@MindTwistComedy</strong>Scan or tap to open</div>
+            <div class="tj-collapsible"><div class="tj-collapsible-inner">
+              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRPaypal.svg" alt="PayPal QR" /></div>
+              <a href="https://www.paypal.com/paypalme/MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open PayPal →</a>
+            </div></div>
+          </div>
+        </div>
+        <!-- ZELLE -->
+        <div class="tj-card" data-app="zelle">
+          <div class="tj-stripe"></div>
+          <div class="tj-body">
+            <div class="tj-identity">
+              <div class="tj-appname">Zelle</div>
+              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_b2e047addf97487dbb77c63efebee9ce~mv2.png" alt="Zelle" /></div>
+            </div>
+            <div class="tj-handle"><strong>IRMA RUIZ</strong><strong style="margin-top:2px;">210-467-2581</strong>Send directly via your bank app</div>
+            <div class="tj-collapsible"><div class="tj-collapsible-inner">
+              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRZelle.svg" alt="Zelle QR" /></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+      <p class="tipjar-footer-note">Tips are voluntary.<br>Thank you for your generosity. ❤️</p>
+    </div>
+  </div>
 
 <script>
   function getContentHeight() {
@@ -1009,6 +1978,18 @@
       ],
     },
     default: {
+      tag:      'MindTwist Comedy',
+      title:    'MIND<br><span>TWIST</span>',
+      desc:     'Live stand-up. Multiple brands. One place to get tickets.',
+      btnText:  'See Upcoming Shows',
+      scheduleTitle: 'Upcoming Shows',
+      marqueeText: 'HA HA HA',
+      theme:    null,
+      shareUrl: 'https://www.mindtwistcomedy.com/',
+      images:   [],
+      view:     'home',
+    },
+    tickets: {
       tag:      'Live Stand-Up Comedy',
       title:    'GET<br><span>TICKETS</span><br>HERE',
       desc:     `Your go-to destination for live comedy! Browse all upcoming shows and grab your seats before they sell out!`,
@@ -1019,18 +2000,62 @@
       shareUrl: 'https://www.mindtwistcomedy.com/tickets',
       images:   [],
     },
+    home: {
+      tag:      'MindTwist Comedy',
+      title:    'MIND<br><span>TWIST</span>',
+      desc:     'Live stand-up. Multiple brands. One place to get tickets.',
+      btnText:  'See Upcoming Shows',
+      scheduleTitle: 'Upcoming Shows',
+      marqueeText: 'HA HA HA',
+      theme:    null,
+      shareUrl: 'https://www.mindtwistcomedy.com/',
+      images:   [],
+      view:     'home',
+    },
+    tipjar: {
+      tag:      'Tip Jar',
+      title:    'TIP<br><span>JAR</span>',
+      desc:     'Support live comedy!',
+      btnText:  'See Upcoming Shows',
+      scheduleTitle: 'Upcoming Shows',
+      marqueeText: 'HA HA HA',
+      theme:    null,
+      shareUrl: 'https://www.mindtwistcomedy.com/tipjar',
+      images:   [],
+      view:     'tipjar',
+    },
   };
 
   const URL_TAG = new URLSearchParams(window.location.search).get('tag')?.toLowerCase().trim() || null;
   const brand   = BRAND_CONFIG[URL_TAG] || BRAND_CONFIG.default;
 
+  // ── VIEW SWITCHING ──────────────────────────────────────
+  function activateView(viewName) {
+    document.getElementById('view-home').classList.toggle('active', viewName === 'home');
+    document.getElementById('view-tipjar').classList.toggle('active', viewName === 'tipjar');
+    document.getElementById('view-schedule').classList.toggle('active', viewName === 'schedule');
+    // Homepage needs fixed height, others scroll
+    if (viewName === 'home') {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+  }
+
+  const currentView = brand.view || 'schedule';
+  activateView(currentView);
+
   if (brand.theme) document.body.classList.add(brand.theme);
 
-  document.getElementById('hero-tag').textContent        = brand.tag;
-  document.getElementById('hero-title').innerHTML        = brand.title;
-  document.getElementById('hero-desc').textContent       = brand.desc;
-  document.getElementById('hero-btn-text').textContent   = brand.btnText;
-  document.getElementById('schedule-title').textContent  = brand.scheduleTitle;
+  if (currentView === 'schedule') {
+    document.getElementById('hero-tag').textContent        = brand.tag;
+    document.getElementById('hero-title').innerHTML        = brand.title;
+    document.getElementById('hero-desc').textContent       = brand.desc;
+    document.getElementById('hero-btn-text').textContent   = brand.btnText;
+    document.getElementById('schedule-title').textContent  = brand.scheduleTitle;
+  }
 
   const MARQUEE_LOGO  = 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/3c5bb56af430ed005e52416d7535672311cf9f7b/posters/Mindy.svg';
   const MARQUEE_COPIES = 30;
@@ -1116,12 +2141,17 @@
 
       row.innerHTML = `
         <div class="show-date">
-          ${display}
-          <span>${day}</span>
+          <div class="show-date-month">${display.split(' ')[0]}</div>
+          <div class="show-date-day">${display.split(' ')[1]}</div>
+          <div class="show-date-weekday">${day}</div>
         </div>
         <div class="show-info">
           <h3>${show.Title || ''}</h3>
           <p>${show.Showtime || ''}</p>
+          <div class="show-venue-inline">
+            <strong>${show.Venue || ''}</strong>
+            ${show['City • ST'] || ''}
+          </div>
         </div>
         <div class="show-venue">
           <strong>${show.Venue || ''}</strong>
@@ -1215,6 +2245,93 @@
 
 
 
+
+  // ── LAYOUT SWITCHING ──────────────────────────────────────
+  const SCHEDULE_TAGS = ['irma', 'teach', 'bingo', 'chingona', 'default', ''];
+
+  function showLayout(tag) {
+    const isHome   = tag === 'home';
+    const isTipjar = tag === 'tipjar';
+    const isSchedule = !isHome && !isTipjar;
+
+    // Toggle body class for home overflow/cursor
+    document.body.classList.toggle('layout-home', isHome);
+
+    // Show/hide main sections
+    document.querySelector('.site-header').style.display  = isHome ? 'none' : '';
+    document.querySelector('.hero').style.display         = isSchedule ? '' : 'none';
+    document.querySelector('.marquee-bar').style.display  = isSchedule ? '' : 'none';
+    document.querySelector('.schedule').style.display     = isSchedule ? '' : 'none';
+    document.getElementById('layout-home').style.display  = isHome ? '' : 'none';
+    document.getElementById('layout-tipjar').style.display = isTipjar ? '' : 'none';
+
+    reportAfterSettle(300);
+  }
+
+  // ── HOMEPAGE BG SWITCHING ──────────────────────────────────
+  let homeActiveKey = null;
+
+  function homeShowBg(key) {
+    if (homeActiveKey) {
+      document.getElementById('home-bg-' + homeActiveKey)?.classList.remove('active');
+      document.getElementById('home-glow-' + homeActiveKey)?.classList.remove('active');
+    }
+    document.getElementById('home-bg-default')?.classList.remove('active');
+    document.getElementById('home-bg-' + key)?.classList.add('active');
+    document.getElementById('home-glow-' + key)?.classList.add('active');
+    homeActiveKey = key;
+    const video = document.querySelector('#home-bg-' + key + ' video');
+    if (video) { video.currentTime = 0; video.play(); }
+  }
+
+  function homeHideBg() {
+    if (homeActiveKey) {
+      document.getElementById('home-bg-' + homeActiveKey)?.classList.remove('active');
+      document.getElementById('home-glow-' + homeActiveKey)?.classList.remove('active');
+    }
+    document.getElementById('home-bg-default')?.classList.add('active');
+    homeActiveKey = null;
+  }
+
+  const homeFeatTitle = document.getElementById('home-feature-title');
+  const homeFeatDesc  = document.getElementById('home-feature-desc');
+  const homeDefaultTitle = 'MindTwist Comedy';
+  const homeDefaultDesc  = 'Live stand-up. Multiple brands. One place to get tickets.';
+
+  function homeSetFeature(title, desc) {
+    homeFeatTitle.style.opacity = '0';
+    homeFeatDesc.style.opacity  = '0';
+    setTimeout(() => {
+      homeFeatTitle.textContent = title;
+      homeFeatDesc.textContent  = desc;
+      homeFeatTitle.style.opacity = '1';
+      homeFeatDesc.style.opacity  = '1';
+    }, 200);
+  }
+
+  document.querySelectorAll('.home-nav-link').forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      const bg = link.dataset.bg;
+      if (bg) homeShowBg(bg);
+      if (link.dataset.title) homeSetFeature(link.dataset.title, link.dataset.desc);
+    });
+    link.addEventListener('mouseleave', () => {
+      homeHideBg();
+      homeSetFeature(homeDefaultTitle, homeDefaultDesc);
+    });
+  });
+
+  // ── TIPJAR MOBILE ACCORDION ────────────────────────────────
+  document.querySelectorAll('.tj-identity').forEach(identity => {
+    identity.addEventListener('click', () => {
+      if (window.innerWidth > 620) return;
+      const card = identity.closest('.tj-card');
+      const isOpen = card.classList.contains('open');
+      document.querySelectorAll('.tj-card').forEach(c => c.classList.remove('open'));
+      if (!isOpen) card.classList.add('open');
+    });
+  });
+
   // ── SHARE BUTTON ───────────────────────────────────────────
   const shareBtn = document.getElementById('share-btn');
   let currentShareUrl = brand.shareUrl || 'https://www.mindtwistcomedy.com/tickets';
@@ -1245,43 +2362,35 @@
 
   // Tag switching buttons
   function setActiveTag(tag) {
-    // Update URL param without reloading
     const url = new URL(window.location.href);
     if (tag) { url.searchParams.set('tag', tag); }
     else { url.searchParams.delete('tag'); }
     window.history.replaceState({}, '', url);
 
-    // Re-run brand + data with new tag
     const newTag = tag || null;
     const newBrand = BRAND_CONFIG[newTag] || BRAND_CONFIG.default;
+    const newView = newBrand.view || 'schedule';
 
-    // Apply theme
+    activateView(newView);
     document.body.className = newBrand.theme || '';
-
-    // Update share URL
     currentShareUrl = newBrand.shareUrl || 'https://www.mindtwistcomedy.com/tickets';
 
-    // Update hero
-    document.getElementById('hero-tag').textContent       = newBrand.tag;
-    document.getElementById('hero-title').innerHTML       = newBrand.title;
-    document.getElementById('hero-desc').textContent      = newBrand.desc;
-    document.getElementById('hero-btn-text').textContent  = newBrand.btnText;
-    document.getElementById('schedule-title').textContent = newBrand.scheduleTitle;
+    if (newView === 'schedule') {
+      document.getElementById('hero-tag').textContent       = newBrand.tag;
+      document.getElementById('hero-title').innerHTML       = newBrand.title;
+      document.getElementById('hero-desc').textContent      = newBrand.desc;
+      document.getElementById('hero-btn-text').textContent  = newBrand.btnText;
+      document.getElementById('schedule-title').textContent = newBrand.scheduleTitle;
+      const newItem = `<div class="marquee-item">${newBrand.marqueeText}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
+      const newSet  = Array(MARQUEE_COPIES).fill(newItem).join('');
+      document.getElementById('marquee-track').innerHTML = newSet + newSet;
+      loadShowsWithTag(newTag);
+    }
 
-    // Update marquee
-    const newItem = `<div class="marquee-item">${newBrand.marqueeText}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
-    const newSet  = Array(MARQUEE_COPIES).fill(newItem).join('');
-    document.getElementById('marquee-track').innerHTML = newSet + newSet;
-
-    // Reload shows with new filter
-    loadShowsWithTag(newTag);
-
-    // Update active state on buttons
     document.querySelectorAll('.header-nav-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tag === (tag || ''));
     });
 
-    // Close drawer
     burger.classList.remove('open');
     drawer.classList.remove('open');
   }
@@ -1290,12 +2399,111 @@
     btn.addEventListener('click', () => setActiveTag(btn.dataset.tag));
   });
 
+  // Set initial layout on load
+  showLayout(URL_TAG || '');
+
   // Mark current tag as active on load
   document.querySelectorAll('.header-nav-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tag === (URL_TAG || ''));
+    btn.classList.toggle('active', URL_TAG && btn.dataset.tag === URL_TAG);
   });
 
-  loadShows();
+
+  // ── HOMEPAGE VIEW JS ──────────────────────────────────────
+  function initHomeView() {
+    const hpCursor = document.getElementById('hp-cursor');
+    if (hpCursor) {
+      document.addEventListener('mousemove', e => {
+        hpCursor.style.left = e.clientX + 'px';
+        hpCursor.style.top  = e.clientY + 'px';
+      });
+    }
+
+    const navLinks = document.querySelectorAll('#hp-nav .nav-link');
+    const featureTitle = document.getElementById('hp-feature-title');
+    const featureDesc  = document.getElementById('hp-feature-desc');
+    const bgDefault    = document.getElementById('bg-default');
+    const defaultTitle = featureTitle ? featureTitle.textContent : '';
+    const defaultDesc  = featureDesc  ? featureDesc.textContent  : '';
+    let activeKey = null;
+
+    function showBg(key) {
+      if (activeKey) {
+        document.getElementById('bg-' + activeKey)?.classList.remove('active');
+        document.getElementById('glow-' + activeKey)?.classList.remove('active');
+      }
+      bgDefault?.classList.remove('active');
+      document.getElementById('bg-' + key)?.classList.add('active');
+      document.getElementById('glow-' + key)?.classList.add('active');
+      activeKey = key;
+      const video = document.querySelector('#bg-' + key + ' video');
+      if (video) { video.currentTime = 0; video.play(); }
+    }
+
+    function hideBg() {
+      if (activeKey) {
+        document.getElementById('bg-' + activeKey)?.classList.remove('active');
+        document.getElementById('glow-' + activeKey)?.classList.remove('active');
+      }
+      bgDefault?.classList.add('active');
+      activeKey = null;
+    }
+
+    function setFeature(title, desc) {
+      if (!featureTitle || !featureDesc) return;
+      featureTitle.style.opacity = '0';
+      featureDesc.style.opacity  = '0';
+      setTimeout(() => {
+        featureTitle.textContent = title;
+        featureDesc.textContent  = desc;
+        featureTitle.style.opacity = '1';
+        featureDesc.style.opacity  = '1';
+      }, 200);
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        showBg(link.dataset.key);
+        setFeature(link.dataset.title, link.dataset.desc);
+      });
+      link.addEventListener('mouseleave', () => {
+        hideBg();
+        setFeature(defaultTitle, defaultDesc);
+      });
+      // Clicking a nav link switches the filter
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        if (link.dataset.tag !== undefined) setActiveTag(link.dataset.tag);
+      });
+    });
+
+    // Tip Jar button and About button
+    document.querySelectorAll('#view-home [data-tag]').forEach(el => {
+      if (!el.classList.contains('nav-link')) {
+        el.addEventListener('click', e => {
+          e.preventDefault();
+          setActiveTag(el.dataset.tag);
+        });
+      }
+    });
+  }
+
+  // ── TIPJAR VIEW JS ─────────────────────────────────────────
+  function initTipjarView() {
+    document.querySelectorAll('.tj-identity').forEach(identity => {
+      identity.addEventListener('click', () => {
+        if (window.innerWidth > 620) return;
+        const card = identity.closest('.tj-card');
+        const isOpen = card.classList.contains('open');
+        document.querySelectorAll('.tj-card').forEach(c => c.classList.remove('open'));
+        if (!isOpen) card.classList.add('open');
+      });
+    });
+  }
+
+  initHomeView();
+  initTipjarView();
+
+  if (currentView === 'schedule') loadShows();
 </script>
 </body>
 </html>
