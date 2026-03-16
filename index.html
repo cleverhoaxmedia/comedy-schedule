@@ -1908,8 +1908,9 @@
 
   // Report height immediately so Wix never needs to add a scrollbar
   document.addEventListener('DOMContentLoaded', () => reportHeight());
-  window.addEventListener('load', () => { reportHeight(); reportAfterSettle(500); reportAfterSettle(1500); });
+  window.addEventListener('load', () => { reportHeight(); reportAfterSettle(500); reportAfterSettle(1500); reportAfterSettle(3000); });
   window.addEventListener('resize', reportHeight);
+  window.addEventListener('scroll', reportHeight, { passive: true });
   document.fonts.ready.then(() => reportAfterSettle(500));
 
   let roTimer;
@@ -2167,8 +2168,11 @@
 
     container.innerHTML = '';
     container.appendChild(grid);
+    reportHeight();
     reportAfterSettle(100);
+    reportAfterSettle(500);
     reportAfterSettle(1500);
+    reportAfterSettle(3000);
   }
 
   let cachedShows = null;
@@ -2184,7 +2188,7 @@
         cachedShows = parseCSV(text);
       }
       const filtered = cachedShows.filter(show => {
-        if (!tag) return true;
+        if (!tag || tag === 'tickets') return true;
         const raw = (show.Tag || '').trim();
         if (!raw) return true;
         return raw.split(',').map(t => t.toLowerCase().trim()).includes(tag);
