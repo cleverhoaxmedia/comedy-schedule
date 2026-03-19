@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Version 1.01 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -31,16 +32,12 @@
       --line-grad:  rgba(255,225,53,0.4);
       --spinner-top:#FFE135;
       --left-bar:   #FFE135;
-      /* Shared vars for home/tipjar views */
+      /* Shared vars for home view */
       --black:      #080808;
       --white:      #F0EEE9;
       --yellow:     #FFE135;
       --muted:      rgba(240,238,233,0.4);
       --ease:       cubic-bezier(0.76, 0, 0.24, 1);
-      --cashapp:    #00D632;
-      --venmo:      #008CFF;
-      --paypal:     #009cde;
-      --zelle:      #6D1ED4;
     }
 
     /* ── TEACHERS GONE BAD ───────────────────────────────── */
@@ -144,7 +141,6 @@
       overflow: hidden;
       position: relative;
     }
-
 
     .hero::before {
       content: '';
@@ -538,7 +534,6 @@
       color: var(--text);
     }
 
-    /* Inline venue shown only on mobile */
     .show-venue-inline {
       display: none;
       font-size: 0.85rem;
@@ -638,8 +633,6 @@
       .show-info h3 { font-size: 0.9rem; }
     }
 
-
-
     /* ── SHARE BUTTON ────────────────────────────────────── */
     .btn-share {
       display: inline-flex;
@@ -688,7 +681,7 @@
       100% { left: 125%; opacity: 0; }
     }
 
-            .btn-share-wrap {
+    .btn-share-wrap {
       position: relative;
       display: inline-flex;
       flex-shrink: 0;
@@ -729,6 +722,7 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
     /* ── SITE HEADER ─────────────────────────────────────── */
     .site-header {
       position: sticky;
@@ -884,7 +878,6 @@
       .header-burger { display: flex; }
     }
 
-
     /* ── LAYOUT SWITCHING ────────────────────────────────── */
     body.layout-home { overflow: hidden; height: 100vh; height: 100dvh; cursor: none; }
     body.layout-home .site-header { display: none; }
@@ -1000,8 +993,6 @@
     }
 
     .home-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
-    .home-btn.primary { background: #FFE135; border-color: #FFE135; color: #080808; font-weight: 700; }
-    .home-btn.primary:hover { background: #fff; border-color: #fff; }
     .home-btn.shimmer { position: relative; overflow: hidden; }
     .home-btn.shimmer::after {
       content: '';
@@ -1037,159 +1028,6 @@
       .home-nav-link { font-size: clamp(2.2rem, 10vw, 3rem); }
       .home-nav-link.get-tix { font-size: clamp(2.8rem, 12vw, 3.8rem); }
     }
-
-    /* ── TIPJAR LAYOUT ───────────────────────────────────── */
-    .tipjar-page {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 3rem 2.5rem 6rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .tipjar-header { margin-bottom: 4rem; animation: fadeUp 0.6s var(--ease) both; }
-
-    .tipjar-eyebrow {
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(240,238,233,0.4);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .tipjar-eyebrow::before {
-      content: '';
-      display: block;
-      width: 2rem;
-      height: 1px;
-      background: #FFE135;
-    }
-
-    .tipjar-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(4rem, 10vw, 8rem);
-      letter-spacing: 0.02em;
-      line-height: 0.9;
-      margin-bottom: 1.25rem;
-      color: #F0EEE9;
-    }
-
-    .tipjar-title span { color: #FFE135; }
-
-    .tipjar-desc {
-      font-size: 1rem;
-      line-height: 1.75;
-      color: rgba(240,238,233,0.4);
-      font-weight: 300;
-      max-width: 48ch;
-    }
-
-    .tipjar-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-    }
-
-    .tj-card {
-      border: 1px solid rgba(240,238,233,0.08);
-      border-radius: 16px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: border-color 0.3s, transform 0.3s var(--ease), background 0.3s;
-      animation: fadeUp 0.6s var(--ease) both;
-    }
-
-    .tj-card:nth-child(1) { animation-delay: 0.05s; }
-    .tj-card:nth-child(2) { animation-delay: 0.10s; }
-    .tj-card:nth-child(3) { animation-delay: 0.15s; }
-    .tj-card:nth-child(4) { animation-delay: 0.20s; }
-
-    .tj-card[data-app="cashapp"] { background: rgba(0,214,50,0.06);   border-color: rgba(0,214,50,0.15); }
-    .tj-card[data-app="venmo"]   { background: rgba(0,140,255,0.06);  border-color: rgba(0,140,255,0.15); }
-    .tj-card[data-app="paypal"]  { background: rgba(0,156,222,0.06);  border-color: rgba(0,156,222,0.15); }
-    .tj-card[data-app="zelle"]   { background: rgba(109,30,212,0.08); border-color: rgba(109,30,212,0.2); }
-
-    .tj-card:hover { transform: translateY(-4px); }
-    .tj-card[data-app="cashapp"]:hover { background: rgba(0,214,50,0.10);   border-color: rgba(0,214,50,0.3); }
-    .tj-card[data-app="venmo"]:hover   { background: rgba(0,140,255,0.10);  border-color: rgba(0,140,255,0.3); }
-    .tj-card[data-app="paypal"]:hover  { background: rgba(0,156,222,0.10);  border-color: rgba(0,156,222,0.3); }
-    .tj-card[data-app="zelle"]:hover   { background: rgba(109,30,212,0.12); border-color: rgba(109,30,212,0.4); }
-
-    .tj-stripe { height: 3px; width: 100%; }
-    .tj-card[data-app="cashapp"] .tj-stripe { background: #00D632; }
-    .tj-card[data-app="venmo"]   .tj-stripe { background: #008CFF; }
-    .tj-card[data-app="paypal"]  .tj-stripe { background: linear-gradient(to right, #009cde, #003087); }
-    .tj-card[data-app="zelle"]   .tj-stripe { background: #6D1ED4; }
-
-    .tj-body { padding: 1.75rem 1.75rem 1.5rem; display: flex; flex-direction: column; flex: 1; gap: 1.25rem; }
-
-    .tj-identity { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-
-    .tj-appname { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.04em; line-height: 1; }
-    .tj-card[data-app="cashapp"] .tj-appname { color: #00D632; }
-    .tj-card[data-app="venmo"]   .tj-appname { color: #008CFF; }
-    .tj-card[data-app="paypal"]  .tj-appname { color: #009cde; }
-    .tj-card[data-app="zelle"]   .tj-appname { color: #a45ee5; }
-
-    .tj-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; flex-shrink: 0; }
-    .tj-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .tj-handle { font-size: 0.8rem; letter-spacing: 0.06em; color: rgba(240,238,233,0.4); font-weight: 300; }
-    .tj-handle strong { display: block; font-size: 1rem; font-weight: 500; color: #F0EEE9; letter-spacing: 0.02em; margin-bottom: 2px; }
-
-    .tj-qr { width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center; }
-    .tj-qr img { width: 100%; height: 100%; object-fit: contain; display: block; }
-
-    .tj-cta {
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid rgba(240,238,233,0.08);
-      text-decoration: none; color: #F0EEE9; font-size: 0.78rem; font-weight: 500;
-      letter-spacing: 0.08em; text-transform: uppercase; background: rgba(255,255,255,0.04);
-      transition: background 0.2s, border-color 0.2s, transform 0.2s;
-    }
-    .tj-cta:hover { transform: translateY(-1px); }
-    .tj-card[data-app="cashapp"] .tj-cta:hover { background: rgba(0,214,50,0.12);   border-color: rgba(0,214,50,0.3); }
-    .tj-card[data-app="venmo"]   .tj-cta:hover { background: rgba(0,140,255,0.12);  border-color: rgba(0,140,255,0.3); }
-    .tj-card[data-app="paypal"]  .tj-cta:hover { background: rgba(0,156,222,0.12);  border-color: rgba(0,156,222,0.3); }
-    .tj-card[data-app="zelle"]   .tj-cta:hover { background: rgba(109,30,212,0.15); border-color: rgba(109,30,212,0.4); }
-
-    .tipjar-footer-note {
-      margin-top: 3rem; text-align: center; font-size: 0.75rem;
-      color: rgba(240,238,233,0.4); font-weight: 300; letter-spacing: 0.04em; line-height: 1.8;
-    }
-
-    /* Tipjar mobile collapsible */
-    @media (min-width: 621px) {
-      .tj-collapsible { display: contents; }
-      .tj-collapsible-inner { display: contents; }
-    }
-
-    @media (max-width: 620px) {
-      .tipjar-page { padding: 3rem 1.25rem 4rem; }
-      .tipjar-grid { grid-template-columns: 1fr; }
-      .tipjar-header { margin-bottom: 2.5rem; }
-      .tj-card:hover { transform: none; }
-      .tj-body { align-items: center; text-align: center; }
-      .tj-identity { cursor: pointer; user-select: none; width: 100%; justify-content: center; }
-      .tj-handle strong { text-align: center; }
-      .tj-identity::after {
-        content: '›'; font-size: 1.6rem; line-height: 1;
-        color: rgba(240,238,233,0.4); transform: rotate(90deg);
-        transition: transform 0.35s var(--ease); flex-shrink: 0;
-      }
-      .tj-card.open .tj-identity::after { transform: rotate(270deg); }
-      .tj-collapsible { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s var(--ease); width: 100%; }
-      .tj-card.open .tj-collapsible { grid-template-rows: 1fr; }
-      .tj-collapsible-inner { overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; width: 100%; }
-      .tj-card.open .tj-collapsible-inner { padding-top: 1.25rem; }
-      .tj-qr { max-width: 240px; }
-      .tj-cta { width: 100%; justify-content: center; }
-    }
-
 
     /* ══ HOMEPAGE VIEW ══════════════════════════════════════ */
     #view-home { display: none; position: relative; }
@@ -1380,102 +1218,432 @@
       .nav-link.get-tix { font-size: clamp(2.8rem, 12vw, 3.8rem); }
     }
 
-    /* ══ TIPJAR VIEW ═════════════════════════════════════════ */
-    #view-tipjar { display: none; }
-    #view-tipjar.active { display: block; }
-
-    .tj-page {
-      position: relative; z-index: 1;
-      max-width: 960px; margin: 0 auto;
-      padding: 3rem 2.5rem 6rem;
-    }
-    .tj-header { margin-bottom: 4rem; animation: fadeUp 0.6s var(--ease) both; }
-    .tj-eyebrow {
-      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 1rem;
-      display: flex; align-items: center; gap: 0.75rem;
-    }
-    .tj-eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--yellow); }
-    .tj-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); letter-spacing: 0.02em; line-height: 0.9; margin-bottom: 1.25rem; }
-    .tj-title span { color: var(--yellow); }
-    .tj-desc { font-size: 1rem; line-height: 1.75; color: var(--muted); font-weight: 300; max-width: 48ch; }
-    .tj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-    .tj-card {
-      border: 1px solid var(--stroke); border-radius: 16px; overflow: hidden;
-      display: flex; flex-direction: column;
-      transition: border-color 0.3s, transform 0.3s var(--ease), background 0.3s;
-      animation: fadeUp 0.6s var(--ease) both;
-    }
-    .tj-card:nth-child(1) { animation-delay: 0.05s; }
-    .tj-card:nth-child(2) { animation-delay: 0.10s; }
-    .tj-card:nth-child(3) { animation-delay: 0.15s; }
-    .tj-card:nth-child(4) { animation-delay: 0.20s; }
-    .tj-card[data-app="cashapp"] { background: rgba(0,214,50,0.06);   border-color: rgba(0,214,50,0.15); }
-    .tj-card[data-app="venmo"]   { background: rgba(0,140,255,0.06);  border-color: rgba(0,140,255,0.15); }
-    .tj-card[data-app="paypal"]  { background: rgba(0,156,222,0.06);  border-color: rgba(0,156,222,0.15); }
-    .tj-card[data-app="zelle"]   { background: rgba(109,30,212,0.08); border-color: rgba(109,30,212,0.2); }
-    .tj-card:hover { transform: translateY(-4px); }
-    .tj-card[data-app="cashapp"]:hover { background: rgba(0,214,50,0.10);   border-color: rgba(0,214,50,0.3); }
-    .tj-card[data-app="venmo"]:hover   { background: rgba(0,140,255,0.10);  border-color: rgba(0,140,255,0.3); }
-    .tj-card[data-app="paypal"]:hover  { background: rgba(0,156,222,0.10);  border-color: rgba(0,156,222,0.3); }
-    .tj-card[data-app="zelle"]:hover   { background: rgba(109,30,212,0.12); border-color: rgba(109,30,212,0.4); }
-    .tj-stripe { height: 3px; width: 100%; }
-    .tj-card[data-app="cashapp"] .tj-stripe { background: var(--cashapp); }
-    .tj-card[data-app="venmo"]   .tj-stripe { background: var(--venmo); }
-    .tj-card[data-app="paypal"]  .tj-stripe { background: linear-gradient(to right, #009cde, #003087); }
-    .tj-card[data-app="zelle"]   .tj-stripe { background: var(--zelle); }
-    .tj-card-body { padding: 1.75rem 1.75rem 1.5rem; display: flex; flex-direction: column; flex: 1; gap: 1.25rem; }
-    .tj-identity { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .tj-appname { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.04em; line-height: 1; }
-    .tj-card[data-app="cashapp"] .tj-appname { color: var(--cashapp); }
-    .tj-card[data-app="venmo"]   .tj-appname { color: var(--venmo); }
-    .tj-card[data-app="paypal"]  .tj-appname { color: var(--paypal); }
-    .tj-card[data-app="zelle"]   .tj-appname { color: #a45ee5; }
-    .tj-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .tj-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .tj-handle { font-size: 0.8rem; letter-spacing: 0.06em; color: var(--muted); font-weight: 300; }
-    .tj-handle strong { display: block; font-size: 1rem; font-weight: 500; color: var(--white); letter-spacing: 0.02em; margin-bottom: 2px; }
-    .tj-qr { width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center; }
-    .tj-qr img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .tj-cta {
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--stroke);
-      text-decoration: none; color: var(--white);
-      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-      background: rgba(255,255,255,0.04);
-      transition: background 0.2s, border-color 0.2s, transform 0.2s;
-    }
-    .tj-cta:hover { transform: translateY(-1px); }
-    .tj-card[data-app="cashapp"] .tj-cta:hover { background: rgba(0,214,50,0.12);   border-color: rgba(0,214,50,0.3); }
-    .tj-card[data-app="venmo"]   .tj-cta:hover { background: rgba(0,140,255,0.12);  border-color: rgba(0,140,255,0.3); }
-    .tj-card[data-app="paypal"]  .tj-cta:hover { background: rgba(0,156,222,0.12);  border-color: rgba(0,156,222,0.3); }
-    .tj-card[data-app="zelle"]   .tj-cta:hover { background: rgba(109,30,212,0.15); border-color: rgba(109,30,212,0.4); }
-    .tj-footer-note { margin-top: 3rem; text-align: center; font-size: 0.75rem; color: var(--muted); font-weight: 300; letter-spacing: 0.04em; line-height: 1.8; animation: fadeUp 0.6s 0.3s var(--ease) both; }
-    @media (max-width: 620px) {
-      .tj-page { padding: 3rem 1.25rem 4rem; }
-      .tj-grid { grid-template-columns: 1fr; }
-      .tj-header { margin-bottom: 2.5rem; }
-      .tj-card:hover { transform: none; }
-      .tj-card-body { align-items: center; text-align: center; }
-      .tj-identity { cursor: pointer; user-select: none; width: 100%; justify-content: center; gap: 1rem; }
-      .tj-handle strong { text-align: center; }
-      .tj-identity::after { content: '›'; font-size: 1.6rem; line-height: 1; color: var(--muted); transform: rotate(90deg); transition: transform 0.35s var(--ease); flex-shrink: 0; }
-      .tj-card.open .tj-identity::after { transform: rotate(270deg); }
-      .tj-collapsible { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s var(--ease); width: 100%; }
-      .tj-card.open .tj-collapsible { grid-template-rows: 1fr; }
-      .tj-collapsible-inner { overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; width: 100%; }
-      .tj-card.open .tj-collapsible-inner { padding-top: 1.25rem; }
-      .tj-qr { max-width: 240px; }
-      .tj-cta { width: 100%; justify-content: center; }
-    }
-    @media (min-width: 621px) {
-      .tj-collapsible { display: contents; }
-      .tj-collapsible-inner { display: contents; }
-    }
-
     /* ══ SCHEDULE VIEW ═══════════════════════════════════════ */
     #view-schedule { display: none; }
     #view-schedule.active { display: block; }
+
+    /* ══ TIP JAR VIEW ════════════════════════════════════════ */
+    #view-tipjar { display: none; }
+    #view-tipjar.active { display: block; }
+
+    .tipjar-section {
+      padding: 3rem 2.5rem 6rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Eyebrow */
+    .tipjar-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #F0EEE9;
+      margin-bottom: 1.1rem;
+      opacity: 0.55;
+    }
+
+    .tipjar-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #FFE135;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .tipjar-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: #F0EEE9;
+      margin-bottom: 1.1rem;
+    }
+
+    .tipjar-title span { color: #FFE135; }
+
+    .tipjar-desc {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(240,238,233,0.55);
+      max-width: 520px;
+      margin-bottom: 3rem;
+    }
+
+    .tipjar-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    /* Per-brand card tokens */
+    .tip-card[data-brand="cashapp"] {
+      --card-color: #00D632;
+      --card-tint: rgba(0,214,50,0.07);
+      --card-border: rgba(0,214,50,0.18);
+      --card-hover-border: rgba(0,214,50,0.35);
+    }
+    .tip-card[data-brand="venmo"] {
+      --card-color: #008CFF;
+      --card-tint: rgba(0,140,255,0.07);
+      --card-border: rgba(0,140,255,0.18);
+      --card-hover-border: rgba(0,140,255,0.35);
+    }
+    .tip-card[data-brand="paypal"] {
+      --card-color: #009cde;
+      --card-tint: rgba(0,156,222,0.07);
+      --card-border: rgba(0,156,222,0.18);
+      --card-hover-border: rgba(0,156,222,0.35);
+    }
+    .tip-card[data-brand="zelle"] {
+      --card-color: #6D1ED4;
+      --card-tint: rgba(109,30,212,0.08);
+      --card-border: rgba(109,30,212,0.22);
+      --card-hover-border: rgba(109,30,212,0.4);
+    }
+
+    .tip-card {
+      background: var(--card-tint);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.75rem 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s cubic-bezier(0.76,0,0.24,1),
+                  transform 0.25s cubic-bezier(0.76,0,0.24,1),
+                  box-shadow 0.25s cubic-bezier(0.76,0,0.24,1);
+      animation: fadeUp 0.5s ease both;
+    }
+
+    /* Colored top stripe */
+    .tip-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; right: 0;
+      height: 3px;
+      background: var(--card-color);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .tip-card:hover {
+      border-color: var(--card-hover-border);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    }
+
+    /* Identity row: name left, icon right */
+    .tip-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .tip-card-identity { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .tip-card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.03em;
+      color: #F0EEE9;
+      line-height: 1;
+    }
+
+    .tip-card-handle-strong {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #F0EEE9;
+      line-height: 1.3;
+    }
+
+    .tip-card-handle-sub {
+      font-size: 0.8rem;
+      color: rgba(240,238,233,0.4);
+      line-height: 1.4;
+    }
+
+    .tip-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.06);
+      flex-shrink: 0;
+      padding: 4px;
+    }
+
+    /* QR code */
+    .tip-qr {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.96);
+      padding: 10px;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* CTA button — ghost style with per-brand hover */
+    .tip-card-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: transparent;
+      color: #F0EEE9;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(240,238,233,0.15);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .tip-card-link:hover {
+      background: var(--card-color);
+      border-color: var(--card-color);
+      color: #080808;
+    }
+
+    .tip-card-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: transparent;
+      color: rgba(240,238,233,0.5);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(240,238,233,0.08);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .tip-card-copy:hover { background: rgba(255,255,255,0.06); color: #F0EEE9; border-color: rgba(240,238,233,0.2); }
+    .tip-card-copy.copied { color: var(--card-color); border-color: var(--card-color); }
+
+    /* ── MOBILE ACCORDION ── */
+    .tip-accordion-strip { display: none; }
+    .tip-accordion-panel { display: none; }
+
+    @media (max-width: 620px) {
+      .tipjar-section { padding: 2.5rem 1.25rem 4rem; }
+      .tipjar-grid { display: none; }
+
+      /* Icon strip */
+      .tip-accordion-strip {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0;
+      }
+
+      .tip-acc-btn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.45rem;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(240,238,233,0.08);
+        border-radius: 14px;
+        padding: 0.85rem 0.5rem 0.7rem;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s, transform 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tip-acc-btn::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: var(--acc-color);
+        border-radius: 14px 14px 0 0;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .tip-acc-btn.active {
+        background: var(--acc-tint);
+        border-color: var(--acc-border);
+      }
+
+      .tip-acc-btn.active::after { opacity: 1; }
+
+      .tip-acc-btn img {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        object-fit: contain;
+        background: rgba(255,255,255,0.06);
+        padding: 3px;
+      }
+
+      .tip-acc-label {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(240,238,233,0.45);
+        transition: color 0.2s;
+      }
+
+      .tip-acc-btn.active .tip-acc-label { color: #F0EEE9; }
+
+      /* Expanding panel */
+      .tip-accordion-panel {
+        display: block;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.4s cubic-bezier(0.76,0,0.24,1),
+                    opacity 0.3s ease,
+                    margin-top 0.3s ease;
+        opacity: 0;
+        margin-top: 0;
+      }
+
+      .tip-accordion-panel.open {
+        max-height: 700px;
+        opacity: 1;
+        margin-top: 0.75rem;
+      }
+
+      .tip-panel-inner {
+        background: var(--panel-tint, rgba(255,255,255,0.04));
+        border: 1px solid var(--panel-border, rgba(240,238,233,0.08));
+        border-radius: 16px;
+        padding: 1.5rem 1.25rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tip-panel-inner::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: var(--panel-color, #FFE135);
+        border-radius: 16px 16px 0 0;
+      }
+
+      .tip-panel-identity {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .tip-panel-name {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.8rem;
+        letter-spacing: 0.03em;
+        color: #F0EEE9;
+        line-height: 1;
+      }
+
+      .tip-panel-handle-strong {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #F0EEE9;
+        margin-top: 0.2rem;
+      }
+
+      .tip-panel-handle-sub {
+        font-size: 0.75rem;
+        color: rgba(240,238,233,0.4);
+        margin-top: 0.1rem;
+      }
+
+      .tip-panel-icon {
+        width: 52px; height: 52px;
+        border-radius: 12px;
+        object-fit: contain;
+        background: rgba(255,255,255,0.06);
+        padding: 4px;
+        flex-shrink: 0;
+      }
+
+      .tip-panel-qr {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.96);
+        padding: 10px;
+        display: block;
+        object-fit: contain;
+      }
+
+      .tip-panel-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        background: transparent;
+        color: #F0EEE9;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(240,238,233,0.15);
+        text-decoration: none;
+        transition: background 0.2s, border-color 0.2s, color 0.2s;
+      }
+
+      .tip-panel-link:hover {
+        background: var(--panel-color);
+        border-color: var(--panel-color);
+        color: #080808;
+      }
+
+      .tip-panel-copy {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background: transparent;
+        color: rgba(240,238,233,0.5);
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 600;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.55rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(240,238,233,0.08);
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+      }
+
+      .tip-panel-copy:hover { background: rgba(255,255,255,0.06); color: #F0EEE9; }
+      .tip-panel-copy.copied { color: var(--panel-color); border-color: var(--panel-color); }
+    }
 
     @keyframes spin   { to { transform: rotate(360deg); } }
     @keyframes fadeUp {
@@ -1498,8 +1666,8 @@
       <button class="header-nav-btn" data-tag="teach">Teachers Gone Bad</button>
       <button class="header-nav-btn" data-tag="bingo">Lotería Comedy</button>
       <button class="header-nav-btn" data-tag="chingona">Chingona Comedy</button>
+      <button class="header-nav-btn" data-tag="tipjar">Tip Jar 🎤</button>
       <span style="color:rgba(245,245,240,0.25); font-size:0.72rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; padding:0.4rem 0.75rem; cursor:default;">Store</span>
-      <button class="header-nav-btn" data-tag="tipjar">Tip Jar</button>
     </nav>
     <button class="header-burger" id="header-burger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1511,8 +1679,8 @@
       <button class="header-nav-btn" data-tag="teach">Teachers Gone Bad</button>
       <button class="header-nav-btn" data-tag="bingo">Lotería Comedy</button>
       <button class="header-nav-btn" data-tag="chingona">Chingona Comedy</button>
+      <button class="header-nav-btn" data-tag="tipjar">Tip Jar 🎤</button>
       <span style="color:rgba(245,245,240,0.25); font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.05em; padding:0.35rem 0; border-bottom:1px solid rgba(255,255,255,0.05); cursor:default;">Store</span>
-      <button class="header-nav-btn" data-tag="tipjar">Tip Jar</button>
     </nav>
   </header>
 
@@ -1579,13 +1747,10 @@
           <a href="#" class="nav-link" style="opacity:0.3; pointer-events:none; cursor:default;" data-key="store" data-title="Store" data-desc="Merch and drops — coming soon.">
             <span>Store</span><span class="nav-meta">Soon →</span>
           </a>
-          <a href="#" class="nav-link" data-key="tipjar" data-tag="tipjar" data-title="Tip Jar" data-desc="Enjoyed the show? Keep this stage humming!">
-            <span>Tip Jar</span><span class="nav-meta">Support Us →</span>
-          </a>
         </nav>
         <div class="left-footer">
-          <a href="#" class="hp-btn primary" data-tag="tipjar">Tip Jar →</a>
           <a href="https://docs.google.com/forms/d/1bMV4cM-nOHJ6P_e8R8GoVkRurOqSng9OAURaf1ki-9g/viewform?edit_requested=true" class="hp-btn shimmer" target="_blank" rel="noopener">Free Tix! 🎟</a>
+          <button class="hp-btn primary" onclick="setActiveTag('tipjar')">Tip Jar 🎤</button>
         </div>
       </div>
       <div class="right">
@@ -1601,199 +1766,270 @@
     </main>
   </div><!-- /view-home -->
 
-  <!-- TIPJAR VIEW -->
-  <div id="view-tipjar">
-    <div class="tj-page">
-      <div class="tj-header">
-        <div class="tj-eyebrow">MindTwistComedy</div>
-        <h1 class="tj-title">Tip <span>Jar</span></h1>
-        <p class="tj-desc">Enjoyed the show? Picking up some swag at the merch stand? Your contributions keep this stage humming! Every dollar counts, thank you.</p>
-      </div>
-      <div class="tj-grid">
-        <div class="tj-card" data-app="cashapp">
-          <div class="tj-stripe"></div>
-          <div class="tj-card-body">
-            <div class="tj-identity">
-              <div class="tj-appname">Cash App</div>
-              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_30d8a10c586e4a7a8f4af2f9a24004af~mv2.png" alt="Cash App" /></div>
-            </div>
-            <div class="tj-handle"><strong>$MindTwistComedy</strong>Scan or tap to open</div>
-            <div class="tj-collapsible"><div class="tj-collapsible-inner">
-              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRCashApp.svg" alt="Cash App QR Code" /></div>
-              <a href="https://cash.app/$MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open Cash App →</a>
-            </div></div>
-          </div>
-        </div>
-        <div class="tj-card" data-app="venmo">
-          <div class="tj-stripe"></div>
-          <div class="tj-card-body">
-            <div class="tj-identity">
-              <div class="tj-appname">Venmo</div>
-              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_c7ca3645e9eb46bdb9b3d5788fd6b117~mv2.png" alt="Venmo" /></div>
-            </div>
-            <div class="tj-handle"><strong>@MindTwistComedy</strong>Scan or tap to open</div>
-            <div class="tj-collapsible"><div class="tj-collapsible-inner">
-              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRVenmo.svg" alt="Venmo QR Code" /></div>
-              <a href="https://account.venmo.com/u/MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open Venmo →</a>
-            </div></div>
-          </div>
-        </div>
-        <div class="tj-card" data-app="paypal">
-          <div class="tj-stripe"></div>
-          <div class="tj-card-body">
-            <div class="tj-identity">
-              <div class="tj-appname">PayPal</div>
-              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_5439953c15e44281a8c59b123c86aa36~mv2.png" alt="PayPal" /></div>
-            </div>
-            <div class="tj-handle"><strong>@MindTwistComedy</strong>Scan or tap to open</div>
-            <div class="tj-collapsible"><div class="tj-collapsible-inner">
-              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRPaypal.svg" alt="PayPal QR Code" /></div>
-              <a href="https://www.paypal.com/paypalme/MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open PayPal →</a>
-            </div></div>
-          </div>
-        </div>
-        <div class="tj-card" data-app="zelle">
-          <div class="tj-stripe"></div>
-          <div class="tj-card-body">
-            <div class="tj-identity">
-              <div class="tj-appname">Zelle</div>
-              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_b2e047addf97487dbb77c63efebee9ce~mv2.png" alt="Zelle" /></div>
-            </div>
-            <div class="tj-handle"><strong>IRMA RUIZ</strong><strong style="margin-top:2px;">210-467-2581</strong>Send directly via your bank app</div>
-            <div class="tj-collapsible"><div class="tj-collapsible-inner">
-              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRZelle.svg" alt="Zelle QR Code" /></div>
-            </div></div>
+  <div id="view-schedule">
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-tag" id="hero-tag">Live Stand-Up Comedy</div>
+        <h1 class="hero-title" id="hero-title">GET<br><span>TICKETS</span><br>HERE</h1>
+        <p class="hero-desc" id="hero-desc">Your go-to destination for live comedy in San Antonio. Browse all upcoming shows and grab your seats before they sell out.</p>
+        <div style="display:flex; gap:0.75rem; align-items:center;">
+          <a href="#schedule" class="btn-primary" id="hero-btn">
+            <span id="hero-btn-text">See Upcoming Shows</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <div class="btn-share-wrap">
+            <button class="btn-share" id="share-btn" aria-label="Copy link">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </button>
+            <span class="share-tooltip">Link Copied!</span>
           </div>
         </div>
       </div>
-      <p class="tj-footer-note">Tips are voluntary.<br>Thank you for your generosity. ❤️</p>
+      <div class="hero-right">
+        <div class="carousel" id="carousel">
+          <div class="carousel-slides" id="slides">
+            <div class="carousel-slide active">
+              <div class="carousel-slide-inner" style="background:#111;">
+                <div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;">Loading…</div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-dots" id="dots"></div>
+          <div class="carousel-nav" id="carousel-nav">
+            <button class="carousel-btn" id="prev" aria-label="Previous slide">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <button class="carousel-btn" id="next" aria-label="Next slide">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee-bar">
+      <div class="marquee-track" id="marquee-track"></div>
     </div>
+
+    <section class="schedule" id="schedule">
+      <div class="section-header">
+        <h2 class="section-title" id="schedule-title">Upcoming Shows</h2>
+        <div class="section-line"></div>
+      </div>
+      <div id="shows-container">
+        <div class="status">
+          <div class="spinner"></div>
+          Loading shows...
+        </div>
+      </div>
+    </section>
+  </div><!-- /view-schedule -->
+
+  <!-- TIP JAR VIEW -->
+  <div id="view-tipjar">
+    <section class="tipjar-section">
+      <div class="tipjar-eyebrow">Support MindTwist Comedy</div>
+      <h1 class="tipjar-title">TIP <span>JAR</span></h1>
+      <p class="tipjar-desc">Enjoying the shows? Every tip helps keep the laughs coming and the lights on. Scan a QR code or tap the button below — thank you so much! 🎤</p>
+
+      <div class="tipjar-grid">
+
+        <!-- CASH APP -->
+        <div class="tip-card" data-brand="cashapp">
+          <div class="tip-card-top">
+            <div class="tip-card-identity">
+              <div class="tip-card-name">Cash App</div>
+              <div class="tip-card-handle-strong">$MindTwistComedy</div>
+              <div class="tip-card-handle-sub">Tap QR or open link</div>
+            </div>
+            <img class="tip-icon" src="https://static.wixstatic.com/media/a8adb7_30d8a10c586e4a7a8f4af2f9a24004af~mv2.png" alt="Cash App" />
+          </div>
+          <img class="tip-qr" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRCashApp.svg" alt="Cash App QR Code" />
+          <a class="tip-card-link" href="https://cash.app/$MindTwistComedy" target="_blank" rel="noopener">
+            Open Cash App →
+          </a>
+          <button class="tip-card-copy" onclick="copyTip(this,'$MindTwistComedy')">Copy Handle</button>
+        </div>
+
+        <!-- VENMO -->
+        <div class="tip-card" data-brand="venmo">
+          <div class="tip-card-top">
+            <div class="tip-card-identity">
+              <div class="tip-card-name">Venmo</div>
+              <div class="tip-card-handle-strong">@MindTwistComedy</div>
+              <div class="tip-card-handle-sub">Tap QR or open link</div>
+            </div>
+            <img class="tip-icon" src="https://static.wixstatic.com/media/a8adb7_c7ca3645e9eb46bdb9b3d5788fd6b117~mv2.png" alt="Venmo" />
+          </div>
+          <img class="tip-qr" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRVenmo.svg" alt="Venmo QR Code" />
+          <a class="tip-card-link" href="https://account.venmo.com/u/MindTwistComedy" target="_blank" rel="noopener">
+            Open Venmo →
+          </a>
+          <button class="tip-card-copy" onclick="copyTip(this,'@MindTwistComedy')">Copy Handle</button>
+        </div>
+
+        <!-- PAYPAL -->
+        <div class="tip-card" data-brand="paypal">
+          <div class="tip-card-top">
+            <div class="tip-card-identity">
+              <div class="tip-card-name">PayPal</div>
+              <div class="tip-card-handle-strong">@MindTwistComedy</div>
+              <div class="tip-card-handle-sub">Tap QR or open link</div>
+            </div>
+            <img class="tip-icon" src="https://static.wixstatic.com/media/a8adb7_5439953c15e44281a8c59b123c86aa36~mv2.png" alt="PayPal" />
+          </div>
+          <img class="tip-qr" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRPaypal.svg" alt="PayPal QR Code" />
+          <a class="tip-card-link" href="https://www.paypal.com/paypalme/MindTwistComedy" target="_blank" rel="noopener">
+            Open PayPal →
+          </a>
+          <button class="tip-card-copy" onclick="copyTip(this,'@MindTwistComedy')">Copy Handle</button>
+        </div>
+
+        <!-- ZELLE -->
+        <div class="tip-card" data-brand="zelle">
+          <div class="tip-card-top">
+            <div class="tip-card-identity">
+              <div class="tip-card-name">Zelle</div>
+              <div class="tip-card-handle-strong">Irma Ruiz</div>
+              <div class="tip-card-handle-sub">210-467-2581</div>
+            </div>
+            <img class="tip-icon" src="https://static.wixstatic.com/media/a8adb7_b2e047addf97487dbb77c63efebee9ce~mv2.png" alt="Zelle" />
+          </div>
+          <img class="tip-qr" src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRZelle.svg" alt="Zelle QR Code" />
+          <button class="tip-card-link" style="cursor:default; pointer-events:none; opacity:0.45;">Scan QR to Send</button>
+          <button class="tip-card-copy" onclick="copyTip(this,'210-467-2581')">Copy Phone Number</button>
+        </div>
+
+      </div><!-- /tipjar-grid -->
+
+      <!-- MOBILE ACCORDION (hidden on desktop) -->
+      <div class="tip-accordion-strip" id="acc-strip">
+        <button class="tip-acc-btn" data-acc="cashapp"
+          style="--acc-color:#00D632; --acc-tint:rgba(0,214,50,0.09); --acc-border:rgba(0,214,50,0.25);">
+          <img src="https://static.wixstatic.com/media/a8adb7_30d8a10c586e4a7a8f4af2f9a24004af~mv2.png" alt="Cash App" />
+          <span class="tip-acc-label">Cash App</span>
+        </button>
+        <button class="tip-acc-btn" data-acc="venmo"
+          style="--acc-color:#008CFF; --acc-tint:rgba(0,140,255,0.09); --acc-border:rgba(0,140,255,0.25);">
+          <img src="https://static.wixstatic.com/media/a8adb7_c7ca3645e9eb46bdb9b3d5788fd6b117~mv2.png" alt="Venmo" />
+          <span class="tip-acc-label">Venmo</span>
+        </button>
+        <button class="tip-acc-btn" data-acc="paypal"
+          style="--acc-color:#009cde; --acc-tint:rgba(0,156,222,0.09); --acc-border:rgba(0,156,222,0.25);">
+          <img src="https://static.wixstatic.com/media/a8adb7_5439953c15e44281a8c59b123c86aa36~mv2.png" alt="PayPal" />
+          <span class="tip-acc-label">PayPal</span>
+        </button>
+        <button class="tip-acc-btn" data-acc="zelle"
+          style="--acc-color:#6D1ED4; --acc-tint:rgba(109,30,212,0.09); --acc-border:rgba(109,30,212,0.28);">
+          <img src="https://static.wixstatic.com/media/a8adb7_b2e047addf97487dbb77c63efebee9ce~mv2.png" alt="Zelle" />
+          <span class="tip-acc-label">Zelle</span>
+        </button>
+      </div>
+
+      <div class="tip-accordion-panel" id="acc-panel"></div>
+
+    </section>
   </div><!-- /view-tipjar -->
 
-  <div id="view-schedule">
-  <section class="hero">
-    <div class="hero-left">
-      <div class="hero-tag" id="hero-tag">Live Stand-Up Comedy</div>
-      <h1 class="hero-title" id="hero-title">GET<br><span>TICKETS</span><br>HERE</h1>
-      <p class="hero-desc" id="hero-desc">Your go-to destination for live comedy in San Antonio. Browse all upcoming shows and grab your seats before they sell out.</p>
-      <div style="display:flex; gap:0.75rem; align-items:center;">
-        <a href="#schedule" class="btn-primary" id="hero-btn">
-          <span id="hero-btn-text">See Upcoming Shows</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <div class="btn-share-wrap">
-          <button class="btn-share" id="share-btn" aria-label="Copy link">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          </button>
-          <span class="share-tooltip">Link Copied!</span>
-        </div>
-      </div>
-    </div>
-    <div class="hero-right">
-      <div class="carousel" id="carousel">
-        <div class="carousel-slides" id="slides">
-          <div class="carousel-slide active">
-            <div class="carousel-slide-inner" style="background:#111;">
-              <div style="color:rgba(255,255,255,0.12);font-size:0.8rem;letter-spacing:0.1em;">Loading…</div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-dots" id="dots"></div>
-        <div class="carousel-nav" id="carousel-nav">
-          <button class="carousel-btn" id="prev" aria-label="Previous slide">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          </button>
-          <button class="carousel-btn" id="next" aria-label="Next slide">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
+<script>
+  function copyTip(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.dataset.label || btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+  document.querySelectorAll('.tip-card-copy').forEach(btn => { btn.dataset.label = btn.textContent; });
 
-  <div class="marquee-bar">
-    <div class="marquee-track" id="marquee-track"></div>
-  </div>
+  // ── MOBILE ACCORDION ──────────────────────────────────────
+  const ACC_DATA = {
+    cashapp: {
+      name: 'Cash App', handleStrong: '$MindTwistComedy', handleSub: 'Tap QR or open link',
+      icon: 'https://static.wixstatic.com/media/a8adb7_30d8a10c586e4a7a8f4af2f9a24004af~mv2.png',
+      qr:   'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRCashApp.svg',
+      link: 'https://cash.app/$MindTwistComedy', linkLabel: 'Open Cash App',
+      copyText: '$MindTwistComedy', copyLabel: 'Copy Handle',
+      color: '#00D632', tint: 'rgba(0,214,50,0.09)', border: 'rgba(0,214,50,0.25)',
+    },
+    venmo: {
+      name: 'Venmo', handleStrong: '@MindTwistComedy', handleSub: 'Tap QR or open link',
+      icon: 'https://static.wixstatic.com/media/a8adb7_c7ca3645e9eb46bdb9b3d5788fd6b117~mv2.png',
+      qr:   'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRVenmo.svg',
+      link: 'https://account.venmo.com/u/MindTwistComedy', linkLabel: 'Open Venmo',
+      copyText: '@MindTwistComedy', copyLabel: 'Copy Handle',
+      color: '#008CFF', tint: 'rgba(0,140,255,0.09)', border: 'rgba(0,140,255,0.25)',
+    },
+    paypal: {
+      name: 'PayPal', handleStrong: '@MindTwistComedy', handleSub: 'Tap QR or open link',
+      icon: 'https://static.wixstatic.com/media/a8adb7_5439953c15e44281a8c59b123c86aa36~mv2.png',
+      qr:   'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRPaypal.svg',
+      link: 'https://www.paypal.com/paypalme/MindTwistComedy', linkLabel: 'Open PayPal',
+      copyText: '@MindTwistComedy', copyLabel: 'Copy Handle',
+      color: '#009cde', tint: 'rgba(0,156,222,0.09)', border: 'rgba(0,156,222,0.25)',
+    },
+    zelle: {
+      name: 'Zelle', handleStrong: 'Irma Ruiz', handleSub: '210-467-2581',
+      icon: 'https://static.wixstatic.com/media/a8adb7_b2e047addf97487dbb77c63efebee9ce~mv2.png',
+      qr:   'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRZelle.svg',
+      link: null,
+      copyText: '210-467-2581', copyLabel: 'Copy Phone Number',
+      color: '#6D1ED4', tint: 'rgba(109,30,212,0.09)', border: 'rgba(109,30,212,0.28)',
+    },
+  };
 
-  <section class="schedule" id="schedule">
-    <div class="section-header">
-      <h2 class="section-title" id="schedule-title">Upcoming Shows</h2>
-      <div class="section-line"></div>
-    </div>
-    <div id="shows-container">
-      <div class="status">
-        <div class="spinner"></div>
-        Loading shows...
-      </div>
-    </div>
-  </section>
-        <h1 class="tipjar-title">Tip <span>Jar</span></h1>
-        <p class="tipjar-desc">Enjoyed the show? Picking up some swag at the merch stand? Your contributions keep this stage humming! Every dollar counts, thank you.</p>
-      </div>
-      <div class="tipjar-grid">
-        <!-- CASHAPP -->
-        <div class="tj-card" data-app="cashapp">
-          <div class="tj-stripe"></div>
-          <div class="tj-body">
-            <div class="tj-identity">
-              <div class="tj-appname">Cash App</div>
-              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_30d8a10c586e4a7a8f4af2f9a24004af~mv2.png" alt="Cash App" /></div>
+  let activeAcc = null;
+  const panel = document.getElementById('acc-panel');
+
+  document.querySelectorAll('.tip-acc-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.acc;
+      if (activeAcc === key) {
+        // Close
+        panel.classList.remove('open');
+        btn.classList.remove('active');
+        activeAcc = null;
+        return;
+      }
+      // Deactivate previous
+      document.querySelectorAll('.tip-acc-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeAcc = key;
+
+      const d = ACC_DATA[key];
+      panel.style.setProperty('--panel-color',  d.color);
+      panel.style.setProperty('--panel-tint',   d.tint);
+      panel.style.setProperty('--panel-border',  d.border);
+
+      panel.innerHTML = `
+        <div class="tip-panel-inner">
+          <div class="tip-panel-identity">
+            <div>
+              <div class="tip-panel-name">${d.name}</div>
+              <div class="tip-panel-handle-strong">${d.handleStrong}</div>
+              <div class="tip-panel-handle-sub">${d.handleSub}</div>
             </div>
-            <div class="tj-handle"><strong>$MindTwistComedy</strong>Scan or tap to open</div>
-            <div class="tj-collapsible"><div class="tj-collapsible-inner">
-              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRCashApp.svg" alt="Cash App QR" /></div>
-              <a href="https://cash.app/$MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open Cash App →</a>
-            </div></div>
+            <img class="tip-panel-icon" src="${d.icon}" alt="${d.name}" />
           </div>
-        </div>
-        <!-- VENMO -->
-        <div class="tj-card" data-app="venmo">
-          <div class="tj-stripe"></div>
-          <div class="tj-body">
-            <div class="tj-identity">
-              <div class="tj-appname">Venmo</div>
-              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_c7ca3645e9eb46bdb9b3d5788fd6b117~mv2.png" alt="Venmo" /></div>
-            </div>
-            <div class="tj-handle"><strong>@MindTwistComedy</strong>Scan or tap to open</div>
-            <div class="tj-collapsible"><div class="tj-collapsible-inner">
-              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRVenmo.svg" alt="Venmo QR" /></div>
-              <a href="https://account.venmo.com/u/MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open Venmo →</a>
-            </div></div>
-          </div>
-        </div>
-        <!-- PAYPAL -->
-        <div class="tj-card" data-app="paypal">
-          <div class="tj-stripe"></div>
-          <div class="tj-body">
-            <div class="tj-identity">
-              <div class="tj-appname">PayPal</div>
-              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_5439953c15e44281a8c59b123c86aa36~mv2.png" alt="PayPal" /></div>
-            </div>
-            <div class="tj-handle"><strong>@MindTwistComedy</strong>Scan or tap to open</div>
-            <div class="tj-collapsible"><div class="tj-collapsible-inner">
-              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRPaypal.svg" alt="PayPal QR" /></div>
-              <a href="https://www.paypal.com/paypalme/MindTwistComedy" target="_blank" rel="noopener" class="tj-cta">Open PayPal →</a>
-            </div></div>
-          </div>
-        </div>
-        <!-- ZELLE -->
-        <div class="tj-card" data-app="zelle">
-          <div class="tj-stripe"></div>
-          <div class="tj-body">
-            <div class="tj-identity">
-              <div class="tj-appname">Zelle</div>
-              <div class="tj-icon"><img src="https://static.wixstatic.com/media/a8adb7_b2e047addf97487dbb77c63efebee9ce~mv2.png" alt="Zelle" /></div>
-            </div>
-            <div class="tj-handle"><strong>IRMA RUIZ</strong><strong style="margin-top:2px;">210-467-2581</strong>Send directly via your bank app</div>
-            <div class="tj-collapsible"><div class="tj-collapsible-inner">
-              <div class="tj-qr"><img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/bc3355bb2988b99103e53f982e893c2ed82705a2/QRCodes/QRZelle.svg" alt="Zelle QR" /></div>
-            </div></div>
-          </div>
-        </div>
-      </div>
-      <p class="tipjar-footer-note">Tips are voluntary.<br>Thank you for your generosity. ❤️</p>
-    </div>
-  </div>
+          <img class="tip-panel-qr" src="${d.qr}" alt="${d.name} QR Code" />
+          ${d.link ? `<a class="tip-panel-link" href="${d.link}" target="_blank" rel="noopener">${d.linkLabel} →</a>` : ''}
+          <button class="tip-panel-copy" onclick="copyPanelBtn(this,'${d.copyText}','${d.copyLabel}')">${d.copyLabel}</button>
+        </div>`;
+
+      // Force reflow then open for transition
+      panel.classList.remove('open');
+      requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('open')));
+    });
+  });
+
+  function copyPanelBtn(btn, text, label) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
 
 <script>
   function getContentHeight() {
@@ -1816,7 +2052,6 @@
 
   function reportAfterSettle(delay) { setTimeout(reportHeight, delay || 1500); }
 
-  // Report height immediately so Wix never needs to add a scrollbar
   document.addEventListener('DOMContentLoaded', () => reportHeight());
   window.addEventListener('load', () => { reportHeight(); reportAfterSettle(500); reportAfterSettle(1500); reportAfterSettle(3000); });
   window.addEventListener('resize', reportHeight);
@@ -1924,11 +2159,11 @@
       view:     'home',
     },
     tipjar: {
-      tag:      'Tip Jar',
+      tag:      'Support MindTwist Comedy',
       title:    'TIP<br><span>JAR</span>',
-      desc:     'Support live comedy!',
-      btnText:  'See Upcoming Shows',
-      scheduleTitle: 'Upcoming Shows',
+      desc:     'Enjoying the shows? Leave a tip!',
+      btnText:  'Tip Jar',
+      scheduleTitle: 'Tip Jar',
       marqueeText: 'HA HA HA',
       theme:    null,
       shareUrl: 'https://www.mindtwistcomedy.com/tipjar',
@@ -1943,9 +2178,8 @@
   // ── VIEW SWITCHING ──────────────────────────────────────
   function activateView(viewName) {
     document.getElementById('view-home').classList.toggle('active', viewName === 'home');
-    document.getElementById('view-tipjar').classList.toggle('active', viewName === 'tipjar');
     document.getElementById('view-schedule').classList.toggle('active', viewName === 'schedule');
-    // Hide header on homepage, show on everything else
+    document.getElementById('view-tipjar').classList.toggle('active', viewName === 'tipjar');
     const header = document.querySelector('.site-header');
     if (header) header.style.display = viewName === 'home' ? 'none' : '';
     if (viewName === 'home') {
@@ -2007,13 +2241,6 @@
       display: `${MONTHS[date.getMonth()]} ${String(date.getDate()).padStart(2, '0')}`,
       day: DAYS[date.getDay()]
     };
-  }
-
-  function matchesTag(show) {
-    if (!URL_TAG) return true;
-    const raw = (show.Tag || '').trim();
-    if (!raw) return true;
-    return raw.split(',').map(t => t.toLowerCase().trim()).includes(URL_TAG);
   }
 
   let current = 0, total = 0, autoTimer = null;
@@ -2159,74 +2386,6 @@
     if (total > 1) autoTimer = setInterval(() => goTo(current + 1), 4000);
   }
 
-
-
-
-
-  // ── HOMEPAGE BG SWITCHING ──────────────────────────────────
-  let homeActiveKey = null;
-
-  function homeShowBg(key) {
-    if (homeActiveKey) {
-      document.getElementById('home-bg-' + homeActiveKey)?.classList.remove('active');
-      document.getElementById('home-glow-' + homeActiveKey)?.classList.remove('active');
-    }
-    document.getElementById('home-bg-default')?.classList.remove('active');
-    document.getElementById('home-bg-' + key)?.classList.add('active');
-    document.getElementById('home-glow-' + key)?.classList.add('active');
-    homeActiveKey = key;
-    const video = document.querySelector('#home-bg-' + key + ' video');
-    if (video) { video.currentTime = 0; video.play(); }
-  }
-
-  function homeHideBg() {
-    if (homeActiveKey) {
-      document.getElementById('home-bg-' + homeActiveKey)?.classList.remove('active');
-      document.getElementById('home-glow-' + homeActiveKey)?.classList.remove('active');
-    }
-    document.getElementById('home-bg-default')?.classList.add('active');
-    homeActiveKey = null;
-  }
-
-  const homeFeatTitle = document.getElementById('home-feature-title');
-  const homeFeatDesc  = document.getElementById('home-feature-desc');
-  const homeDefaultTitle = 'MindTwist Comedy';
-  const homeDefaultDesc  = 'Live stand-up. Multiple brands. One place to get tickets.';
-
-  function homeSetFeature(title, desc) {
-    homeFeatTitle.style.opacity = '0';
-    homeFeatDesc.style.opacity  = '0';
-    setTimeout(() => {
-      homeFeatTitle.textContent = title;
-      homeFeatDesc.textContent  = desc;
-      homeFeatTitle.style.opacity = '1';
-      homeFeatDesc.style.opacity  = '1';
-    }, 200);
-  }
-
-  document.querySelectorAll('.home-nav-link').forEach(link => {
-    link.addEventListener('mouseenter', () => {
-      const bg = link.dataset.bg;
-      if (bg) homeShowBg(bg);
-      if (link.dataset.title) homeSetFeature(link.dataset.title, link.dataset.desc);
-    });
-    link.addEventListener('mouseleave', () => {
-      homeHideBg();
-      homeSetFeature(homeDefaultTitle, homeDefaultDesc);
-    });
-  });
-
-  // ── TIPJAR MOBILE ACCORDION ────────────────────────────────
-  document.querySelectorAll('.tj-identity').forEach(identity => {
-    identity.addEventListener('click', () => {
-      if (window.innerWidth > 620) return;
-      const card = identity.closest('.tj-card');
-      const isOpen = card.classList.contains('open');
-      document.querySelectorAll('.tj-card').forEach(c => c.classList.remove('open'));
-      if (!isOpen) card.classList.add('open');
-    });
-  });
-
   // ── SHARE BUTTON ───────────────────────────────────────────
   const shareBtn = document.getElementById('share-btn');
   let currentShareUrl = brand.shareUrl || 'https://www.mindtwistcomedy.com/tickets';
@@ -2247,7 +2406,6 @@
     drawer.classList.toggle('open');
   });
 
-  // Close drawer on any link click
   drawer.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
       burger.classList.remove('open');
@@ -2255,7 +2413,6 @@
     });
   });
 
-  // Tag switching buttons
   function setActiveTag(tag) {
     const url = new URL(window.location.href);
     if (tag) { url.searchParams.set('tag', tag); }
@@ -2294,13 +2451,9 @@
     btn.addEventListener('click', () => setActiveTag(btn.dataset.tag));
   });
 
-  // Set initial layout on load
-
-  // Mark current tag as active on load
   document.querySelectorAll('.header-nav-btn').forEach(btn => {
     btn.classList.toggle('active', URL_TAG && btn.dataset.tag === URL_TAG);
   });
-
 
   // ── HOMEPAGE VIEW JS ──────────────────────────────────────
   function initHomeView() {
@@ -2363,14 +2516,12 @@
         hideBg();
         setFeature(defaultTitle, defaultDesc);
       });
-      // Clicking a nav link switches the filter
       link.addEventListener('click', e => {
         e.preventDefault();
         if (link.dataset.tag !== undefined) setActiveTag(link.dataset.tag);
       });
     });
 
-    // Tip Jar button and About button
     document.querySelectorAll('#view-home [data-tag]').forEach(el => {
       if (!el.classList.contains('nav-link')) {
         el.addEventListener('click', e => {
@@ -2381,21 +2532,7 @@
     });
   }
 
-  // ── TIPJAR VIEW JS ─────────────────────────────────────────
-  function initTipjarView() {
-    document.querySelectorAll('.tj-identity').forEach(identity => {
-      identity.addEventListener('click', () => {
-        if (window.innerWidth > 620) return;
-        const card = identity.closest('.tj-card');
-        const isOpen = card.classList.contains('open');
-        document.querySelectorAll('.tj-card').forEach(c => c.classList.remove('open'));
-        if (!isOpen) card.classList.add('open');
-      });
-    });
-  }
-
   initHomeView();
-  initTipjarView();
 
   if (currentView === 'schedule') loadShows();
 </script>
