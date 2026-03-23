@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version 1.01a -->
+<!-- Version 1.01b -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -881,6 +881,14 @@
     /* ── LAYOUT SWITCHING ────────────────────────────────── */
     body.layout-home { overflow: hidden; height: 100vh; height: 100dvh; cursor: none; }
     body.layout-home .site-header { display: none; }
+
+    body:has(#view-home.active) .site-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+    }
 
     /* ── HOMEPAGE LAYOUT ─────────────────────────────────── */
     #layout-home .stage {
@@ -2258,9 +2266,7 @@
     document.getElementById('view-schedule').classList.toggle('active', viewName === 'schedule');
     document.getElementById('view-tipjar').classList.toggle('active', viewName === 'tipjar');
     const header = document.querySelector('.site-header');
-    const footer = document.getElementById('site-footer');
     if (header) header.style.display = viewName === 'home' ? 'none' : '';
-    if (footer) footer.style.display = viewName === 'home' ? 'none' : '';
     if (viewName === 'home') {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
