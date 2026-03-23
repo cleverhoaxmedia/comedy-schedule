@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version 1.01 -->
+<!-- Version 1.01a -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1650,6 +1650,83 @@
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ── SITE FOOTER ─────────────────────────────────────── */
+    .site-footer {
+      width: 100%;
+      background: var(--bg-deep, #1A1A1A);
+      border-top: 1px solid var(--stroke, rgba(255,255,255,0.06));
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .site-footer-logo img {
+      height: 28px;
+      width: auto;
+      display: block;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .site-footer-logo:hover img { opacity: 1; }
+
+    .site-footer-social {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .footer-social-link:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--accent, #FFE135);
+      transform: translateY(-2px);
+    }
+
+    .footer-social-link img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .site-footer-copy {
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text-dim, rgba(245,245,240,0.35));
+      white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+      .site-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1.75rem 1.25rem;
+        gap: 1.25rem;
+      }
+      .site-footer-copy { order: 3; }
+      .site-footer-social { gap: 0.4rem; }
+      .footer-social-link { width: 38px; height: 38px; }
+    }
   </style>
 </head>
 <body>
@@ -2181,7 +2258,9 @@
     document.getElementById('view-schedule').classList.toggle('active', viewName === 'schedule');
     document.getElementById('view-tipjar').classList.toggle('active', viewName === 'tipjar');
     const header = document.querySelector('.site-header');
+    const footer = document.getElementById('site-footer');
     if (header) header.style.display = viewName === 'home' ? 'none' : '';
+    if (footer) footer.style.display = viewName === 'home' ? 'none' : '';
     if (viewName === 'home') {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
@@ -2536,5 +2615,40 @@
 
   if (currentView === 'schedule') loadShows();
 </script>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer" id="site-footer">
+    <a class="site-footer-logo" href="#" onclick="event.preventDefault(); setActiveTag('home')">
+      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+    </a>
+    <div class="site-footer-social">
+      <a class="footer-social-link" href="https://www.tiktok.com/@irmaruiz_mindtwistcomedy" target="_blank" rel="noopener" aria-label="TikTok">
+        <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/TT_Footer.png" alt="TikTok" />
+      </a>
+      <a class="footer-social-link" href="https://www.facebook.com/mindtwistcomedy" target="_blank" rel="noopener" aria-label="Facebook">
+        <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/FB_Inta.png" alt="Facebook" />
+      </a>
+      <a class="footer-social-link" href="https://www.youtube.com/channel/UClTURiQjeci0uTH9j263spA?view_as=subscriber" target="_blank" rel="noopener" aria-label="YouTube">
+        <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/YT_Footer.png" alt="YouTube" />
+      </a>
+      <a class="footer-social-link" href="https://twitter.com/mindtwistcomedy" target="_blank" rel="noopener" aria-label="X (Twitter)">
+        <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/X_Insta.png" alt="X" />
+      </a>
+      <a class="footer-social-link" href="https://www.snapchat.com/add/mindtwistcomedy" target="_blank" rel="noopener" aria-label="Snapchat">
+        <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/Snap_Footer.png" alt="Snapchat" />
+      </a>
+      <a class="footer-social-link" href="https://cleverhoaxmedia.github.io/comedy-schedule/PornHug.html" target="_blank" rel="noopener" aria-label="PornHub">
+        <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/PH_Footer.png" alt="PornHub" />
+      </a>
+      <a class="footer-social-link" href="https://www.instagram.com/irmaruiz_mindtwistcomedy/" target="_blank" rel="noopener" aria-label="Instagram">
+        <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/Inst_Footer.png" alt="Instagram" />
+      </a>
+      <a class="footer-social-link" href="https://www.linkedin.com/in/irmaruiz/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/LI_Footer.png" alt="LinkedIn" />
+      </a>
+    </div>
+    <span class="site-footer-copy">© 2025 MindTwist Comedy. All rights reserved.</span>
+  </footer>
+
 </body>
 </html>
