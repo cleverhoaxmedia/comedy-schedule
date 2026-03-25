@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version 1.01b -->
+<!-- Version 1.01c -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1862,6 +1862,7 @@
             <span id="hero-btn-text">See Upcoming Shows</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
+          <a id="media-btn" href="#" target="_blank" rel="noopener" style="display:none; align-items:center; gap:0.6rem; background:transparent; border:1px solid rgba(255,255,255,0.25); color:var(--text); font-family:'DM Sans',sans-serif; font-weight:700; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.55rem 1.2rem; border-radius:999px; text-decoration:none; transition:background 0.2s, border-color 0.2s; white-space:nowrap;">Media</a>
           <div class="btn-share-wrap">
             <button class="btn-share" id="share-btn" aria-label="Copy link">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -2187,6 +2188,7 @@
       marqueeText: 'LOTERÍA COMEDY',
       theme:    'theme-loteria',
       shareUrl: 'https://www.mindtwistcomedy.com/loteria',
+      mediaUrl: 'https://www.mysanantonio.com/entertainment/article/irma-ruiz-comedian-san-antonio-21063216.php',
       images: [
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/LotStand1.jpg',
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/LotStand2.jpg',
@@ -2287,6 +2289,9 @@
     document.getElementById('hero-desc').textContent       = brand.desc;
     document.getElementById('hero-btn-text').textContent   = brand.btnText;
     document.getElementById('schedule-title').textContent  = brand.scheduleTitle;
+    const mediaBtn = document.getElementById('media-btn');
+    if (brand.mediaUrl) { mediaBtn.href = brand.mediaUrl; mediaBtn.style.display = 'inline-flex'; }
+    else { mediaBtn.style.display = 'none'; }
   }
 
   const MARQUEE_LOGO  = 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/3c5bb56af430ed005e52416d7535672311cf9f7b/posters/Mindy.svg';
@@ -2518,6 +2523,9 @@
       document.getElementById('hero-desc').textContent      = newBrand.desc;
       document.getElementById('hero-btn-text').textContent  = newBrand.btnText;
       document.getElementById('schedule-title').textContent = newBrand.scheduleTitle;
+      const mediaBtn = document.getElementById('media-btn');
+      if (newBrand.mediaUrl) { mediaBtn.href = newBrand.mediaUrl; mediaBtn.style.display = 'inline-flex'; }
+      else { mediaBtn.style.display = 'none'; }
       const newItem = `<div class="marquee-item">${newBrand.marqueeText}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
       const newSet  = Array(MARQUEE_COPIES).fill(newItem).join('');
       document.getElementById('marquee-track').innerHTML = newSet + newSet;
@@ -2653,7 +2661,7 @@
         <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/LI_Footer.png" alt="LinkedIn" />
       </a>
     </div>
-    
+    <span class="site-footer-copy">© 2025 MindTwist Comedy. All rights reserved.</span>
   </footer>
 
 </body>
