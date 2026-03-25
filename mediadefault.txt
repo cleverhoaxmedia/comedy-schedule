@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindTwistComedy — About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0D0D0D;
+      --bg-card: #161616;
+      --bg-hover: #1e1e1e;
+      --border: rgba(255,255,255,0.07);
+      --text: #F5F5F0;
+      --text-dim: rgba(245,245,240,0.5);
+      --accent: #FFE135;
+      --max-width: 1000px;
+      --ease: cubic-bezier(0.76, 0, 0.24, 1);
+      --radius-lg: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 5rem 0 2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 7rem);
+      line-height: 0.9;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 600px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .section {
+      padding: 2rem 0 4rem;
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .media-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: transform 0.2s var(--ease), background 0.2s ease;
+    }
+
+    .media-card:hover {
+      transform: translateY(-3px);
+      background: var(--bg-hover);
+    }
+
+    .media-source {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .media-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .media-card p {
+      color: var(--text-dim);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .media-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .media-link {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .media-link:hover {
+      color: var(--accent);
+    }
+
+    .featured {
+      grid-column: span 2;
+      border-color: rgba(255,225,53,0.25);
+    }
+
+    .featured blockquote {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      line-height: 1;
+      margin-top: 0.5rem;
+    }
+
+    .press {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .press h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .press p {
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 800px) {
+      .media-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .featured {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container">
+
+    <section class="hero">
+      <h1>ABOUT</h1>
+      <p>
+        A simple archive of press mentions, articles, and features about MindTwist Comedy.
+      </p>
+    </section>
+
+    <section class="section">
+
+      <div class="media-grid">
+
+        <article class="media-card featured">
+          <div class="media-source">Featured</div>
+          <h3>City Paper spotlights MindTwist Comedy as one of the live events reshaping the local scene</h3>
+          <p>
+            Use this slot for your strongest press mention or most recognizable feature.
+          </p>
+          <blockquote>
+            “One of the sharpest and most inventive comedy showcases in the city.”
+          </blockquote>
+          <div class="media-footer">
+            <span>March 2026</span>
+            <a class="media-link" href="#" target="_blank">Read →</a>
+          </div>
+        </article>
+
+        <article class="media-card">
+          <div class="media-source">The Daily Ledger</div>
+          <h3>MindTwist Comedy brings packed crowds and offbeat energy to downtown weekends</h3>
+          <p>Short summary or context about the article.</p>
+          <div class="media-footer">
+            <span>Jan 18, 2026</span>
+            <a class="media-link" href="#" target="_blank">Read →</a>
+          </div>
+        </article>
+
+        <article class="media-card">
+          <div class="media-source">LaughTrack Local</div>
+          <h3>Five indie comedy nights to know right now</h3>
+          <p>Example of a roundup or list mention.</p>
+          <div class="media-footer">
+            <span>Dec 2, 2025</span>
+            <a class="media-link" href="#" target="_blank">Visit →</a>
+          </div>
+        </article>
+
+        <article class="media-card">
+          <div class="media-source">Weekend Beat</div>
+          <h3>Founder interview on building a local comedy brand</h3>
+          <p>Use for interviews, podcasts, or profiles.</p>
+          <div class="media-footer">
+            <span>Oct 9, 2025</span>
+            <a class="media-link" href="#" target="_blank">Open →</a>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="press">
+        <h2>Press Contact</h2>
+        <p>For inquiries, interviews, or to share coverage:</p>
+        <a class="media-link" href="mailto:press@mindtwistcomedy.com">press@mindtwistcomedy.com</a>
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
