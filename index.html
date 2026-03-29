@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version 1.01c -->
+<!-- Version 1.01d -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1742,7 +1742,7 @@
   <!-- SITE HEADER -->
   <header class="site-header">
     <a class="site-header-logo" href="#" onclick="event.preventDefault(); setActiveTag('home')">
-      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
     </a>
     <nav class="site-header-nav">
       <button class="header-nav-btn" data-tag="home">Home</button>
@@ -1811,7 +1811,7 @@
     <main class="shell">
       <div class="left">
         <div class="brand-logo">
-          <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+          <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
         </div>
         <nav class="nav" id="hp-nav">
           <a href="#" class="nav-link get-tix" data-key="getTix" data-tag="tickets" data-title="Get Tickets" data-desc="All upcoming shows across every brand — in one place.">
@@ -1841,7 +1841,7 @@
       <div class="right">
         <div class="feature">
           <div class="feature-kicker"><span class="kicker-dot"></span><span>Now Featuring</span></div>
-          <div class="feature-title" id="hp-feature-title">MindTwist Comedy</div>
+          <div class="feature-title" id="hp-feature-title">MindTwistComedy</div>
           <p class="feature-desc" id="hp-feature-desc">Live stand-up. Multiple brands. One place to get tickets.</p>
         </div>
         <div class="right-footer">
@@ -1914,7 +1914,7 @@
   <!-- TIP JAR VIEW -->
   <div id="view-tipjar">
     <section class="tipjar-section">
-      <div class="tipjar-eyebrow">Support MindTwist Comedy</div>
+      <div class="tipjar-eyebrow">Support MindTwistComedy</div>
       <h1 class="tipjar-title">TIP <span>JAR</span></h1>
       <p class="tipjar-desc">Enjoyed the show? Grabbbing some swag at the merch stand? Every dollar helps keep this stage humming, thank you! ♥ </p>
 
@@ -2018,8 +2018,28 @@
   </div><!-- /view-tipjar -->
 
 <script>
+  // ── CLIPBOARD HELPER (works in iframes / non-HTTPS) ──────
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(() => execCopy(text));
+    }
+    return execCopy(text);
+  }
+  function execCopy(text) {
+    return new Promise((resolve, reject) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try { document.execCommand('copy') ? resolve() : reject(); }
+      catch(e) { reject(e); }
+      finally { document.body.removeChild(ta); }
+    });
+  }
+
   function copyTip(btn, text) {
-    navigator.clipboard.writeText(text).then(() => {
+    copyToClipboard(text).then(() => {
       const orig = btn.dataset.label || btn.textContent;
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
@@ -2109,7 +2129,7 @@
   });
 
   function copyPanelBtn(btn, text, label) {
-    navigator.clipboard.writeText(text).then(() => {
+    copyToClipboard(text).then(() => {
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 2000);
@@ -2211,7 +2231,7 @@
       ],
     },
     default: {
-      tag:      'MindTwist Comedy',
+      tag:      'MindTwistComedy',
       title:    'MIND<br><span>TWIST</span>',
       desc:     'Live stand-up. Multiple brands. One place to get tickets.',
       btnText:  'See Upcoming Shows',
@@ -2234,7 +2254,7 @@
       images:   [],
     },
     home: {
-      tag:      'MindTwist Comedy',
+      tag:      'MindTwistComedy',
       title:    'MIND<br><span>TWIST</span>',
       desc:     'Live stand-up. Multiple brands. One place to get tickets.',
       btnText:  'See Upcoming Shows',
@@ -2246,7 +2266,7 @@
       view:     'home',
     },
     tipjar: {
-      tag:      'Support MindTwist Comedy',
+      tag:      'Support MindTwistComedy',
       title:    'TIP<br><span>JAR</span>',
       desc:     'Enjoying the shows? Leave a tip!',
       btnText:  'Tip Jar',
@@ -2481,7 +2501,7 @@
   let currentShareUrl = brand.shareUrl || 'https://www.mindtwistcomedy.com/tickets';
 
   shareBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(currentShareUrl).then(() => {
+    copyToClipboard(currentShareUrl).then(() => {
       shareBtn.closest('.btn-share-wrap').classList.add('copied');
       setTimeout(() => shareBtn.closest('.btn-share-wrap').classList.remove('copied'), 2000);
     });
@@ -2633,7 +2653,7 @@
   <!-- SITE FOOTER -->
   <footer class="site-footer" id="site-footer">
     <a class="site-footer-logo" href="#" onclick="event.preventDefault(); setActiveTag('home')">
-      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
     </a>
     <div class="site-footer-social">
       <a class="footer-social-link" href="https://www.tiktok.com/@irmaruiz_mindtwistcomedy" target="_blank" rel="noopener" aria-label="TikTok">
@@ -2661,7 +2681,7 @@
         <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/LI_Footer.png" alt="LinkedIn" />
       </a>
     </div>
-    <span class="site-footer-copy">© 2025 MindTwist Comedy. All rights reserved.</span>
+    <span class="site-footer-copy">© 2026 MindTwistComedy. All rights reserved.</span>
   </footer>
 
 </body>
