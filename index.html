@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version 1.01d -->
+<!-- Version 1.02a -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -882,14 +882,6 @@
     body.layout-home { overflow: hidden; height: 100vh; height: 100dvh; cursor: none; }
     body.layout-home .site-header { display: none; }
 
-    body:has(#view-home.active) .site-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-    }
-
     /* ── HOMEPAGE LAYOUT ─────────────────────────────────── */
     #layout-home .stage {
       position: fixed;
@@ -1742,7 +1734,7 @@
   <!-- SITE HEADER -->
   <header class="site-header">
     <a class="site-header-logo" href="#" onclick="event.preventDefault(); setActiveTag('home')">
-      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
+      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
     </a>
     <nav class="site-header-nav">
       <button class="header-nav-btn" data-tag="home">Home</button>
@@ -1811,7 +1803,7 @@
     <main class="shell">
       <div class="left">
         <div class="brand-logo">
-          <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
+          <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
         </div>
         <nav class="nav" id="hp-nav">
           <a href="#" class="nav-link get-tix" data-key="getTix" data-tag="tickets" data-title="Get Tickets" data-desc="All upcoming shows across every brand — in one place.">
@@ -1841,7 +1833,7 @@
       <div class="right">
         <div class="feature">
           <div class="feature-kicker"><span class="kicker-dot"></span><span>Now Featuring</span></div>
-          <div class="feature-title" id="hp-feature-title">MindTwistComedy</div>
+          <div class="feature-title" id="hp-feature-title">MindTwist Comedy</div>
           <p class="feature-desc" id="hp-feature-desc">Live stand-up. Multiple brands. One place to get tickets.</p>
         </div>
         <div class="right-footer">
@@ -1862,7 +1854,6 @@
             <span id="hero-btn-text">See Upcoming Shows</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
-          <a id="media-btn" href="#" target="_blank" rel="noopener" style="display:none; align-items:center; gap:0.6rem; background:transparent; border:1px solid rgba(255,255,255,0.25); color:var(--text); font-family:'DM Sans',sans-serif; font-weight:700; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.55rem 1.2rem; border-radius:999px; text-decoration:none; transition:background 0.2s, border-color 0.2s; white-space:nowrap;">Media</a>
           <div class="btn-share-wrap">
             <button class="btn-share" id="share-btn" aria-label="Copy link">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -1914,7 +1905,7 @@
   <!-- TIP JAR VIEW -->
   <div id="view-tipjar">
     <section class="tipjar-section">
-      <div class="tipjar-eyebrow">Support MindTwistComedy</div>
+      <div class="tipjar-eyebrow">Support MindTwist Comedy</div>
       <h1 class="tipjar-title">TIP <span>JAR</span></h1>
       <p class="tipjar-desc">Enjoyed the show? Grabbbing some swag at the merch stand? Every dollar helps keep this stage humming, thank you! ♥ </p>
 
@@ -2018,28 +2009,8 @@
   </div><!-- /view-tipjar -->
 
 <script>
-  // ── CLIPBOARD HELPER (works in iframes / non-HTTPS) ──────
-  function copyToClipboard(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text).catch(() => execCopy(text));
-    }
-    return execCopy(text);
-  }
-  function execCopy(text) {
-    return new Promise((resolve, reject) => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
-      document.body.appendChild(ta);
-      ta.focus(); ta.select();
-      try { document.execCommand('copy') ? resolve() : reject(); }
-      catch(e) { reject(e); }
-      finally { document.body.removeChild(ta); }
-    });
-  }
-
   function copyTip(btn, text) {
-    copyToClipboard(text).then(() => {
+    navigator.clipboard.writeText(text).then(() => {
       const orig = btn.dataset.label || btn.textContent;
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
@@ -2129,7 +2100,7 @@
   });
 
   function copyPanelBtn(btn, text, label) {
-    copyToClipboard(text).then(() => {
+    navigator.clipboard.writeText(text).then(() => {
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 2000);
@@ -2208,7 +2179,6 @@
       marqueeText: 'LOTERÍA COMEDY',
       theme:    'theme-loteria',
       shareUrl: 'https://www.mindtwistcomedy.com/loteria',
-      mediaUrl: 'https://www.mysanantonio.com/entertainment/article/irma-ruiz-comedian-san-antonio-21063216.php',
       images: [
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/LotStand1.jpg',
         'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/LotStand2.jpg',
@@ -2231,7 +2201,7 @@
       ],
     },
     default: {
-      tag:      'MindTwistComedy',
+      tag:      'MindTwist Comedy',
       title:    'MIND<br><span>TWIST</span>',
       desc:     'Live stand-up. Multiple brands. One place to get tickets.',
       btnText:  'See Upcoming Shows',
@@ -2254,7 +2224,7 @@
       images:   [],
     },
     home: {
-      tag:      'MindTwistComedy',
+      tag:      'MindTwist Comedy',
       title:    'MIND<br><span>TWIST</span>',
       desc:     'Live stand-up. Multiple brands. One place to get tickets.',
       btnText:  'See Upcoming Shows',
@@ -2266,7 +2236,7 @@
       view:     'home',
     },
     tipjar: {
-      tag:      'Support MindTwistComedy',
+      tag:      'Support MindTwist Comedy',
       title:    'TIP<br><span>JAR</span>',
       desc:     'Enjoying the shows? Leave a tip!',
       btnText:  'Tip Jar',
@@ -2288,7 +2258,9 @@
     document.getElementById('view-schedule').classList.toggle('active', viewName === 'schedule');
     document.getElementById('view-tipjar').classList.toggle('active', viewName === 'tipjar');
     const header = document.querySelector('.site-header');
+    const footer = document.getElementById('site-footer');
     if (header) header.style.display = viewName === 'home' ? 'none' : '';
+    if (footer) footer.style.display = viewName === 'home' ? 'none' : '';
     if (viewName === 'home') {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
@@ -2309,9 +2281,6 @@
     document.getElementById('hero-desc').textContent       = brand.desc;
     document.getElementById('hero-btn-text').textContent   = brand.btnText;
     document.getElementById('schedule-title').textContent  = brand.scheduleTitle;
-    const mediaBtn = document.getElementById('media-btn');
-    if (brand.mediaUrl) { mediaBtn.href = brand.mediaUrl; mediaBtn.style.display = 'inline-flex'; }
-    else { mediaBtn.style.display = 'none'; }
   }
 
   const MARQUEE_LOGO  = 'https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/3c5bb56af430ed005e52416d7535672311cf9f7b/posters/Mindy.svg';
@@ -2344,9 +2313,20 @@
     }).filter(row => row.Date);
   }
 
-  function formatDate(dateStr) {
+  function normalizeDate(dateStr) {
+    if (!dateStr) return new Date(0);
+    // Handle MM/DD/YYYY (Google Sheets default auto-format)
+    if (dateStr.includes('/')) {
+      const [m, d, y] = dateStr.split('/').map(Number);
+      return new Date(y, m - 1, d);
+    }
+    // Handle YYYY-MM-DD (preferred format)
     const [y, m, d] = dateStr.split('-').map(Number);
-    const date = new Date(y, m - 1, d);
+    return new Date(y, m - 1, d);
+  }
+
+  function formatDate(dateStr) {
+    const date = normalizeDate(dateStr);
     return {
       display: `${MONTHS[date.getMonth()]} ${String(date.getDate()).padStart(2, '0')}`,
       day: DAYS[date.getDay()]
@@ -2441,7 +2421,7 @@
         const raw = (show.Tag || '').trim();
         if (!raw) return true;
         return raw.split(',').map(t => t.toLowerCase().trim()).includes(tag);
-      });
+      }).sort((a, b) => normalizeDate(a.Date) - normalizeDate(b.Date));
       const newBrand = BRAND_CONFIG[tag] || BRAND_CONFIG.default;
       buildCarouselForBrand(newBrand, filtered);
       renderShows(filtered);
@@ -2501,7 +2481,7 @@
   let currentShareUrl = brand.shareUrl || 'https://www.mindtwistcomedy.com/tickets';
 
   shareBtn.addEventListener('click', () => {
-    copyToClipboard(currentShareUrl).then(() => {
+    navigator.clipboard.writeText(currentShareUrl).then(() => {
       shareBtn.closest('.btn-share-wrap').classList.add('copied');
       setTimeout(() => shareBtn.closest('.btn-share-wrap').classList.remove('copied'), 2000);
     });
@@ -2543,9 +2523,6 @@
       document.getElementById('hero-desc').textContent      = newBrand.desc;
       document.getElementById('hero-btn-text').textContent  = newBrand.btnText;
       document.getElementById('schedule-title').textContent = newBrand.scheduleTitle;
-      const mediaBtn = document.getElementById('media-btn');
-      if (newBrand.mediaUrl) { mediaBtn.href = newBrand.mediaUrl; mediaBtn.style.display = 'inline-flex'; }
-      else { mediaBtn.style.display = 'none'; }
       const newItem = `<div class="marquee-item">${newBrand.marqueeText}<img class="marquee-separator" src="${MARQUEE_LOGO}" alt="" aria-hidden="true" /></div>`;
       const newSet  = Array(MARQUEE_COPIES).fill(newItem).join('');
       document.getElementById('marquee-track').innerHTML = newSet + newSet;
@@ -2653,7 +2630,7 @@
   <!-- SITE FOOTER -->
   <footer class="site-footer" id="site-footer">
     <a class="site-footer-logo" href="#" onclick="event.preventDefault(); setActiveTag('home')">
-      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
+      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
     </a>
     <div class="site-footer-social">
       <a class="footer-social-link" href="https://www.tiktok.com/@irmaruiz_mindtwistcomedy" target="_blank" rel="noopener" aria-label="TikTok">
@@ -2681,7 +2658,7 @@
         <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/LI_Footer.png" alt="LinkedIn" />
       </a>
     </div>
-    <span class="site-footer-copy">© 2026 MindTwistComedy. All rights reserved.</span>
+    <span class="site-footer-copy">© 2025 MindTwist Comedy. All rights reserved.</span>
   </footer>
 
 </body>
