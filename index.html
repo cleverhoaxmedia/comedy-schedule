@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version 1.02c -->
+<!-- Version 1.02d -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1208,13 +1208,47 @@
       text-shadow: 0 6px 20px rgba(0,0,0,0.5); transition: opacity 0.25s;
     }
     .right-footer { display: flex; gap: 8px; }
+
+    /* ── HOMEPAGE MOBILE: NAV DIVIDERS ───────────────────── */
     @media (max-width: 768px) {
       #view-home .cursor { display: none; }
       .shell { grid-template-columns: 1fr; height: auto; min-height: 100vh; padding: 2rem 1.5rem 2rem 2rem; gap: 3rem; }
       .shell .right { align-items: flex-start; }
       .feature { text-align: left; }
       .feature-kicker { margin-bottom: 1rem; }
-      .nav-link { font-size: clamp(2.2rem, 10vw, 3rem); }
+
+      .nav {
+        padding: 1rem 0;
+      }
+
+      .nav-link {
+        font-size: clamp(2.2rem, 10vw, 3rem);
+        border-bottom: 2px solid rgba(255,255,255,0.18);
+        padding: 0.75rem 0 0.75rem 1.2rem;
+      }
+
+      .nav-link:last-child {
+        border-bottom: 1px solid rgba(240,238,233,0.14);
+      }
+
+      .nav-link > span:first-child {
+        display: block;
+        max-width: 100%;
+        line-height: 0.95;
+      }
+
+      .nav-link .nav-meta {
+        width: 100%;
+        opacity: 0.7;
+        transform: none;
+        font-size: 0.62rem;
+        padding-left: 0.05rem;
+      }
+
+      .nav-link:hover {
+        padding-left: 1.5rem;
+      }
+
       .nav-link.get-tix { font-size: clamp(2.8rem, 12vw, 3.8rem); }
     }
 
@@ -1734,7 +1768,7 @@
   <!-- SITE HEADER -->
   <header class="site-header">
     <a class="site-header-logo" href="#" onclick="event.preventDefault(); setActiveTag('home')">
-      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
     </a>
     <nav class="site-header-nav">
       <button class="header-nav-btn" data-tag="home">Home</button>
@@ -1803,7 +1837,7 @@
     <main class="shell">
       <div class="left">
         <div class="brand-logo">
-          <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+          <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
         </div>
         <nav class="nav" id="hp-nav">
           <a href="#" class="nav-link get-tix" data-key="getTix" data-tag="tickets" data-title="Get Tickets" data-desc="All upcoming shows across every brand — in one place.">
@@ -1833,7 +1867,7 @@
       <div class="right">
         <div class="feature">
           <div class="feature-kicker"><span class="kicker-dot"></span><span>Now Featuring</span></div>
-          <div class="feature-title" id="hp-feature-title">MindTwist Comedy</div>
+          <div class="feature-title" id="hp-feature-title">MindTwistComedy</div>
           <p class="feature-desc" id="hp-feature-desc">Live stand-up. Multiple brands. One place to get tickets.</p>
         </div>
         <div class="right-footer">
@@ -1905,7 +1939,7 @@
   <!-- TIP JAR VIEW -->
   <div id="view-tipjar">
     <section class="tipjar-section">
-      <div class="tipjar-eyebrow">Support MindTwist Comedy</div>
+      <div class="tipjar-eyebrow">Support MindTwistComedy</div>
       <h1 class="tipjar-title">TIP <span>JAR</span></h1>
       <p class="tipjar-desc">Enjoyed the show? Grabbbing some swag at the merch stand? Every dollar helps keep this stage humming, thank you! ♥ </p>
 
@@ -2225,7 +2259,7 @@ Chingona Comedy brings some of the funniest women working today to talk real sh*
       ],
     },
     default: {
-      tag:      'MindTwist Comedy',
+      tag:      'MindTwistComedy',
       title:    'MIND<br><span>TWIST</span>',
       desc:     'Live stand-up. Multiple brands. One place to get tickets.',
       btnText:  'See Upcoming Shows',
@@ -2248,7 +2282,7 @@ Chingona Comedy brings some of the funniest women working today to talk real sh*
       images:   [],
     },
     home: {
-      tag:      'MindTwist Comedy',
+      tag:      'MindTwistComedy',
       title:    'MIND<br><span>TWIST</span>',
       desc:     'Live stand-up. Multiple brands. One place to get tickets.',
       btnText:  'See Upcoming Shows',
@@ -2260,7 +2294,7 @@ Chingona Comedy brings some of the funniest women working today to talk real sh*
       view:     'home',
     },
     tipjar: {
-      tag:      'Support MindTwist Comedy',
+      tag:      'Support MindTwistComedy',
       title:    'TIP<br><span>JAR</span>',
       desc:     'Enjoying the shows? Leave a tip!',
       btnText:  'Tip Jar',
@@ -2339,12 +2373,10 @@ Chingona Comedy brings some of the funniest women working today to talk real sh*
 
   function normalizeDate(dateStr) {
     if (!dateStr) return new Date(0);
-    // Handle MM/DD/YYYY (Google Sheets default auto-format)
     if (dateStr.includes('/')) {
       const [m, d, y] = dateStr.split('/').map(Number);
       return new Date(y, m - 1, d);
     }
-    // Handle YYYY-MM-DD (preferred format)
     const [y, m, d] = dateStr.split('-').map(Number);
     return new Date(y, m - 1, d);
   }
@@ -2654,7 +2686,7 @@ Chingona Comedy brings some of the funniest women working today to talk real sh*
   <!-- SITE FOOTER -->
   <footer class="site-footer" id="site-footer">
     <a class="site-footer-logo" href="#" onclick="event.preventDefault(); setActiveTag('home')">
-      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwist Comedy" />
+      <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/posters/White-Clear%202.png" alt="MindTwistComedy" />
     </a>
     <div class="site-footer-social">
       <a class="footer-social-link" href="https://www.tiktok.com/@irmaruiz_mindtwistcomedy" target="_blank" rel="noopener" aria-label="TikTok">
@@ -2682,7 +2714,7 @@ Chingona Comedy brings some of the funniest women working today to talk real sh*
         <img src="https://raw.githubusercontent.com/cleverhoaxmedia/comedy-schedule/refs/heads/main/GenImages/Social%20Media%20Icons/LI_Footer.png" alt="LinkedIn" />
       </a>
     </div>
-    <span class="site-footer-copy">© 2025 MindTwist Comedy. All rights reserved.</span>
+    <span class="site-footer-copy">© 2025 MindTwistComedy. All rights reserved.</span>
   </footer>
 
 </body>
